@@ -14,6 +14,8 @@ registered.network.covariance.function(
 )
 }
 \arguments{
+\item{plane.boundary}{A matrix containing the cooridnates of the vertices of the boundard of the space. See ggvoronoi.}
+
 \item{type}{The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.}
 
 \item{linear.combination}{A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.}

@@ -4,7 +4,7 @@
 #'
 #'
 #' @param coordiantes An Nx2 matrix containing the Euclidean coordinates of the nodes.
-#' @plane.boundary A matrix containing the cooridnates of the vertices of the boundard of the space. See ggvoronoi.
+#' @param plane.boundary A matrix containing the cooridnates of the vertices of the boundard of the space. See ggvoronoi.
 #' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
 #' @param hyperaparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
 #' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
