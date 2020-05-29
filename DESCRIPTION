@@ -8,7 +8,7 @@ Authors@R:
            email = "rowland.Seymour@nottingham.ac.uk",
            comment = c(ORCID = "0000-0002-8739-3921"))
 Description: This package implements the Bradley-Terry for Urban Network (BTUN) model. It 	can be used to investigate data sets where judges compared different urban areas. 	It computes the level of deprivation of each area being considered, and can rank 	them from least to most deprived. The method uses a registered Gaussian Process to 	learn the spatial structure of the level of deprivation across the areas.
-License: use_cc0_license()
+License: use_gpl3_license()
 Imports: ggvoronoi, igraph, surveillance 
 Encoding: UTF-8
 LazyData: true
