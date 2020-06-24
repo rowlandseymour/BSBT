@@ -8,9 +8,7 @@
 A .shp object
 }
 \usage{
-system.file("extdata", "dar_subwards.shp", package = "BTUN")
-
-system.file("extdata", "dar_subwards.shp", package = "BTUN")
+dar.shapefiles
 }
 \description{
 Polygons for the 452 subwards in Dar es Salaam, Tanzania

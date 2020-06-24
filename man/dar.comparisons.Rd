@@ -11,9 +11,7 @@ A csv file containing 76408 rows and 2 columns. Each row corresponds to a judgem
 This dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann.We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge HumanitarianStreet Mapping Team (HOT) for providing a team of experts in data collectionto facilitate the surveys. This work was also supported by the EPSRC HorizonCentre for Doctoral Training - My Life in Data (EP/L015463/1) and EPSRC grant Neodemographics (EP/L021080/1).
 }
 \usage{
-system.file("extdata", "dar.csv", package = "BTUN")
-
-system.file("extdata", "dar.csv", package = "BTUN")
+dar.comparisons
 }
 \description{
 A comparative judgement dataset on deprivation in subwards in Dar es Salaam, Tanzania.
