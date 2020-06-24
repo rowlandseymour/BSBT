@@ -5,12 +5,12 @@
 #'
 #' @param adj.matrix The graph adjacency matrix
 #' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
-#' @param hyperaparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
+#' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
 #' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @return The mean vector and covariance matrix
 #' @export
-registered.adjacent.covariance.function <- function(adj.matrix, type, hyperparameters,
+registered_adjacency_covariance_function <- function(adj.matrix, type, hyperparameters,
                                                    linear.combination, linear.constraint = 0){
 
 

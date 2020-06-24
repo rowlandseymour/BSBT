@@ -1,14 +1,14 @@
 #' Simulate contests from the Bradley--Terry Model
 #'
 #' This function simulates pair-wise contests according to the Bradley--Terry model
-#'
+
 #'
 #' @param n.contests The number of contests to be carried out
 #' @param true.quality A vector with the level of deprivation in each area on the log scale.
 #' @param sigma.obs Standard deviation for the noise to be added to the level of deprivation in each subward. If 0, no noise is used.
 #' @return A list containing a data.frame with each par-wise contest and the outcome, and a win matrix where the i,j^th element is the number of times i beat j
 #' @export
-simulate.contests <- function(n.contests, true.quality, sigma.obs){
+simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 
 
   if(n.contests%%1 != 0)
@@ -25,13 +25,13 @@ simulate.contests <- function(n.contests, true.quality, sigma.obs){
 
       #Generate IDs of subwards
       subwards <- sample(1:length(true.quality), 2, FALSE)  #choose two subwards to compare
-      log.lambda.1 <- true.quality[subwards[1]] + rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
-      log.lambda.2 <- true.quality[subwards[2]] + rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
+      log.lambda.1 <- true.quality[subwards[1]] + stats::rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
+      log.lambda.2 <- true.quality[subwards[2]] + stats::rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
 
 
       #Simulate Contest
       win.prob <- exp(log.lambda.1)/(exp(log.lambda.1) + exp(log.lambda.2)) #compute probability i > j
-      result <- rbinom(1, 1, win.prob)                                      #simulate from bernoulli dist
+      result <- stats::rbinom(1, 1, win.prob)                                      #simulate from bernoulli dist
 
       #Record Results
       contest.results[j, ] <- c(subwards, result)                           #record result
@@ -51,7 +51,7 @@ simulate.contests <- function(n.contests, true.quality, sigma.obs){
       log.lambda.2 <- true.quality[subwards[2]]
       #Simulate Contest
       win.prob <- exp(log.lambda.1)/(exp(log.lambda.1) + exp(log.lambda.2))
-      result <- rbinom(1, 1, win.prob)
+      result <- stats::rbinom(1, 1, win.prob)
 
       #Record Results
       contest.results[j, ] <- c(subwards, result)

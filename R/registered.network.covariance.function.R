@@ -3,16 +3,16 @@
 #' This function constructs a covariance function from the Euclidean coordinates of the nodes. It constructs a voronoi grpah to partition the space and places edges betweeen areas which are adjacent. The covairance function may be suqred exponential, rational quadratic or Matern
 #'
 #'
-#' @param coordiantes An Nx2 matrix containing the Euclidean coordinates of the nodes.
+#' @param coordinates An Nx2 matrix containing the Euclidean coordinates of the nodes.
 #' @param plane.boundary A matrix containing the cooridnates of the vertices of the boundard of the space. See ggvoronoi.
 #' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
-#' @param hyperaparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
+#' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
 #' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @return The mean vector and covariance matrix
 #' @export
 #' @export
-registered.network.covariance.function <- function(coordinates, plane.boundary, type, hyperparameters,
+registered_network_covariance_function <- function(coordinates, plane.boundary, type, hyperparameters,
                                            linear.combination, linear.constraint = 0){
 
 

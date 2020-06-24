@@ -12,6 +12,8 @@
 #'
 #' @keywords datasets
 #'
+#' @usage system.file("extdata", "dar.csv", package = "BTUN")
+#'
 #'@source This dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann.We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge HumanitarianStreet Mapping Team (HOT) for providing a team of experts in data collectionto facilitate the surveys. This work was also supported by the EPSRC HorizonCentre for Doctoral Training - My Life in Data (EP/L015463/1) and EPSRC grant Neodemographics (EP/L021080/1).
 #'
 "dar.comparisons"
@@ -30,9 +32,9 @@
 #'
 #' @format A .shp object
 #'
+#' @usage system.file("extdata", "dar_subwards.shp", package = "BTUN")
+#'
 #' @keywords datasets
 #'
-#' @examples
-#' plot(dar$geometry)
 #'
 "dar.shapefiles"

@@ -1,4 +1,4 @@
-#' Compute the qaulity ratio on a logit scale
+#' Compute the quality ratio on a logit scale
 #'
 #' This function compute the logit(pi_ij) = lambda_i - log(exp(lambda_i) + exp(lambda_j))
 #'
@@ -7,7 +7,7 @@
 #' @param y The level of deprivation of the losing area on the exponential scale
 #' @return logit(pi_ij)
 #' @export
-quality.ratio <- function(x, y) log(x)- log(x+y)
+quality_ratio <- function(x, y) log(x)- log(x+y)
 
 
 #' Compute the value of the loglikelihood function
@@ -19,9 +19,9 @@ quality.ratio <- function(x, y) log(x)- log(x+y)
 #' @param win.matrix A matrix, where w_ij give the number of times area i beat j
 #' @return The value of of the loglikelihood function
 #' @export
-loglike.function <- function(x, win.matrix){
+loglike_function <- function(x, win.matrix){
 
-  result <- outer(x, x, quality.ratio)*win.matrix
+  result <- outer(x, x, quality_ratio)*win.matrix
 
   return(sum(result))
 
@@ -36,9 +36,9 @@ loglike.function <- function(x, win.matrix){
 #' @param chol The cholesky decomposition of the covariance matrix Sigma
 #' @return a vector containing a sample from the distribution
 #' @export
-mvnorm.chol <- function(mu, chol){
+mvnorm_chol <- function(mu, chol){
 
-  return(mu + t(chol)%*%rnorm(length(mu)))
+  return(mu + t(chol)%*%stats::rnorm(length(mu)))
 }
 
 
@@ -62,11 +62,11 @@ mvnorm.chol <- function(mu, chol){
 #'   \item time.taken - Time tkane to run the MCMC algorithm in seconds
 #' }
 #' @export
-run.mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.intial, alpha = FALSE){
+run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE){
 
-  f <- f.intial
+  f <- f.initial
   n.objects <- length(f)
-  loglike <- loglike.function(as.numeric(exp(f)), win.matrix)
+  loglike <- loglike_function(as.numeric(exp(f)), win.matrix)
 
   counter <- 0
   f.matrix <- matrix(NA, n.iter, n.objects)
@@ -83,7 +83,7 @@ run.mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.intial, alpha 
     #Update alpha
 
     if(alpha == TRUE){
-      alpha.sq.current   <- 1/rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
+      alpha.sq.current   <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
       k.chol     <- sqrt(alpha.sq.current)*k.chol.plain
       alpha.vector[i]  <- alpha.sq.current
     }
@@ -93,11 +93,11 @@ run.mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.intial, alpha 
 
 
     #Update f0
-    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm.chol(k.mean, k.chol)
-    loglike.prop <- loglike.function(as.numeric(exp(f.prop)), win.matrix)
+    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, k.chol)
+    loglike.prop <- loglike_function(as.numeric(exp(f.prop)), win.matrix)
 
     log.p.acc <- loglike.prop - loglike
-    if(log(runif(1)) < log.p.acc){
+    if(log(stats::runif(1)) < log.p.acc){
       f                     <- f.prop
       loglike               <- loglike.prop
       counter[1]            <- counter[1] + 1
@@ -140,19 +140,19 @@ run.mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.intial, alpha 
 #' }
 #' @export
 
-run.gender.mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, female.win.matrix, f.intial, g.initial){
+run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, female.win.matrix, f.initial, g.initial){
 
-  f <- f.intial
+  f <- f.initial
   g <- g.initial
   n.objects <- length(f)
-  loglike <- loglike.function(as.numeric(exp(f)), male.win.matrix) + loglike.function(as.numeric(exp(g + f)), female.win.matrix)
+  loglike <- loglike_function(as.numeric(exp(f)), male.win.matrix) + loglike_function(as.numeric(exp(g + f)), female.win.matrix)
 
   counter <- 0
   f.matrix <- matrix(NA, n.iter, n.objects)
   g.matrix <- matrix(NA, n.iter, n.objects)
   alpha.matrix <- matrix(NA, n.iter, 2)
 
-  k.plain.chol <- k.chol
+  k.chol.plain <- k.chol
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -160,22 +160,22 @@ run.gender.mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
   for(i in 1:n.iter){
 
   #Gibbs Step for alpha
-  male.alpha.sq.current     <- 1/rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
-  female.alpha.sq.current   <- 1/rgamma(1, 0.1 + n.objects/2, 0.5*t(g)%*%k.chol.plain%*%g + 0.1)
+  male.alpha.sq.current     <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
+  female.alpha.sq.current   <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(g)%*%k.chol.plain%*%g + 0.1)
   male.k.chol               <- sqrt(male.alpha.sq.current)*k.chol.plain
   female.k.chol             <- sqrt(female.alpha.sq.current)*k.chol.plain
   alpha.matrix[i, ]         <- c(male.alpha.sq.current, female.alpha.sq.current)
 
   #MH step for f and g
-  f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm.chol(k.mean, male.k.chol)
-  g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm.chol(k.mean, female.k.chol)
+  f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, male.k.chol)
+  g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm_chol(k.mean, female.k.chol)
 
-  loglike.prop <- loglike.function(as.numeric(exp(f.prop)), male.win.matrix) +
-    loglike.function(as.numeric(exp(g.prop + f.prop)), female.win.matrix)
+  loglike.prop <- loglike_function(as.numeric(exp(f.prop)), male.win.matrix) +
+    loglike_function(as.numeric(exp(g.prop + f.prop)), female.win.matrix)
 
   log.p.acc <- loglike.prop - loglike
 
-  if(log(runif(1)) < log.p.acc){
+  if(log(stats::runif(1)) < log.p.acc){
 
     f <- f.prop
     g <- g.prop
@@ -191,8 +191,7 @@ run.gender.mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
   toc <- Sys.time()
 
-  if(alpha == TRUE)
-    return(list("f" = f.matrix, "g" = g.matrix, "alpha.sq" =alpha.vector, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
+  return(list("f" = f.matrix, "g" = g.matrix, "alpha.sq" =alpha.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
 
 
 
