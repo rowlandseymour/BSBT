@@ -53,7 +53,7 @@ registered_adjacency_covariance_function <- function(adj.matrix, type, hyperpara
   prior.mean               <- rep(0, dim(shortest.path.matrix)[1])
   registered.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
   registered.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
-  registered.chol          <- chol(registered.k + tol*diag(dim(k)[1]))
+  registered.chol          <- chol(registered.k + tol*diag(dim(registered.k)[1]))
 
   return(list("mean" = registered.mean, "covariance" = registered.k, "decomp.covariance" = registered.chol))
 }
