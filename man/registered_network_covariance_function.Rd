@@ -10,7 +10,8 @@ registered_network_covariance_function(
   type,
   hyperparameters,
   linear.combination,
-  linear.constraint = 0
+  linear.constraint = 0,
+  tol = 1e-05
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ registered_network_covariance_function(
 \item{linear.combination}{A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.}
 
 \item{linear.constraint}{The value the linear constraint takes. Defaults to 0.}
+
+\item{tol}{The tolerance for the Cholesky decomposition}
 }
 \value{
 The mean vector and covariance matrix

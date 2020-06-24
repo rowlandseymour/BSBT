@@ -8,10 +8,11 @@
 #' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
 #' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
+#' @param tol The tolerance for the Cholesky decomposition
 #' @return The mean vector and covariance matrix
 #' @export
 registered_covariance_function <- function(coordinates, type, hyperparameters,
-                                           linear.combination, linear.constraint = 0){
+                                           linear.combination, linear.constraint = 0, tol = 1e-5){
 
 
   if(type == "sqexp" & length(hyperparameters) != 2)
@@ -45,7 +46,7 @@ registered_covariance_function <- function(coordinates, type, hyperparameters,
   prior.mean               <- rep(0, dim(coordinates)[1])
   registered.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
   registered.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
+  registered.chol          <- chol(registered.k + tol*diag(dim(k)[1]))
 
-
- return(list("mean" = registered.mean, "covariance" = registered.k))
+ return(list("mean" = registered.mean, "covariance" = registered.k, "decomp.covariance" = registered.chol))
 }
