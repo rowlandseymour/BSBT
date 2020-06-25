@@ -75,7 +75,7 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 
 #' Construct Win Matrix from Comparisons
 #'
-#' This function constructs a win matrix from a data frame of comparisons.
+#' This function constructs a win matrix from a data frame of comparisons. It is needed for the mcmc function.
 #'
 #' @param n.areas The number of areas in the study.
 #' @param comparisons An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgement. The first column is the better area, the second column is the more deprived area. The areas should be labeled from 1 to n.areas.
