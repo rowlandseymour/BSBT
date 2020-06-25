@@ -36,6 +36,7 @@ test_that("registered covariance works", {
 
 
 test_that("registered network covariance works", {
+
   expect_error(registered_network_covariance_function(coords, vertices, type = "se", hyperparameters = c(1, 0.5),
                                                         linear.combination = rep(1, 10),
                                                         linear.constraint = 0, tol = 1e-5), "Could not construct covariance matrix. Unrecognised covariance type")

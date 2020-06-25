@@ -13,10 +13,12 @@
 #' @return The mean vector and covariance matrix
 #' @examples
 #'
-#' coords <- data.frame(runif(10), runif(10)) #generate coordinates
+#' coords <- data.frame("x" = runif(10), "y" = runif(10)) #generate coordinates
 #' boundary <- data.frame("x" = c(0, 0, 1, 1), "y" = c(0, 1, 1, 0)) #generate boundary of area
-#' #create covariance matrix using Squared Exponential function and subject to the constraint the sum of the deprivation levels is 0.
-#' k <- registered_network_covariance_function(coords, boundary, "sqexp", c(1, 0.5), rep(0, 10), 0)
+#' #create covariance matrix using Squared Exponential function and subject to the constraint
+#' #the sum of the deprivation levels is 0.
+#' k <- registered_network_covariance_function(coords, boundary, "sqexp",
+#' c(1, 0.5), rep(1, 10), linear.constraint = 0, tol = 1e-1)
 #' @export
 registered_network_covariance_function <- function(coordinates, plane.boundary, type, hyperparameters,
                                            linear.combination, linear.constraint = 0, tol = 1e-5){
@@ -24,7 +26,7 @@ registered_network_covariance_function <- function(coordinates, plane.boundary, 
 
   #Partion Plane using Voronoi diagram and create network from this. Use dijkstra's algorithm to
   # compute shortest path between each node
-  plane.partition         <- ggvoronoi::voronoi_polygon(data=coordinates,outline=plane.boundary)
+  plane.partition         <- ggvoronoi::voronoi_polygon(data=coordinates, outline=plane.boundary)
   adj.matrix              <- surveillance::poly2adjmat(plane.partition)
   object.network          <- igraph::graph.adjacency(adj.matrix, weighted=TRUE)
   shortest.path.matrix    <- igraph::shortest.paths(object.network, algorithm = "dijkstra")

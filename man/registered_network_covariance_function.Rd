@@ -37,8 +37,10 @@ This function constructs a covariance function from the Euclidean coordinates of
 }
 \examples{
 
-coords <- data.frame(runif(10), runif(10)) #generate coordinates
+coords <- data.frame("x" = runif(10), "y" = runif(10)) #generate coordinates
 boundary <- data.frame("x" = c(0, 0, 1, 1), "y" = c(0, 1, 1, 0)) #generate boundary of area
-#create covariance matrix using Squared Exponential function and subject to the constraint the sum of the deprivation levels is 0.
-k <- registered_network_covariance_function(coords, boundary, "sqexp", c(1, 0.5), rep(0, 10), 0)
+#create covariance matrix using Squared Exponential function and subject to the constraint
+#the sum of the deprivation levels is 0.
+k <- registered_network_covariance_function(coords, boundary, "sqexp",
+c(1, 0.5), rep(1, 10), linear.constraint = 0, tol = 1e-1)
 }
