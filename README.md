@@ -1,6 +1,7 @@
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/rowlandseymour/BTUN.svg?branch=master)](https://travis-ci.com/rowlandseymour/BTUN)
+[![R build status](https://github.com/rowlandseymour/BTUN/workflows/R-CMD-check/badge.svg)](https://github.com/rowlandseymour/BTUN/actions)
 <!-- badges: end -->
 
 # BTUN: Bradley--Terry for Urban Networks
