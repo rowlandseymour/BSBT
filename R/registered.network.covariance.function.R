@@ -3,15 +3,20 @@
 #' This function constructs a covariance function from the Euclidean coordinates of the nodes. It constructs a voronoi grpah to partition the space and places edges betweeen areas which are adjacent. The covairance function may be suqred exponential, rational quadratic or Matern
 #'
 #'
-#' @param coordinates An Nx2 matrix containing the Euclidean coordinates of the nodes.
-#' @param plane.boundary A matrix containing the cooridnates of the vertices of the boundard of the space. See ggvoronoi.
+#' @param coordinates An Nx2 dataframe containing the Euclidean coordinates of the nodes.The first column should contain the x/longitude coordinates and the second column the y/latatiude coordinates.
+#' @param plane.boundary A matrix containing the cooridnates of the vertices of the boundard of the space. See \link[ggvoronoi]{ggvoronoi}.
 #' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
 #' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
 #' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @param tol The tolerance for the Cholesky decomposition
 #' @return The mean vector and covariance matrix
-#' @export
+#' @examples
+#'
+#' coords <- data.frame(runif(10), runif(10)) #generate coordinates
+#' boundary <- data.frame("x" = c(0, 0, 1, 1), "y" = c(0, 1, 1, 0)) #generate boundary of area
+#' #create covariance matrix using Squared Exponential function and subject to the constraint the sum of the deprivation levels is 0.
+#' k <- registered_network_covariance_function(coords, boundary, "sqexp", c(1, 0.5), rep(0, 10), 0)
 #' @export
 registered_network_covariance_function <- function(coordinates, plane.boundary, type, hyperparameters,
                                            linear.combination, linear.constraint = 0, tol = 1e-5){
@@ -19,7 +24,7 @@ registered_network_covariance_function <- function(coordinates, plane.boundary, 
 
   #Partion Plane using Voronoi diagram and create network from this. Use dijkstra's algorithm to
   # compute shortest path between each node
-  plane.partition         <- ggvoronoi::voronoi_polygon(data=coordinates,x="x",y="y",outline=plane.boundary)
+  plane.partition         <- ggvoronoi::voronoi_polygon(data=coordinates,outline=plane.boundary)
   adj.matrix              <- surveillance::poly2adjmat(plane.partition)
   object.network          <- igraph::graph.adjacency(adj.matrix, weighted=TRUE)
   shortest.path.matrix    <- igraph::shortest.paths(object.network, algorithm = "dijkstra")

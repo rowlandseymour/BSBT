@@ -38,6 +38,10 @@ registered_covariance_function <- function(coordinates, type, hyperparameters,
     stop("Could not construct covariance matrix. Unrecognised covariance type.")
   }
 
+  if(dim(coords)[1] != length(linear.combination))
+    stop("Could not register distirbution. Linear constraint dimensions does not match number of objects.")
+
+
 
   #Register Prior Distribution
   if(length(linear.constraint) > 1)

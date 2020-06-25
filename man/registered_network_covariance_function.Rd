@@ -15,9 +15,9 @@ registered_network_covariance_function(
 )
 }
 \arguments{
-\item{coordinates}{An Nx2 matrix containing the Euclidean coordinates of the nodes.}
+\item{coordinates}{An Nx2 dataframe containing the Euclidean coordinates of the nodes.The first column should contain the x/longitude coordinates and the second column the y/latatiude coordinates.}
 
-\item{plane.boundary}{A matrix containing the cooridnates of the vertices of the boundard of the space. See ggvoronoi.}
+\item{plane.boundary}{A matrix containing the cooridnates of the vertices of the boundard of the space. See \link[ggvoronoi]{ggvoronoi}.}
 
 \item{type}{The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.}
 
@@ -34,4 +34,11 @@ The mean vector and covariance matrix
 }
 \description{
 This function constructs a covariance function from the Euclidean coordinates of the nodes. It constructs a voronoi grpah to partition the space and places edges betweeen areas which are adjacent. The covairance function may be suqred exponential, rational quadratic or Matern
+}
+\examples{
+
+coords <- data.frame(runif(10), runif(10)) #generate coordinates
+boundary <- data.frame("x" = c(0, 0, 1, 1), "y" = c(0, 1, 1, 0)) #generate boundary of area
+#create covariance matrix using Squared Exponential function and subject to the constraint the sum of the deprivation levels is 0.
+k <- registered_network_covariance_function(coords, boundary, "sqexp", c(1, 0.5), rep(0, 10), 0)
 }
