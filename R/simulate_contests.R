@@ -82,6 +82,7 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 #' @return A matrix where the {i, j}^th element is the number of times area i beat area j.
 #' @export
 comparisons_to_matrix <- function(n.areas, comparisons){
+
   win.matrix <- matrix(0, n.areas, n.areas)
   for(j in 1:dim(comparisons)[1])
     win.matrix[comparisons[j, 1], comparisons[j, 2]] <- win.matrix[comparisons[j, 1], comparisons[j, 2]] + 1
