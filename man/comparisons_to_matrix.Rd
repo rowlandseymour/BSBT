@@ -15,5 +15,5 @@ comparisons_to_matrix(n.areas, comparisons)
 A matrix where the {i, j}^th element is the number of times area i beat area j.
 }
 \description{
-This function constructs a win matrix from a data frame of comparisons.
+This function constructs a win matrix from a data frame of comparisons. It is needed for the mcmc function.
 }
