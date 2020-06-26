@@ -6,7 +6,7 @@
 [![R build status](https://github.com/rowlandseymour/BTUN/workflows/R-CMD-check/badge.svg)](https://github.com/rowlandseymour/BTUN/actions)
 <!-- badges: end -->
 ----
-The `BTUN` package allows you to fit a spatial Bradley--Terry model to  comparative judgement data sets. The aim is to estimate the deprivation levels in urban areas and find the most deprived citizens. The `BTUN` model creates a network from the urban area and uses a Gaussian Process to model the nonparametrically model the deprivation levels.
+The `BTUN` package allows you to fit a spatial Bradley--Terry model to  comparative judgement data sets. The aim is to estimate the deprivation levels in urban areas and find the most deprived citizens. The `BTUN` model creates a network from the urban area and uses a Gaussian Process to nonparametrically model the deprivation levels. 
 
 ## Installation
 ----
