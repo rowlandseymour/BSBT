@@ -6,6 +6,13 @@
 #' @param x The level of deprivation of the winning area on the exponential scale
 #' @param y The level of deprivation of the losing area on the exponential scale
 #' @return logit(pi_ij)
+#'
+#' @examples
+#'
+#' #compare areas with levels -2 and 2
+#'
+#' qr <- quality_ratio(exp(-2), exp(2))
+#'
 #' @export
 quality_ratio <- function(x, y) log(x)- log(x+y)
 
@@ -35,6 +42,14 @@ loglike_function <- function(x, win.matrix){
 #' @param mu The mean vector
 #' @param chol The cholesky decomposition of the covariance matrix Sigma
 #' @return a vector containing a sample from the distribution
+#'
+#' @examples
+#'
+#' mu <- c(2, 1) #mean vector
+#' sigma <- matrix(c(2^2, 0.5*2*1, 0.5*2*1, 1^2), 2, 2) #covariacne matrix
+#' sigma.chol <- chol(sigma) #decompose covariance matrix
+#' f <- mvnorm_chol(mu, sigma.chol) #draw sample
+#'
 #' @export
 mvnorm_chol <- function(mu, chol){
 
@@ -61,6 +76,20 @@ mvnorm_chol <- function(mu, chol){
 #'   \item accpetance.rate - The acceptance rate for f
 #'   \item time.taken - Time tkane to run the MCMC algorithm in seconds
 #' }
+#'
+#' @examples
+#'
+#' n.iter <- 10
+#' delta <- 0.1
+#' k.mean <- c(0, 0, 0)
+#' k.chol <- diag(3)
+#' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
+#' win.matrix <- comparisons_to_matrix(3, comparisons)
+#' f.initial <- c(0, 0, 0)
+#'
+#' mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial)
+#'
+#'
 #' @export
 run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE){
 
@@ -138,6 +167,22 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #'   \item accpetance.rate - The acceptance rate for f and g
 #'   \item time.taken - Time tkane to run the MCMC algorithm in seconds
 #' }
+#'
+#' @examples
+#'
+#' n.iter <- 10
+#' delta <- 0.1
+#' k.mean <- c(0, 0, 0)
+#' k.chol <- diag(3)
+#' men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
+#' women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
+#' men.win.matrix <- comparisons_to_matrix(3, men.comparisons)
+#' women.win.matrix <- comparisons_to_matrix(3, women.comparisons)
+#' f.initial <- c(0, 0, 0)
+#' g.initial <- c(0, 0, 0)
+#'
+#' mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.chol, men.win.matrix, women.win.matrix, f.initial, g.initial)
+#'
 #' @export
 
 run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, female.win.matrix, f.initial, g.initial){

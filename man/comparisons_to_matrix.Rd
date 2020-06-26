@@ -17,3 +17,12 @@ A matrix where the {i, j}^th element is the number of times area i beat area j.
 \description{
 This function constructs a win matrix from a data frame of comparisons. It is needed for the mcmc function.
 }
+\examples{
+
+#Generate some sample comparisons
+comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
+
+#Create matrix from comparisons
+win.matrix <- comparisons_to_matrix(3, comparisons)
+
+}

@@ -7,6 +7,12 @@
 #' @param true.quality A vector with the level of deprivation in each area on the log scale.
 #' @param sigma.obs Standard deviation for the noise to be added to the level of deprivation in each subward. If 0, no noise is used.
 #' @return A list containing a data.frame with each par-wise contest and the outcome, and a win matrix where the i,j^th element is the number of times i beat j
+#'
+#' @examples
+#'
+#' example.deprivation <- -2:2 #True level of deprivation in each area
+#' example.comparisons <- simulate_comparisons(10, example.deprivation, 0) #generate comparisons
+#'
 #' @export
 simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 
@@ -80,6 +86,15 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 #' @param n.areas The number of areas in the study.
 #' @param comparisons An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgement. The first column is the better area, the second column is the more deprived area. The areas should be labeled from 1 to n.areas.
 #' @return A matrix where the {i, j}^th element is the number of times area i beat area j.
+#'
+#' @examples
+#'
+#' #Generate some sample comparisons
+#' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
+#'
+#' #Create matrix from comparisons
+#' win.matrix <- comparisons_to_matrix(3, comparisons)
+#'
 #' @export
 comparisons_to_matrix <- function(n.areas, comparisons){
 

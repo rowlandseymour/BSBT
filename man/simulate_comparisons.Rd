@@ -19,3 +19,9 @@ A list containing a data.frame with each par-wise contest and the outcome, and a
 \description{
 This function simulates pair-wise contests according to the Bradley--Terry model
 }
+\examples{
+
+example.deprivation <- -2:2 #True level of deprivation in each area
+example.comparisons <- simulate_comparisons(10, example.deprivation, 0) #generate comparisons
+
+}
