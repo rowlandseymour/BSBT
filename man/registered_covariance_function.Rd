@@ -32,3 +32,11 @@ The mean vector and covariance matrix
 \description{
 This function constructs a covariance function from the Euclidean coordinates of the objects. The covairance function may be squared exponential, rational quadratic or Matern.
 }
+\examples{
+#Generate 10 points and create covariance matrix using Euclidean distance metric
+coords <- data.frame("x" = runif(10), "y" = runif(10)) #generate coordinates
+#create covariance matrix using Squared Exponential function and subject to the constraint
+#the sum of the deprivation levels is 0.
+k <- registered_covariance_function(coords, "sqexp",
+c(1, 0.5), rep(1, 10), linear.constraint = 0, tol = 1e-5)
+}
