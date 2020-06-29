@@ -33,3 +33,21 @@
 #'
 #'
 "dar.shapefiles"
+
+
+
+#' Adjacency matrix for the subwards in Dar es Salaam, Tanzania
+#'
+#'
+#'
+#' @docType data
+#'
+#'
+#' @format A 452x452 matrix, where a_{ij} = 1 if subwards i and j are neighbours and 0 otherwise.
+#'
+#'
+#' @keywords datasets
+#'
+#'
+"dar.adj.matrix"
+

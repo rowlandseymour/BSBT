@@ -181,7 +181,8 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #' f.initial <- c(0, 0, 0)
 #' g.initial <- c(0, 0, 0)
 #'
-#' mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.chol, men.win.matrix, women.win.matrix, f.initial, g.initial)
+#' mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.chol, men.win.matrix,
+#'     women.win.matrix, f.initial, g.initial)
 #'
 #' @export
 

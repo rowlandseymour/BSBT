@@ -17,13 +17,13 @@ There are two functions:
 \enumerate{
 \item \code{\link{registered_adjacency_covariance_function}} creates a covariance matrix
 using a network based metric, and
-\item \code{\link{registered_covariance_function}} creates a matrix using the Euckidean distance metric.
+\item \code{\link{registered_covariance_function}} creates a matrix using the Euclidean distance metric.
 }
 }
 
 \section{MCMC functions}{
 
 The main MCMC function is \code{\link{run_mcmc}}, but in cases where the gender of the judges is known
-the function \code{\link{run_gender_mcmc}} can be used to analyse how the different geneders behave.
+the function \code{\link{run_gender_mcmc}} can be used to analyse how the different genders behave.
 }
 

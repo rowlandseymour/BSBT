@@ -34,12 +34,10 @@ This function constructs a covariance function from the graph's adjacency matrix
 }
 \examples{
 #Construct covariance matrix of Dar es Salaam, Tanzania, using network metric
-data(dar.shapefiles, package = "BTUN") #load data
-adj.matrix <- surveillance::poly2adjmat(dar.shapefiles$geometry) #create adjacency matrix
-#Covariance registetred by sum of subwards is 0 using squared exponential function
-k <- registered_adjacency_covariance_function(adj.matrix, type = "sqexp",
-       hyperparameters = c(1, 0.5), rep(1, dim(adj.matrix)[1]), 0)
+data(dar.adj.matrix, package = "BTUN") #load dar es salaam adjacency matrix
+k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "sqexp",
+       hyperparameters = c(1, 0.5), rep(1, dim(dar.adj.matrix)[1]), 0)
        #Covariance registetred by sum of subwards is 0 using rational quadratic function
-k <- registered_adjacency_covariance_function(adj.matrix, type = "ratquad",
-       hyperparameters = c(1, 0.5, 2), rep(1, dim(adj.matrix)[1]), 0)
+k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "ratquad",
+       hyperparameters = c(1, 0.5, 2), rep(1, dim(dar.adj.matrix)[1]), 0)
 }
