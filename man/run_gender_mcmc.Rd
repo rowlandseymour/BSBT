@@ -45,3 +45,19 @@ A list of MCMC output
 \description{
 This function runs the BTUN with Gender Effect MCMC algorithm
 }
+\examples{
+
+n.iter <- 10
+delta <- 0.1
+k.mean <- c(0, 0, 0)
+k.chol <- diag(3)
+men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
+women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
+men.win.matrix <- comparisons_to_matrix(3, men.comparisons)
+women.win.matrix <- comparisons_to_matrix(3, women.comparisons)
+f.initial <- c(0, 0, 0)
+g.initial <- c(0, 0, 0)
+
+mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.chol, men.win.matrix, women.win.matrix, f.initial, g.initial)
+
+}

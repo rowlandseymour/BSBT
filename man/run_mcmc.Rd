@@ -33,3 +33,17 @@ A list of MCMC output
 \description{
 This function runs the BTUN mcmc algorithm
 }
+\examples{
+
+n.iter <- 10
+delta <- 0.1
+k.mean <- c(0, 0, 0)
+k.chol <- diag(3)
+comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
+win.matrix <- comparisons_to_matrix(3, comparisons)
+f.initial <- c(0, 0, 0)
+
+mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial)
+
+
+}

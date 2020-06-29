@@ -17,3 +17,10 @@ logit(pi_ij)
 \description{
 This function compute the logit(pi_ij) = lambda_i - log(exp(lambda_i) + exp(lambda_j))
 }
+\examples{
+
+#compare areas with levels -2 and 2
+
+qr <- quality_ratio(exp(-2), exp(2))
+
+}

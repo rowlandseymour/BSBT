@@ -2,3 +2,4 @@
 .Rhistory
 inst/doc
 R/logo_code.R
+.DS_Store
