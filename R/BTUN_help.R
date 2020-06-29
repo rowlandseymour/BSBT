@@ -1,0 +1,23 @@
+#' BTUN: Bradley--Terry for Urban Networks
+#'
+#' The BTUN package allows you to fit a spatial Bradley--Terry model
+#' to comparative judgement data sets. The aim is to estimate the deprivation levels
+#' in urban areas and find the most deprived citizens. The BTUN model creates a network
+#' from the urban area and uses a Gaussian Process to nonparametrically model the deprivation levels.
+#'
+#' @section Covariance Functions:
+#' The covariance functions can be used to construct the Gaussian Process prior distribution.
+#' There are two functions:
+#' \enumerate{
+#'     \item \code{\link{registered_adjacency_covariance_function}} creates a covariance matrix
+#'     using a network based metric, and
+#'     \item \code{\link{registered_covariance_function}} creates a matrix using the Euckidean distance metric.
+#' }
+#'
+#' @section MCMC functions:
+#' The main MCMC function is \code{\link{run_mcmc}}, but in cases where the gender of the judges is known
+#' the function \code{\link{run_gender_mcmc}} can be used to analyse how the different geneders behave.
+#'
+#' @docType package
+#' @name BTUN
+NULL
