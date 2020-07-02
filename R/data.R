@@ -52,18 +52,18 @@
 "dar.adj.matrix"
 
 
-#' MCMC Output for Dar es Salaam Vignette
+#' The Mean Level of Deprivation for Subwards in Dar es Salaam
 #'
-#'
+#'This data is used in the vignette
 #'
 #' @docType data
 #'
 #'
-#' @format A list containing the value of f and alpha at each iteration of the MCMC output
+#' @format An vector
 #'
 #'
 #' @keywords datasets
 #'
 #'
-"mcmc.output"
+"mean.deprivation"
 
