@@ -43,5 +43,7 @@ This work is supported the UK Engineering and Physical Sciences Research Council
 
 The comparative judgement dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann. We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge Humanitarian Street Mapping Team (HOT) for providing a team of experts in data collection to facilitate the surveys. This fieldwork was also supported by the EPSRC Horizon Centre for Doctoral Training - My Life in Data (EP/L015463/1) and by EPSRC grant Neodemographics (EP/L021080/1).
 
+
 <img src='man/figures/EPSRC.png' align="left" height="50px" /> <img src='man/figures/uon.png' align="left" height="50px" /><img src='man/figures/Beads.jpg' align="left" height="50px" />
+
 
