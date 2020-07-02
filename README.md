@@ -2,6 +2,8 @@
 ----
 ## Bradley--Terry for Urban Networks
 <!-- badges: start -->
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build status](https://travis-ci.com/rowlandseymour/BTUN.svg?branch=master)](https://travis-ci.com/rowlandseymour/BTUN)
 [![R build status](https://github.com/rowlandseymour/BTUN/workflows/R-CMD-check/badge.svg)](https://github.com/rowlandseymour/BTUN/actions)
 <!-- badges: end -->
@@ -39,7 +41,7 @@ There is also code for simulating comparative judgement data given the underlyin
 
 ## Acknowledgements
 ----
-This work is supported the UK Engineering and Physical Sciences Research Council (EP/T003928/1) and the Bid East African Data Science research group at the University of Nottingham.
+This work is supported the UK Engineering and Physical Sciences Research Council (EP/T003928/1) and the Big East African Data Science research group at the University of Nottingham.
 
 The comparative judgement dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann. We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge Humanitarian Street Mapping Team (HOT) for providing a team of experts in data collection to facilitate the surveys. This fieldwork was also supported by the EPSRC Horizon Centre for Doctoral Training - My Life in Data (EP/L015463/1) and by EPSRC grant Neodemographics (EP/L021080/1).
 
