@@ -51,3 +51,19 @@
 #'
 "dar.adj.matrix"
 
+
+#' MCMC Output for Dar es Salaam Vignette
+#'
+#'
+#'
+#' @docType data
+#'
+#'
+#' @format A list containing the value of f and alpha at each iteration of the MCMC output
+#'
+#'
+#' @keywords datasets
+#'
+#'
+"mcmc.output"
+

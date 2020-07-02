@@ -19,6 +19,8 @@ Depends:
 Suggests: 
     knitr,
     rmarkdown,
-    testthat, 
-    devtools
+    testthat,  
+    sf,
+    surveillance,
+    spdep
 VignetteBuilder: knitr
