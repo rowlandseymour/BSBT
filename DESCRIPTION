@@ -22,5 +22,6 @@ Suggests:
     testthat,  
     sf,
     surveillance,
-    spdep
+    spdep,
+    RColorBrewer
 VignetteBuilder: knitr
