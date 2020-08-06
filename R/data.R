@@ -3,11 +3,11 @@
 #' A comparative judgement dataset on deprivation in subwards in Dar es Salaam, Tanzania.
 #' Citizens were shown pairs of subwards at random and asked which was more deprived.
 #' If they said they were equal, one of the pair was chosen at random to be more deprived.
-#' The data was collected in August 2018.
+#' The data was collected in August 2018. The gender of each judge is also included.
 #' @docType data
 #'
 #'
-#' @format A csv file containing 76408 rows and 2 columns. Each row corresponds to a judgement made by a single judge. The column shows which of the pair of subwards was judged to be poorest and richest.
+#' @format A csv file containing 76408 rows and 3 columns. Each row corresponds to a judgement made by a single judge. Columns 2 and 3 shows which of the pair of subwards was judged to be poorest and richest, and column 3 shows the genderr of the judge.
 #'
 #' @keywords datasets
 #'
