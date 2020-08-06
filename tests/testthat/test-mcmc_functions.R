@@ -15,3 +15,40 @@ test_that("Multivariate Normal Sampler works", {
   expect_error(mvnorm_chol(c(1, 2, 3), matrix(c(1, 2, 3, 4), 2, 2)), "non-conformable arguments")
 })
 
+
+test_that("standard MCMC function works", {
+  data("dar.adj.matrix")
+  k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "sqexp", hyperparameters = c(1, 0.5), linear.combination = rep(1, 452), linear.constraint = 0, tol = 1e-6)
+  win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
+  expect_error(run_mcmc(10, 0.1, k$mean, k$decomp.covariance, win.matrix, rep(1, 451), alpha = FALSE), "non-conformable arrays")
+  expect_error(run_mcmc(-1, 0.1, k$mean, k$decomp.covariance, win.matrix, rep(1, 452), alpha = FALSE), "invalid")
+}
+)
+
+
+
+test_that("gender MCMC function works", {
+  data("dar.adj.matrix")
+  k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "sqexp", hyperparameters = c(1, 0.5), linear.combination = rep(1, 452), linear.constraint = 0, tol = 1e-6)
+  male.win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
+  female.win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
+  expect_error(run_gender_mcmc(10, 0.1, k$mean, k$decomp.covariance, male.win.matrix, female.win.matrix, rep(1, 451), rep(1, 452)), "non-conformable arrays")
+  expect_error(run_gender_mcmc(-1, 0.1, k$mean, k$decomp.covariance, male.win.matrix, female.win.matrix, rep(1, 452), rep(1, 452)), "invalid")
+}
+)
+
+test_that("standard MCMC function works", {
+  data("dar.adj.matrix")
+  S <- list()
+  S[[1]] <- rep(1, 2, 1, 10)
+  S[[2]] <- rep(3, 4, 4, 10)
+  k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "sqexp", hyperparameters = c(1, 0.5), linear.combination = rep(1, 452), linear.constraint = 0, tol = 1e-6)
+  win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
+  expect_error(run_mcmc_with_ordering(10, 0.1, k$mean, k$decomp.covariance, win.matrix, rep(1, 451), S, alpha = FALSE), "non-conformable arrays")
+  expect_error(run_mcmc_with_ordering(-1, 0.1, k$mean, k$decomp.covariance, win.matrix, rep(1, 452), S, alpha = FALSE), "invalid")
+  S <- c(0, 1)
+  expect_error(run_mcmc_with_ordering(10, 0.1, k$mean, k$decomp.covariance, win.matrix, rep(1, 452), S, alpha = FALSE), "S must be a list")
+}
+)
+
+
