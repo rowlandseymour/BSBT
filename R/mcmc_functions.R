@@ -245,6 +245,111 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
 
 
+#' Run the BTUN MCMC algorithm with ordering constraints
+#'
+#' This function runs the BTUN mcmc algorithm with ordering constraints. The constraints are
+#' included using a list of sets.
+#'
+#' @param n.iter The number of iterations to be run
+#' @param delta The underrlaxed tuning parameter must be in (0, 1)
+#' @param k.mean The GP prior mean vector
+#' @param k.chol The cholesky decomposition of the GP prior covariance matrix
+#' @param win.matrix A matrix, where w_ij give the number of times area i beat j
+#' @param f.initial A vector of the intial esitmate for f
+#' @param S A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constaint, and the confidence parameter.
+#' @param alpha A boolean if inference for alpha should be carried out
+#' @return A list of MCMC output
+#' \itemize{
+#'   \item f.matrix - A matrix containing the each iteration of f
+#'   \item alpha.sq - A vector containing the iterations of alpha^2
+#'   \item accpetance.rate - The acceptance rate for f
+#'   \item time.taken - Time tkane to run the MCMC algorithm in seconds
+#' }
+#'
+#' @examples
+#'
+#' n.iter <- 10
+#' delta <- 0.1
+#' k.mean <- c(0, 0, 0)
+#' k.chol <- diag(3)
+#' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
+#' win.matrix <- comparisons_to_matrix(3, comparisons)
+#' f.initial <- c(0, 0, 0)
+#' S <- list()
+#' S[[1]] <- c(1, 3, -1, 3)
+#' S[[2]] <- c(1, 2, -1, 3)
+#' mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, S)
+#'
+#'
+#' @export
+run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, S, alpha = FALSE){
 
 
+  #Compute loglikelihood contributions from order constraints
+  log.order.likelihood <- function(S, f){
+    if(typeof(S) != "list")
+      stop("S must be a list")
+
+
+    m <- length(S)
+
+    log.order.prior.value <- 0
+    for(i in 1:m)
+      log.order.prior.value <- log.order.prior.value + stats::pnorm(S[[i]][3]/S[[i]][4]*f[S[[i]][1]] - f[S[[i]][2]], 0, 1, log.p = TRUE)
+
+    return(log.order.prior.value)
+  }
+
+
+  f <- f.initial
+  n.objects <- length(f)
+  loglike <- loglike_function(as.numeric(exp(f)), win.matrix)
+
+  counter <- 0
+  f.matrix <- matrix(NA, n.iter, n.objects)
+  alpha.vector <- numeric(n.iter)
+
+  if(alpha == TRUE)
+    k.chol.plain <- k.chol
+
+  # MCMC Loop ---------------------------------------------------------------
+
+  tic <- Sys.time()
+  for(i in 1:n.iter){
+
+    #Update alpha
+
+    if(alpha == TRUE){
+      alpha.sq.current   <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
+      k.chol     <- sqrt(alpha.sq.current)*k.chol.plain
+      alpha.vector[i]  <- alpha.sq.current
+    }
+
+
+
+
+
+    #Update f0
+    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, k.chol)
+    loglike.prop <- loglike_function(as.numeric(exp(f.prop)), win.matrix)
+
+    log.p.acc <- loglike.prop - loglike + log.order.likelihood(S, f.prop) - log.order.likelihood(S, f)
+    if(log(stats::runif(1)) < log.p.acc){
+      f                     <- f.prop
+      loglike               <- loglike.prop
+      counter[1]            <- counter[1] + 1
+    }
+
+    f.matrix[i, ]   <- f
+
+  }
+
+  toc <- Sys.time()
+
+  if(alpha == TRUE)
+    return(list("f" = f.matrix, "alpha.sq" =alpha.vector, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
+  else
+    return(list("f" = f.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
+
+}
 
