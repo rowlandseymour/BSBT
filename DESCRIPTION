@@ -1,12 +1,17 @@
 Package: BTUN
 Title: BTUN: Bradley--Terry for Urban Networks
 Version: 1.0
-Authors@R: 
+Authors@R: c(
     person(given = "Rowland",
            family = "Seymour",
            role = c("aut", "cre"),
            email = "rowland.Seymour@nottingham.ac.uk",
-           comment = c(ORCID = "0000-0002-8739-3921"))
+           comment = c(ORCID = "0000-0002-8739-3921")),
+	person(given = "James",
+		   family = "Briant",
+		   role = c("auth"),
+		   email = "james@briant.co.uk")
+	)
 Description: This package implements the Bradley-Terry for Urban Network (BTUN) model. It 	can be used to investigate data sets where judges compared different urban areas. 	It computes the level of deprivation of each area being considered, and can rank 	them from least to most deprived. The method uses a registered Gaussian Process to 	learn the spatial structure of the level of deprivation across the areas.
 License: GPL-3 + file LICENSE
 Imports: 
