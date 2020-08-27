@@ -246,7 +246,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
 
 
-#' Run the BTUN MCMC alogorithm with n types of indiuviduals 
+#' Run the BTUN MCMC alogorithm with n types of indiuviduals
 #'
 #' This function runs the MCMC alogorithm with n types of individuals, for example male and female. The types must share the same covariance matrix and the win matrices are entered as a list.
 #'
@@ -277,7 +277,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #' women.win.matrix <- comparisons_to_matrix(3, women.comparisons)
 #' f.initial <- c(0, 0, 0)
 #' g.initial <- c(0, 0, 0)
-#' 
+#'
 #' win.matrices <- list(men.win.matrix, women.win.matrix)
 #' estimates.initial <- list(f.initial, g.initial)
 #'
@@ -285,67 +285,71 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #'
 #' @export
 run_n_levels_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial){
-  
+
   inv_gamma <- function(lambdas, k.chol.plain, n.objects) {
     1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(lambdas)%*%k.chol.plain%*%lambdas + 0.1)
   }
-  
+
   # get model constants
   n.objects <- length(estimates.initial[[1]]) # number of areas
   n.levels <- length(estimates.initial) # 2 for male and female
-  
+
+  for(i in 1:n.levels)
+    if(n.objects != length(estimates.initial[[i]]))
+      stop("initial estimates have different lengths")
+
   estimates.current <- matrix(unlist(estimates.initial), ncol=n.objects, byrow=TRUE) # this is a matrix
-  
+
   loglike <- loglike_function(as.numeric(exp(estimates.initial[[1]])), win.matrices[[1]]) +
     sum(mapply(loglike_function, split(exp(t(estimates.current[1, ] + t(estimates.current[2:n.levels, ]))), 1:(n.levels-1)), win.matrices[2:n.levels]))
-  
+
   lambda.estimate.matrices <- rep(list(matrix(NA, n.iter, n.objects)), n.levels) # this is a list of matrices
   alpha.matrix <- matrix(NA, n.iter, n.levels) # this is a matrix, tracks the alphas on each iteration
-  
+
   counter <- 0
-  
+
   k.chol.plain <- k.chol
-  
+
   # MCMC Loop ---------------------------------------------------------------
-  
+
   tic <- Sys.time()
   for(i in 1:n.iter){
-    
+
     # Gibbs Step for alpha
     alpha.sq.current <- apply(estimates.current, 1, inv_gamma, k.chol.plain, n.objects) # this is a vector
-    
+
     n.levels.k.chol <- lapply(sqrt(alpha.sq.current), "*", k.chol.plain) # This is a list
     alpha.matrix[i, ] <- alpha.sq.current
-    
+
     # MH step for all the n.levels
-    estimates.prop <- sqrt(1 - delta^2)*estimates.current + 
+    estimates.prop <- sqrt(1 - delta^2)*estimates.current +
       delta*t(mapply(mvnorm_chol, rep(list(k.mean), n.levels), n.levels.k.chol)) # this is a matrix
-    
+
     # calculate the proposed likelihood
     loglike.prop <- loglike_function(as.numeric(exp(estimates.prop[1, ])), win.matrices[[1]]) +
       sum(mapply(loglike_function, split(exp(t(estimates.prop[1, ] + t(estimates.prop[2:n.levels, ]))), 1:(n.levels-1)), win.matrices[2:n.levels]))
-    
+
     log.p.acc <- loglike.prop - loglike
-    
+
     if(log(stats::runif(1)) < log.p.acc){
       estimates.current <- estimates.prop
       loglike <- loglike.prop
       counter <- counter + 1
     }
-    
+
     #lambda_estimate.matrices <- mapply(function(matrix, vector, row) matrix[row, ] <- vector, lambda_estimate.matrices, estimates.current, i)
-    
+
     # store each estimate.current value
     for(j in 1:n.levels){
       lambda.estimate.matrices[[j]][i, ] <- estimates.current[j, ]
     }
-    
+
   }
-  
+
   toc <- Sys.time()
-  
+
   return(list("estimates" = lambda.estimate.matrices, "alpha.sq" = alpha.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
-  
+
 }
 
 

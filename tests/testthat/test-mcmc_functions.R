@@ -37,7 +37,7 @@ test_that("gender MCMC function works", {
 }
 )
 
-test_that("standard MCMC function works", {
+test_that("ordered MCMC function works", {
   data("dar.adj.matrix")
   S <- list()
   S[[1]] <- rep(1, 2, 1, 10)
@@ -50,5 +50,23 @@ test_that("standard MCMC function works", {
   expect_error(run_mcmc_with_ordering(10, 0.1, k$mean, k$decomp.covariance, win.matrix, rep(1, 452), S, alpha = FALSE), "S must be a list")
 }
 )
+
+
+test_that("n level MCMC function works", {
+  data("dar.adj.matrix")
+  k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "sqexp", hyperparameters = c(1, 0.5), linear.combination = rep(1, 452), linear.constraint = 0, tol = 1e-6)
+  male.win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
+  female.win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
+  win.matrices <- list(male.win.matrix, female.win.matrix)
+  initial.estimates <- list(rep(0, 451), rep(0, 452))
+  expect_error(run_n_levels_mcmc(10, 0.1, k$mean, k$decomp.covariance, win.matrices, initial.estimates), "initial estimates have different lengths")
+  initial.estimates <- list(rep(0, 452), rep(0, 452))
+  expect_error(run_n_levels_mcmc(-1, 0.1, k$mean, k$decomp.covariance, win.matrices, initial.estimates), "invalid")
+}
+)
+
+
+
+
 
 
