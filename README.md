@@ -1,6 +1,6 @@
 # BSBT <img src='man/figures/logo.png' align="right" height="140px" />
 ----
-## Bayesain Spatial Bradley--Terry
+## Bayesian Spatial Bradley--Terry
 <!-- badges: start -->
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)

@@ -1,4 +1,4 @@
-#' Construct a registered covariance matrix from the Euclidean coordinates of the objects
+#' Construct a constrained covariance matrix from the Euclidean coordinates of the objects
 #'
 #' This function constructs a covariance function from the Euclidean coordinates of the objects. The covairance function may be squared exponential, rational quadratic or Matern.
 #'
@@ -16,10 +16,10 @@
 #' coords <- data.frame("x" = runif(10), "y" = runif(10)) #generate coordinates
 #' #create covariance matrix using Squared Exponential function and subject to the constraint
 #' #the sum of the deprivation levels is 0.
-#' k <- registered_covariance_function(coords, "sqexp",
+#' k <- constrained_covariance_function(coords, "sqexp",
 #' c(1, 0.5), rep(1, 10), linear.constraint = 0, tol = 1e-5)
 #' @export
-registered_covariance_function <- function(coordinates, type, hyperparameters,
+constrained_covariance_function <- function(coordinates, type, hyperparameters,
                                            linear.combination, linear.constraint = 0, tol = 1e-5){
 
 
@@ -47,25 +47,25 @@ registered_covariance_function <- function(coordinates, type, hyperparameters,
   }
 
   if(dim(coordinates)[1] != length(linear.combination))
-    stop("Could not register distirbution. Linear constraint dimensions does not match number of objects.")
+    stop("Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
 
 
 
-  #Register Prior Distribution
+  #Constrain Prior Distribution
   if(length(linear.constraint) > 1)
     stop("Currently only scalar constraints are supported")
 
   prior.mean               <- rep(0, dim(coordinates)[1])
-  registered.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
-  registered.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
-  registered.chol          <- chol(registered.k + tol*diag(dim(k)[1]))
+  constrained.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
+  constrained.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
+  constrained.chol          <- chol(constrained.k + tol*diag(dim(k)[1]))
 
- return(list("mean" = registered.mean, "covariance" = registered.k, "decomp.covariance" = registered.chol))
+ return(list("mean" = constrained.mean, "covariance" = constrained.k, "decomp.covariance" = constrained.chol))
 }
 
 
 
-#' Construct a registered covariance matrix from the adjaency matrix
+#' Construct a constrained covariance matrix from the adjaency matrix
 #'
 #' This function constructs a covariance function from the graph's adjacency matrix. The covairance function may be suqred exponential, rational quadratic or Matern
 #'
@@ -81,13 +81,13 @@ registered_covariance_function <- function(coordinates, type, hyperparameters,
 #' @examples
 #' #Construct covariance matrix of Dar es Salaam, Tanzania, using network metric
 #' data(dar.adj.matrix, package = "BSBT") #load dar es salaam adjacency matrix
-#' k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "sqexp",
+#' k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp",
 #'        hyperparameters = c(1, 0.5), rep(1, dim(dar.adj.matrix)[1]), 0)
 #'        #Covariance registetred by sum of subwards is 0 using rational quadratic function
-#' k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "ratquad",
+#' k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "ratquad",
 #'        hyperparameters = c(1, 0.5, 2), rep(1, dim(dar.adj.matrix)[1]), 0)
 #' @export
-registered_adjacency_covariance_function <- function(adj.matrix, type, hyperparameters,
+constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperparameters,
                                                      linear.combination, linear.constraint = 0, tol = 1e-5){
 
 
@@ -106,11 +106,11 @@ registered_adjacency_covariance_function <- function(adj.matrix, type, hyperpara
     stop("Insufficient hyperparameters. Matern requires 2 values.")
 
   if(dim(shortest.path.matrix)[1] != length(linear.combination))
-    stop("Could not register distirbution. Linear constraint dimensions does not match number of objects.")
+    stop("Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
 
 
 
-  #Constructe Covariance Matrix
+  #Construct Covariance Matrix
   if(type == "sqexp"){
     k <- hyperparameters[1]^2*exp(-shortest.path.matrix^2/hyperparameters[2]^2)
   } else if(type == "ratquad"){
@@ -122,16 +122,16 @@ registered_adjacency_covariance_function <- function(adj.matrix, type, hyperpara
   }
 
 
-  #Register Prior Distribution
+  #Constrain Prior Distribution
   if(length(linear.constraint) > 1)
     stop("Currently only scalar constraints are supported")
 
   prior.mean               <- rep(0, dim(shortest.path.matrix)[1])
-  registered.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
-  registered.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
-  registered.chol          <- chol(registered.k + tol*diag(dim(registered.k)[1]))
+  constrained.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
+  constrained.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
+  constrained.chol          <- chol(constrained.k + tol*diag(dim(constrained.k)[1]))
 
-  return(list("mean" = registered.mean, "covariance" = registered.k, "decomp.covariance" = registered.chol))
+  return(list("mean" = constrained.mean, "covariance" = constrained.k, "decomp.covariance" = constrained.chol))
 }
 
 

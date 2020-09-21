@@ -246,9 +246,9 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
 
 
-#' Run the BSBT MCMC alogorithm with n types of indiuviduals
+#' Run the BSBT MCMC algorithm with n types of individuals and asymmetric variance
 #'
-#' This function runs the MCMC alogorithm with n types of individuals, for example male and female. The types must share the same covariance matrix and the win matrices are entered as a list.
+#' This function runs the MCMC algorithm with n types of individuals, for example male and female. The types must share the same covariance matrix and the win matrices are entered as a list. This model has an asymmetric variance structure, as the variance of the baseline is always smaller.
 #'
 #'
 #' @param n.iter The number of iterations to be run
@@ -256,7 +256,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #' @param k.mean The GP prior mean vector
 #' @param k.chol The cholesky decomposition of the GP prior covariance matrix, alpha must be set to 1 when constructing this
 #' @param win.matrices A list of n matrices where the ith matrix is the win matrix corresponding to only the ith level
-#' @param initial.estimates A list of vectors where the ith vector is the initial estimate for the ith level effect
+#' @param estimates.initial A list of vectors where the ith vector is the initial estimate for the ith level effect
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item estimates - A list of matrices. Each matrix containing the iteration of the ith level
@@ -281,10 +281,10 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #' win.matrices <- list(men.win.matrix, women.win.matrix)
 #' estimates.initial <- list(f.initial, g.initial)
 #'
-#' mcmc.output <- run_n_levels_mcmc(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial)
+#' mcmc.output <- run_asymmetric_mcmc(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial)
 #'
 #' @export
-run_n_levels_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial){
+run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial){
 
   inv_gamma <- function(lambdas, k.chol.plain, n.objects) {
     1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(lambdas)%*%k.chol.plain%*%lambdas + 0.1)

@@ -2,12 +2,12 @@
 #'
 #' This package implements the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then constructs a correlated prior distribution for the quality parameters based on the network. The package includes MCMC algorithms to estimate the quality parameters.
 #' @section Covariance Functions:
-#' The covariance functions can be used to construct the Gaussian Process prior distribution.
+#' The covariance functions can be used to construct the Multivariate Normal prior distribution.
 #' There are two functions:
 #' \enumerate{
-#'     \item \code{\link{registered_adjacency_covariance_function}} creates a covariance matrix
+#'     \item \code{\link{constrained_adjacency_covariance_function}} creates a covariance matrix
 #'     using a network based metric, and
-#'     \item \code{\link{registered_covariance_function}} creates a matrix using the Euclidean distance metric.
+#'     \item \code{\link{constrained_covariance_function}} creates a matrix using the Euclidean distance metric.
 #' }
 #'
 #' @section MCMC functions:
