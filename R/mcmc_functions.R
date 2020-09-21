@@ -64,10 +64,10 @@ mvnorm_chol <- function(mu, chol){
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
-#' @param k.mean The GP prior mean vector
-#' @param k.chol The cholesky decomposition of the GP prior covariance matrix
+#' @param k.mean The prior mean vector
+#' @param k.chol The cholesky decomposition of the prior covariance matrix
 #' @param win.matrix A matrix, where w_ij give the number of times area i beat j
-#' @param f.initial A vector of the intial esitmate for f
+#' @param f.initial A vector of the initial esitmate for f
 #' @param alpha A boolean if inference for alpha should be carried out
 #' @return A list of MCMC output
 #' \itemize{
@@ -153,8 +153,8 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
-#' @param k.mean The GP prior mean vector
-#' @param k.chol The cholesky decomposition of the GP prior covariance matrix, alpha must be set to 1 when constructing ths
+#' @param k.mean The  prior mean vector
+#' @param k.chol The cholesky decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing ths
 #' @param male.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by men
 #' @param female.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by women
 #' @param f.initial A vector of the intial esitmate for f, the male function
@@ -216,7 +216,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
   f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, male.k.chol)
   g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm_chol(k.mean, female.k.chol)
 
-  loglike.prop <- loglike_function(as.numeric(exp(f.prop)), male.win.matrix) +
+  loglike.prop <- loglike_function(as.numeric(exp(f.prop - g.prop)), male.win.matrix) +
     loglike_function(as.numeric(exp(g.prop + f.prop)), female.win.matrix)
 
   log.p.acc <- loglike.prop - loglike
@@ -237,7 +237,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
   toc <- Sys.time()
 
-  return(list("f" = f.matrix, "g" = g.matrix, "alpha.sq" =alpha.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
+  return(list("f" = f.matrix, "g" = g.matrix, "alpha.sq" = alpha.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
 
 
 
@@ -253,8 +253,8 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
-#' @param k.mean The GP prior mean vector
-#' @param k.chol The cholesky decomposition of the GP prior covariance matrix, alpha must be set to 1 when constructing this
+#' @param k.mean The prior mean vector
+#' @param k.chol The cholesky decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing this
 #' @param win.matrices A list of n matrices where the ith matrix is the win matrix corresponding to only the ith level
 #' @param estimates.initial A list of vectors where the ith vector is the initial estimate for the ith level effect
 #' @return A list of MCMC output
@@ -364,8 +364,8 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, est
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
-#' @param k.mean The GP prior mean vector
-#' @param k.chol The cholesky decomposition of the GP prior covariance matrix
+#' @param k.mean The prior mean vector
+#' @param k.chol The cholesky decomposition of the prior covariance matrix
 #' @param win.matrix A matrix, where w_ij give the number of times area i beat j
 #' @param f.initial A vector of the intial esitmate for f
 #' @param S A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constaint, and the confidence parameter.
