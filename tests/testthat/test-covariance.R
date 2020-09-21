@@ -11,9 +11,6 @@ test_that("constrained adjacent covariance works", {
   expect_error(constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp", hyperparameters = c(1, 0.5),
                                                         linear.combination = rep(1, 41),
                                                         linear.constraint = 0, tol = 1e-5), "Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
-  expect_error(constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp", hyperparameters = c(1, 0.5),
-                                                        linear.combination = rep(1, 452),
-                                                        linear.constraint = 0, tol = NA), "the leading minor of order 1 is not positive definite")
 })
 
 coords <- data.frame("x" = runif(10), "y" = runif(10))
@@ -28,8 +25,5 @@ test_that("constrained covariance works", {
   expect_error(constrained_covariance_function(coords, type = "sqexp", hyperparameters = c(1, 0.5),
                                                         linear.combination = rep(1, 41),
                                                         linear.constraint = 0, tol = 1e-5), "Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
-  expect_error(constrained_covariance_function(coords, type = "sqexp", hyperparameters = c(1, 0.5),
-                                                        linear.combination = rep(1, 10),
-                                                        linear.constraint = 0, tol = NA), "the leading minor of order 1 is not positive definite")
 })
 
