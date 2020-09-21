@@ -23,7 +23,7 @@ devtools::install_github("rowlandseymour/BSBT", dependencies = TRUE)
 ----
 The first step is to create a network from the set of areas. Here's an example of a network made from Local Authority Areas in the England:
 ![England Map and Network (BSBT)](man/figures/england_network.png?raw=true)
- There are two ways to do this in `BSBT`. The first is to construct an adjacency matrix, which describes which areas are neighbours. This can then be fed into `registered_adjacent_covariance_function`. The second way is to use coordinates which can be used with`registered_covariance_matrix`. This uses the Euclidean distance metric.
+ There are two ways to do this in `BSBT`. The first is to construct an adjacency matrix, which describes which areas are neighbours. This can then be fed into `constrained_adjacent_covariance_function`. The second way is to use coordinates which can be used with`constrained_covariance_matrix`. This uses the Euclidean distance metric.
 
 
 ## Fitting the Model
