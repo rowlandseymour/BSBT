@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc_functions.R
 \name{run_mcmc_with_ordering}
 \alias{run_mcmc_with_ordering}
-\title{Run the BTUN MCMC algorithm with ordering constraints}
+\title{Run the BSBT MCMC algorithm with ordering constraints}
 \usage{
 run_mcmc_with_ordering(
   n.iter,
@@ -42,7 +42,7 @@ A list of MCMC output
 }
 }
 \description{
-This function runs the BTUN mcmc algorithm with ordering constraints. The constraints are
+This function runs the BSBT mcmc algorithm with ordering constraints. The constraints are
 included using a list of sets.
 }
 \examples{

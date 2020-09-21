@@ -34,7 +34,7 @@ This function constructs a covariance function from the graph's adjacency matrix
 }
 \examples{
 #Construct covariance matrix of Dar es Salaam, Tanzania, using network metric
-data(dar.adj.matrix, package = "BTUN") #load dar es salaam adjacency matrix
+data(dar.adj.matrix, package = "BSBT") #load dar es salaam adjacency matrix
 k <- registered_adjacency_covariance_function(dar.adj.matrix, type = "sqexp",
        hyperparameters = c(1, 0.5), rep(1, dim(dar.adj.matrix)[1]), 0)
        #Covariance registetred by sum of subwards is 0 using rational quadratic function

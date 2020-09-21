@@ -1,10 +1,6 @@
-#' BTUN: Bradley--Terry for Urban Networks
+#' BSBT: Bayesian Spatial Bradley--Terry
 #'
-#' The BTUN package allows you to fit a spatial Bradley--Terry model
-#' to comparative judgement data sets. The aim is to estimate the deprivation levels
-#' in urban areas and find the most deprived citizens. The BTUN model creates a network
-#' from the urban area and uses a Gaussian Process to nonparametrically model the deprivation levels.
-#'
+#' This package implements the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then constructs a correlated prior distribution for the quality parameters based on the network. The package includes MCMC algorithms to estimate the quality parameters.
 #' @section Covariance Functions:
 #' The covariance functions can be used to construct the Gaussian Process prior distribution.
 #' There are two functions:
@@ -19,5 +15,5 @@
 #' the function \code{\link{run_gender_mcmc}} can be used to analyse how the different genders behave.
 #'
 #' @docType package
-#' @name BTUN
+#' @name BSBT
 NULL

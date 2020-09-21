@@ -1,4 +1,4 @@
 library(testthat)
-library(BTUN)
+library(BSBT)
 
-test_check("BTUN")
+test_check("BSBT")

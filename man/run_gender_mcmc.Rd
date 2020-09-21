@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc_functions.R
 \name{run_gender_mcmc}
 \alias{run_gender_mcmc}
-\title{Run the BTUN with Gender Effect MCMC algorithm}
+\title{Run the BSBT with Gender Effect MCMC algorithm}
 \usage{
 run_gender_mcmc(
   n.iter,
@@ -43,7 +43,7 @@ A list of MCMC output
 }
 }
 \description{
-This function runs the BTUN with Gender Effect MCMC algorithm
+This function runs the BSBT with Gender Effect MCMC algorithm
 }
 \examples{
 

@@ -57,9 +57,9 @@ mvnorm_chol <- function(mu, chol){
 }
 
 
-#' Run the BTUN MCMC algorithm
+#' Run the BSBT MCMC algorithm
 #'
-#' This function runs the BTUN mcmc algorithm
+#' This function runs the BSBT MCMC algorithm to estimate the model parameters. This includes the quality parameter for each area and the variance hyperparameter.
 #'
 #'
 #' @param n.iter The number of iterations to be run
@@ -146,9 +146,9 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 }
 
 
-#' Run the BTUN with Gender Effect MCMC algorithm
+#' Run the BSBT with Gender Effect MCMC algorithm
 #'
-#' This function runs the BTUN with Gender Effect MCMC algorithm
+#' This function runs the BSBT with Gender Effect MCMC algorithm
 #'
 #'
 #' @param n.iter The number of iterations to be run
@@ -246,7 +246,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
 
 
-#' Run the BTUN MCMC alogorithm with n types of indiuviduals
+#' Run the BSBT MCMC alogorithm with n types of indiuviduals
 #'
 #' This function runs the MCMC alogorithm with n types of individuals, for example male and female. The types must share the same covariance matrix and the win matrices are entered as a list.
 #'
@@ -357,9 +357,9 @@ run_n_levels_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, estim
 
 
 
-#' Run the BTUN MCMC algorithm with ordering constraints
+#' Run the BSBT MCMC algorithm with ordering constraints
 #'
-#' This function runs the BTUN mcmc algorithm with ordering constraints. The constraints are
+#' This function runs the BSBT mcmc algorithm with ordering constraints. The constraints are
 #' included using a list of sets.
 #'
 #' @param n.iter The number of iterations to be run

@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc_functions.R
 \name{run_mcmc}
 \alias{run_mcmc}
-\title{Run the BTUN MCMC algorithm}
+\title{Run the BSBT MCMC algorithm}
 \usage{
 run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE)
 }
@@ -31,7 +31,7 @@ A list of MCMC output
 }
 }
 \description{
-This function runs the BTUN mcmc algorithm
+This function runs the BSBT MCMC algorithm to estimate the model parameters. This includes the quality parameter for each area and the variance hyperparameter.
 }
 \examples{
 

@@ -1,5 +1,5 @@
-Package: BTUN
-Title: BTUN: Bradley--Terry for Urban Networks
+Package: BSBT
+Title: BSBT: Bayesian Spatial Bradley--Terry
 Version: 1.0
 Authors@R: c(
     person(given = "Rowland",
@@ -12,7 +12,7 @@ Authors@R: c(
 		   role = c("aut"),
 		   email = "james@briant.co.uk")
 	)
-Description: This package implements the Bradley-Terry for Urban Network (BTUN) model. It 	can be used to investigate data sets where judges compared different urban areas. 	It computes the level of deprivation of each area being considered, and can rank 	them from least to most deprived. The method uses a registered Gaussian Process to 	learn the spatial structure of the level of deprivation across the areas.
+Description: This package implements the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then constructs a correlated prior distribution for the quality parameters based on the network. The package includes MCMC algorithms to estimate the quality parameters.  
 License: GPL-3 + file LICENSE
 Imports: 
     stats,
@@ -21,7 +21,7 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
 Suggests: 
@@ -31,6 +31,7 @@ Suggests:
     sf,
     surveillance,
     spdep,
-    RColorBrewer
+    RColorBrewer,
+    deldir
 VignetteBuilder: knitr
 RdMacros: lifecycle

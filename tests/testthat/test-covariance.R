@@ -1,4 +1,4 @@
-data("dar.adj.matrix",  package = "BTUN")
+data("dar.adj.matrix",  package = "BSBT")
 
 
 test_that("registered adjacent covariance works", {
