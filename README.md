@@ -8,7 +8,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R build status](https://github.com/rowlandseymour/BSBT/workflows/R-CMD-check/badge.svg)](https://github.com/rowlandseymour/BSBT/actions)
 <!-- badges: end -->
 ----
-The `BSBT` R package allows you to fit a spatial Bradley--Terry model to comparative judgement data sets. The package estimates the quality of each area in the data set, based on the observed comaparisons. The model requires a network to be constructed to represent how the areas are connected. It includes spatial information by placing a corelated prior distribution to the quality parameters, where the prior distirbution parameters depend on  the network structure. The package estimates the model parameters using an MCMC algorithm. 
+📦 The `BSBT` R package allows you to fit a spatial Bradley--Terry model to comparative judgement data sets. The package estimates the quality of each area in the data set, based on the observed comaparisons. The model requires a network to be constructed to represent how the areas are connected. It includes spatial information by placing a corelated prior distribution to the quality parameters, where the prior distirbution parameters depend on  the network structure. The package estimates the model parameters using an MCMC algorithm. 
 
 ## Installation
 ----
@@ -41,7 +41,7 @@ There is also code for simulating comparative judgement data given the underlyin
 
 ## Acknowledgements
 ----
-This work is supported the UK Engineering and Physical Sciences Research Council (EP/T003928/1) and the Big East African Data Science research group at the University of Nottingham.
+This work is supported by the Engineering and Physical Sciences Research Council [grant number EP/T003928/1] and the Big East African Data Science research group at the University of Nottingham.
 
 The comparative judgement dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann. We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge Humanitarian Street Mapping Team (HOT) for providing a team of experts in data collection to facilitate the surveys. This fieldwork was also supported by the EPSRC Horizon Centre for Doctoral Training - My Life in Data (EP/L015463/1) and by EPSRC grant Neodemographics (EP/L021080/1).
 
