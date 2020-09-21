@@ -20,9 +20,9 @@ run_mcmc_with_ordering(
 
 \item{delta}{The underrlaxed tuning parameter must be in (0, 1)}
 
-\item{k.mean}{The GP prior mean vector}
+\item{k.mean}{The prior mean vector}
 
-\item{k.chol}{The cholesky decomposition of the GP prior covariance matrix}
+\item{k.chol}{The cholesky decomposition of the prior covariance matrix}
 
 \item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
 

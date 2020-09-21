@@ -18,9 +18,9 @@ run_asymmetric_mcmc(
 
 \item{delta}{The underrlaxed tuning parameter must be in (0, 1)}
 
-\item{k.mean}{The GP prior mean vector}
+\item{k.mean}{The prior mean vector}
 
-\item{k.chol}{The cholesky decomposition of the GP prior covariance matrix, alpha must be set to 1 when constructing this}
+\item{k.chol}{The cholesky decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing this}
 
 \item{win.matrices}{A list of n matrices where the ith matrix is the win matrix corresponding to only the ith level}
 

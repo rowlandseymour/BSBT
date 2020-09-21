@@ -20,9 +20,9 @@ run_gender_mcmc(
 
 \item{delta}{The underrlaxed tuning parameter must be in (0, 1)}
 
-\item{k.mean}{The GP prior mean vector}
+\item{k.mean}{The  prior mean vector}
 
-\item{k.chol}{The cholesky decomposition of the GP prior covariance matrix, alpha must be set to 1 when constructing ths}
+\item{k.chol}{The cholesky decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing ths}
 
 \item{male.win.matrix}{A matrix, where w_ij give the number of times area i beat j when judged by men}
 
