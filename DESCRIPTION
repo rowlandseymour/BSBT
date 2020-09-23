@@ -12,7 +12,7 @@ Authors@R: c(
 		   role = c("aut"),
 		   email = "james@briant.co.uk")
 	)
-Description: This package implements the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then constructs a correlated prior distribution for the quality parameters based on the network. The package includes MCMC algorithms to estimate the quality parameters.  
+Description: This package implements the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then places a correlated prior distirbution on the quality parameter for each area, based on the network. The package includes MCMC algorithms to estimate the quality parameters.  
 License: GPL-3 + file LICENSE
 Imports: 
     stats,

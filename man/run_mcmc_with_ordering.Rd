@@ -54,8 +54,10 @@ comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 win.matrix <- comparisons_to_matrix(3, comparisons)
 f.initial <- c(0, 0, 0)
 S <- list()
-S[[1]] <- c(1, 3, -1, 3) #Specify that lambda_1 - lambda_3 < 0, and the confidence parameter has value 3.
-S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0, and the confidence parameter has value 3.
+S[[1]] <- c(1, 3, -1, 3) #Specify that lambda_1 - lambda_3 < 0,
+#and the confidence parameter has value 3.
+S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0,
+#and the confidence parameter has value 3.
 mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, S)
 
 

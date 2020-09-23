@@ -7,13 +7,16 @@
 #' @param n.contests The number of contests to be carried out
 #' @param true.quality A vector with the level of deprivation in each area on the log scale.
 #' @param sigma.obs Standard deviation for the noise to be added to the level of deprivation in each subward. If 0, no noise is used.
-#' @return A list containing a data.frame with each par-wise contest, the outcome (a 1 for a win, a 0 for a loss), and a win matrix where the i,j^th element is the number of times i beat j
+#' @return A list containing a data.frame with each par-wise contest, the outcome (a 1 for a win, a 0 for a loss),
+#' # and a win matrix where the i,j^th element is the number of times i beat j
 #'
 #' @examples
 #'
 #' example.deprivation <- -2:2 #True level of deprivation in each area
-#' example.comparisons <- simulate_comparisons(10, example.deprivation, 0) #generate comparisons with no judge noise
-#' example.comparisons <- simulate_comparisons(10, example.deprivation, 0.1) #generate comparisons with judge noise.
+#' #generate comparisons with no judge noise
+#' example.comparisons <- simulate_comparisons(10, example.deprivation, 0)
+#' #generate comparisons with judge noise.
+#' example.comparisons <- simulate_comparisons(10, example.deprivation, 0.1)
 #' @export
 simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 
