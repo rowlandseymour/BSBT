@@ -18,7 +18,7 @@ constrained_adjacency_covariance_function(
 
 \item{type}{The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.}
 
-\item{hyperparameters}{A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters}
+\item{hyperparameters}{A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters}
 
 \item{linear.combination}{A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.}
 
@@ -30,7 +30,7 @@ constrained_adjacency_covariance_function(
 The mean vector and covariance matrix
 }
 \description{
-This function constructs a covariance function from the graph's adjacency matrix. The covairance function may be suqred exponential, rational quadratic or Matern
+This function constructs a covariance function from the graph's adjacency matrix. The covairance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
 }
 \examples{
 #Construct covariance matrix of Dar es Salaam, Tanzania, using network metric
@@ -40,4 +40,7 @@ k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp",
        #Covariance registetred by sum of subwards is 0 using rational quadratic function
 k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "ratquad",
        hyperparameters = c(1, 0.5, 2), rep(1, dim(dar.adj.matrix)[1]), 0)
+}
+\seealso{
+For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}
 }

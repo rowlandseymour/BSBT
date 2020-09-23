@@ -5,7 +5,7 @@
 \alias{dar.adj.matrix}
 \title{Adjacency matrix for the subwards in Dar es Salaam, Tanzania}
 \format{
-A 452x452 matrix, where a_{ij} = 1 if subwards i and j are neighbours and 0 otherwise.
+A 452x452 matrix, where a_{ij} = 1 if subwards i and j are neighbours and 0 otherwise. The adjacency matrix is based on areas which share administrative borders. Two additional edges over the Kurasini creek to represent a road and ferry crossing have been added.
 }
 \usage{
 dar.adj.matrix

@@ -18,7 +18,7 @@ constrained_covariance_function(
 
 \item{type}{The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.}
 
-\item{hyperparameters}{A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters}
+\item{hyperparameters}{A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters}
 
 \item{linear.combination}{A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.}
 
@@ -30,7 +30,7 @@ constrained_covariance_function(
 The mean vector and covariance matrix
 }
 \description{
-This function constructs a covariance function from the Euclidean coordinates of the objects. The covairance function may be squared exponential, rational quadratic or Matern.
+This function constructs a covariance function from the Euclidean coordinates of the objects. The covairance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
 }
 \examples{
 #Generate 10 points and create covariance matrix using Euclidean distance metric
@@ -39,4 +39,7 @@ coords <- data.frame("x" = runif(10), "y" = runif(10)) #generate coordinates
 #the sum of the deprivation levels is 0.
 k <- constrained_covariance_function(coords, "sqexp",
 c(1, 0.5), rep(1, 10), linear.constraint = 0, tol = 1e-5)
+}
+\seealso{
+For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}
 }
