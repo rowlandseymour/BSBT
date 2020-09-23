@@ -1,15 +1,17 @@
 #' Construct a constrained covariance matrix from the Euclidean coordinates of the objects
 #'
-#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covairance function may be squared exponential, rational quadratic or Matern.
+#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covairance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
 #'
 #'
 #' @param coordinates An Nx2 matrix containing the Euclidean coordinates of the nodes.
 #' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
-#' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
+#' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters
 #' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @param tol The tolerance for the Cholesky decomposition
 #' @return The mean vector and covariance matrix
+#'
+#' @seealso For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}
 #'
 #' @examples
 #' #Generate 10 points and create covariance matrix using Euclidean distance metric
@@ -67,16 +69,18 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
 
 #' Construct a constrained covariance matrix from the adjaency matrix
 #'
-#' This function constructs a covariance function from the graph's adjacency matrix. The covairance function may be suqred exponential, rational quadratic or Matern
+#' This function constructs a covariance function from the graph's adjacency matrix. The covairance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
 #'
 #'
 #' @param adj.matrix The graph adjacency matrix
 #' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
-#' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, lenght scale and scaling parameters
+#' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters
 #' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @param tol The tolerance for the Cholesky decomposition
 #' @return The mean vector and covariance matrix
+#'
+#' @seealso For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}
 #'
 #' @examples
 #' #Construct covariance matrix of Dar es Salaam, Tanzania, using network metric
