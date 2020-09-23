@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc_functions.R
 \name{mvnorm_chol}
 \alias{mvnorm_chol}
-\title{Draw a sample from a multivariate normal diastirbution}
+\title{Draw a sample from a multivariate normal distribution}
 \usage{
 mvnorm_chol(mu, chol)
 }
@@ -15,7 +15,7 @@ mvnorm_chol(mu, chol)
 a vector containing a sample from the distribution
 }
 \description{
-This draws a sample from a multivariate normal distribution with mean vector mu and covariance matirx Sigma, using the Cholesky decomposition method.
+This draws a sample from a multivariate normal distribution with mean vector mu and covariance matrix Sigma,. It recquires the covariance matrix to be decomposed using the Cholesky method (chol).
 }
 \examples{
 
@@ -25,3 +25,5 @@ sigma.chol <- chol(sigma) #decompose covariance matrix
 f <- mvnorm_chol(mu, sigma.chol) #draw sample
 
 }
+\keyword{distribution}
+\keyword{internal}

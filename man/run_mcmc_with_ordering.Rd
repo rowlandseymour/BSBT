@@ -26,9 +26,9 @@ run_mcmc_with_ordering(
 
 \item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
 
-\item{f.initial}{A vector of the intial esitmate for f}
+\item{f.initial}{A vector of the initial estimate for f}
 
-\item{S}{A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constaint, and the confidence parameter.}
+\item{S}{A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constraints, and the confidence parameter; S = (i, j, ±1, nu).}
 
 \item{alpha}{A boolean if inference for alpha should be carried out}
 }
@@ -37,13 +37,12 @@ A list of MCMC output
 \itemize{
 \item f.matrix - A matrix containing the each iteration of f
 \item alpha.sq - A vector containing the iterations of alpha^2
-\item accpetance.rate - The acceptance rate for f
-\item time.taken - Time tkane to run the MCMC algorithm in seconds
+\item acceptance.rate - The acceptance rate for f
+\item time.taken - Time taken to run the MCMC algorithm in seconds
 }
 }
 \description{
-This function runs the BSBT mcmc algorithm with ordering constraints. The constraints are
-included using a list of sets.
+This function runs the BSBT MCMC algorithm with ordering constraints. This allows the sign of lambda_i - lambda_j to be specified. The confidence parameters specify the confidence in this constraint. As this parameter approaches 0, all proposals that do not meet this constraint will be rejected. As this parameter approaches infinity, all proposals are accepted, regardless of the constraint. Only small numbers of ordering constraints should be included, as they can affect the mixing of the markov chain.
 }
 \examples{
 
@@ -55,8 +54,8 @@ comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 win.matrix <- comparisons_to_matrix(3, comparisons)
 f.initial <- c(0, 0, 0)
 S <- list()
-S[[1]] <- c(1, 3, -1, 3)
-S[[2]] <- c(1, 2, -1, 3)
+S[[1]] <- c(1, 3, -1, 3) #Specify that lambda_1 - lambda_3 < 0, and the confidence parameter has value 3.
+S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0, and the confidence parameter has value 3.
 mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, S)
 
 

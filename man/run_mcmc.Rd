@@ -17,7 +17,7 @@ run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE)
 
 \item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
 
-\item{f.initial}{A vector of the initial esitmate for f}
+\item{f.initial}{A vector of the initial estimate for f}
 
 \item{alpha}{A boolean if inference for alpha should be carried out}
 }
@@ -27,21 +27,21 @@ A list of MCMC output
 \item f.matrix - A matrix containing the each iteration of f
 \item alpha.sq - A vector containing the iterations of alpha^2
 \item accpetance.rate - The acceptance rate for f
-\item time.taken - Time tkane to run the MCMC algorithm in seconds
+\item time.taken - Time taken to run the MCMC algorithm in seconds
 }
 }
 \description{
-This function runs the BSBT MCMC algorithm to estimate the model parameters. This includes the quality parameter for each area and the variance hyperparameter.
+This function runs the BSBT MCMC algorithm to estimate the deprivation parameters. In this version, the judges are assumed to act homogeneously. This algorithm estimates the deprivation in each area and the prior distribution variance parameter. For data with two types of judges, see \code{\link{run_gender_mcmc}}.
 }
 \examples{
 
 n.iter <- 10
 delta <- 0.1
 k.mean <- c(0, 0, 0)
-k.chol <- diag(3)
+k.chol <- diag(3) #decomposed covariance matrix
 comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
-win.matrix <- comparisons_to_matrix(3, comparisons)
-f.initial <- c(0, 0, 0)
+win.matrix <- comparisons_to_matrix(3, comparisons) #construct covariance matrix
+f.initial <- c(0, 0, 0) #intial estimates for lamabda_1, lambda_2, lambda_3
 
 mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial)
 

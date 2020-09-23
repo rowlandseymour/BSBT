@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc_functions.R
 \name{loglike_function}
 \alias{loglike_function}
-\title{Compute the value of the loglikelihood function}
+\title{Compute the loglikelihood function}
 \usage{
 loglike_function(x, win.matrix)
 }
@@ -15,5 +15,14 @@ loglike_function(x, win.matrix)
 The value of of the loglikelihood function
 }
 \description{
-This function computes the value of the binomial loglikelihood function
+This function computes the BSBT model loglikelihood function. It requires the deprivation levels and the win matrix.
 }
+\examples{
+
+win.matrix <- matrix(c(0, 3, 2, 1, 0, 1, 1, 3, 0), 3, 3) #construct win matrix
+lambda     <- c(3, 1, 2)
+
+l <- loglike_function(lambda, win.matrix)
+
+}
+\keyword{interal}

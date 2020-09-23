@@ -36,7 +36,8 @@ A list of MCMC output
 }
 }
 \description{
-This function runs the MCMC algorithm with n types of individuals, for example male and female. The types must share the same covariance matrix and the win matrices are entered as a list. This model has an asymmetric variance structure, as the variance of the baseline is always smaller.
+This function runs the MCMC algorithm with n types of individuals, for example male and female. The types must share the same covariance matrix and the win matrices are entered as a list. The first item in the list acts as the baseline group. This model has an asymmetric variance structure, as the variance of the baseline is always smaller.
+For a model with thee types, f, g and h, the structure is as follows. The baseline is f, or the second type, g = f + d_1, and the third type, h = f + d_2. Here d_1 and d_2 are the discrepancy between each type and the baseline.
 }
 \examples{
 

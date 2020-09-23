@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc_functions.R
 \name{quality_ratio}
 \alias{quality_ratio}
-\title{Compute the quality ratio on a logit scale}
+\title{Compute the logit of the ratio of qualities}
 \usage{
 quality_ratio(x, y)
 }
@@ -15,7 +15,7 @@ quality_ratio(x, y)
 logit(pi_ij)
 }
 \description{
-This function compute the logit(pi_ij) = lambda_i - log(exp(lambda_i) + exp(lambda_j))
+This function computes the probability i beats j on the logit scale. It is given by logit(pi_ij) = lambda_i - log(exp(lambda_i) + exp(lambda_j))
 }
 \examples{
 
@@ -24,3 +24,4 @@ This function compute the logit(pi_ij) = lambda_i - log(exp(lambda_i) + exp(lamb
 qr <- quality_ratio(exp(-2), exp(2))
 
 }
+\keyword{internal}

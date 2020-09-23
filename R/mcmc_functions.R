@@ -1,11 +1,13 @@
-#' Compute the quality ratio on a logit scale
+#' Compute the logit of the ratio of qualities
 #'
-#' This function compute the logit(pi_ij) = lambda_i - log(exp(lambda_i) + exp(lambda_j))
+#' This function computes the probability i beats j on the logit scale. It is given by logit(pi_ij) = lambda_i - log(exp(lambda_i) + exp(lambda_j))
 #'
 #'
 #' @param x The level of deprivation of the winning area on the exponential scale
 #' @param y The level of deprivation of the losing area on the exponential scale
 #' @return logit(pi_ij)
+#'
+#' @keywords internal
 #'
 #' @examples
 #'
@@ -17,14 +19,24 @@
 quality_ratio <- function(x, y) log(x)- log(x+y)
 
 
-#' Compute the value of the loglikelihood function
+#' Compute the loglikelihood function
 #'
-#' This function computes the value of the binomial loglikelihood function
+#' This function computes the BSBT model loglikelihood function. It requires the deprivation levels and the win matrix.
 #'
 #'
 #' @param x The level of deprivation of the areas on an exponential scale
 #' @param win.matrix A matrix, where w_ij give the number of times area i beat j
 #' @return The value of of the loglikelihood function
+#'
+#' @keywords interal
+#'
+#' @examples
+#'
+#' win.matrix <- matrix(c(0, 3, 2, 1, 0, 1, 1, 3, 0), 3, 3) #construct win matrix
+#' lambda     <- c(3, 1, 2)
+#'
+#' l <- loglike_function(lambda, win.matrix)
+#'
 #' @export
 loglike_function <- function(x, win.matrix){
 
@@ -34,14 +46,17 @@ loglike_function <- function(x, win.matrix){
 
 }
 
-#' Draw a sample from a multivariate normal diastirbution
+#' Draw a sample from a multivariate normal distribution
 #'
-#' This draws a sample from a multivariate normal distribution with mean vector mu and covariance matirx Sigma, using the Cholesky decomposition method.
+#' This draws a sample from a multivariate normal distribution with mean vector mu and covariance matrix Sigma,. It recquires the covariance matrix to be decomposed using the Cholesky method (chol).
 #'
 #'
 #' @param mu The mean vector
 #' @param chol The cholesky decomposition of the covariance matrix Sigma
 #' @return a vector containing a sample from the distribution
+#'
+#' @keywords  internal distribution
+#'
 #'
 #' @examples
 #'
@@ -53,13 +68,14 @@ loglike_function <- function(x, win.matrix){
 #' @export
 mvnorm_chol <- function(mu, chol){
 
+  #x <- mu + t(L)u, where u ~ N(0, I)
   return(mu + t(chol)%*%stats::rnorm(length(mu)))
 }
 
 
 #' Run the BSBT MCMC algorithm
 #'
-#' This function runs the BSBT MCMC algorithm to estimate the model parameters. This includes the quality parameter for each area and the variance hyperparameter.
+#' This function runs the BSBT MCMC algorithm to estimate the deprivation parameters. In this version, the judges are assumed to act homogeneously. This algorithm estimates the deprivation in each area and the prior distribution variance parameter. For data with two types of judges, see \code{\link{run_gender_mcmc}}.
 #'
 #'
 #' @param n.iter The number of iterations to be run
@@ -67,14 +83,14 @@ mvnorm_chol <- function(mu, chol){
 #' @param k.mean The prior mean vector
 #' @param k.chol The cholesky decomposition of the prior covariance matrix
 #' @param win.matrix A matrix, where w_ij give the number of times area i beat j
-#' @param f.initial A vector of the initial esitmate for f
+#' @param f.initial A vector of the initial estimate for f
 #' @param alpha A boolean if inference for alpha should be carried out
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item f.matrix - A matrix containing the each iteration of f
 #'   \item alpha.sq - A vector containing the iterations of alpha^2
 #'   \item accpetance.rate - The acceptance rate for f
-#'   \item time.taken - Time tkane to run the MCMC algorithm in seconds
+#'   \item time.taken - Time taken to run the MCMC algorithm in seconds
 #' }
 #'
 #' @examples
@@ -82,10 +98,10 @@ mvnorm_chol <- function(mu, chol){
 #' n.iter <- 10
 #' delta <- 0.1
 #' k.mean <- c(0, 0, 0)
-#' k.chol <- diag(3)
+#' k.chol <- diag(3) #decomposed covariance matrix
 #' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
-#' win.matrix <- comparisons_to_matrix(3, comparisons)
-#' f.initial <- c(0, 0, 0)
+#' win.matrix <- comparisons_to_matrix(3, comparisons) #construct covariance matrix
+#' f.initial <- c(0, 0, 0) #intial estimates for lamabda_1, lambda_2, lambda_3
 #'
 #' mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial)
 #'
@@ -148,24 +164,24 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 
 #' Run the BSBT with Gender Effect MCMC algorithm
 #'
-#' This function runs the BSBT with Gender Effect MCMC algorithm
-#'
+#' This function runs the BSBT MCMC algorithm where the male and female judges can be separated. It generates samples for the grand mean of the male and female perceptions for the derivation in each area and the difference between them. It is similar to \code{\link{run_mcmc}}.
+#' This function requires the data to be separate into two parts, one for each gender. There should be a win matrix for the male judges, and a win matrix for the female judges. Similarly, intial estimates for the grand mean and difference parameters need to be included seperately.
 #'
 #' @param n.iter The number of iterations to be run
-#' @param delta The underrlaxed tuning parameter must be in (0, 1)
+#' @param delta The underrlaxed tuning parameter. Must be in (0, 1)
 #' @param k.mean The  prior mean vector
-#' @param k.chol The cholesky decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing ths
+#' @param k.chol The cholesky decomposition of the prior covariance matrix, alpha must be set to 1 when constructing this
 #' @param male.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by men
 #' @param female.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by women
-#' @param f.initial A vector of the intial esitmate for f, the male function
-#' @param g.initial A vector of the intial esitmate for g, the discrepancy functon
+#' @param f.initial A vector of the initial estimate for f, the grand mean of men and women's perceptions
+#' @param g.initial A vector of the initial estimate for g, the difference between men and women's perceptions
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item f.matrix - A matrix containing the each iteration of f
 #'   \item g.matrix - A matrix containing the each iteration of g
 #'   \item alpha.sq - A matrix containing the iterations of alpha^2
-#'   \item accpetance.rate - The acceptance rate for f and g
-#'   \item time.taken - Time tkane to run the MCMC algorithm in seconds
+#'   \item acceptance.rate - The acceptance rate for f and g
+#'   \item time.taken - Time taken to run the MCMC algorithm in seconds
 #' }
 #'
 #' @examples
@@ -173,13 +189,13 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #' n.iter <- 10
 #' delta <- 0.1
 #' k.mean <- c(0, 0, 0)
-#' k.chol <- diag(3)
+#' k.chol <- diag(3) #decomposed covariance matrix
 #' men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
-#' men.win.matrix <- comparisons_to_matrix(3, men.comparisons)
-#' women.win.matrix <- comparisons_to_matrix(3, women.comparisons)
-#' f.initial <- c(0, 0, 0)
-#' g.initial <- c(0, 0, 0)
+#' men.win.matrix <- comparisons_to_matrix(3, men.comparisons) #win matrix for the male judges
+#' women.win.matrix <- comparisons_to_matrix(3, women.comparisons) #win matrix for the female judges
+#' f.initial <- c(0, 0, 0) #initial estimate for grand mean
+#' g.initial <- c(0, 0, 0) #initial estimate for differences
 #'
 #' mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.chol, men.win.matrix,
 #'     women.win.matrix, f.initial, g.initial)
@@ -190,14 +206,16 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
   f <- f.initial
   g <- g.initial
-  n.objects <- length(f)
-  loglike <- loglike_function(as.numeric(exp(f)), male.win.matrix) + loglike_function(as.numeric(exp(g + f)), female.win.matrix)
+  n.objects <- length(f) #compute number of objects/areas from f
+  loglike <- loglike_function(as.numeric(exp(f)), male.win.matrix) + loglike_function(as.numeric(exp(g + f)), female.win.matrix) #loglike value based on intial values
 
+  #Initialise sotrage matrices
   counter <- 0
   f.matrix <- matrix(NA, n.iter, n.objects)
   g.matrix <- matrix(NA, n.iter, n.objects)
   alpha.matrix <- matrix(NA, n.iter, 2)
 
+  #k.chol.plain sotres the decomposed covariance matrix with alpah = 1, k.chol is for alpha varying
   k.chol.plain <- k.chol
 
   # MCMC Loop ---------------------------------------------------------------
@@ -206,8 +224,11 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
   for(i in 1:n.iter){
 
   #Gibbs Step for alpha
+  #Sample alpha values
   male.alpha.sq.current     <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
   female.alpha.sq.current   <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(g)%*%k.chol.plain%*%g + 0.1)
+
+  #recompute covariance matrices
   male.k.chol               <- sqrt(male.alpha.sq.current)*k.chol.plain
   female.k.chol             <- sqrt(female.alpha.sq.current)*k.chol.plain
   alpha.matrix[i, ]         <- c(male.alpha.sq.current, female.alpha.sq.current)
@@ -219,10 +240,10 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
   loglike.prop <- loglike_function(as.numeric(exp(f.prop - g.prop)), male.win.matrix) +
     loglike_function(as.numeric(exp(g.prop + f.prop)), female.win.matrix)
 
-  log.p.acc <- loglike.prop - loglike
+  log.p.acc <- loglike.prop - loglike #underrelaxed means acceptance probability is likelihood ratio
 
   if(log(stats::runif(1)) < log.p.acc){
-
+    #if accepted, update variables
     f <- f.prop
     g <- g.prop
     loglike <- loglike.prop
@@ -230,6 +251,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
   }
 
+  #store variables
   f.matrix[i, ]   <- f
   g.matrix[i, ]   <- g
 
@@ -248,8 +270,8 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
 #' Run the BSBT MCMC algorithm with n types of individuals and asymmetric variance
 #'
-#' This function runs the MCMC algorithm with n types of individuals, for example male and female. The types must share the same covariance matrix and the win matrices are entered as a list. This model has an asymmetric variance structure, as the variance of the baseline is always smaller.
-#'
+#' This function runs the MCMC algorithm with n types of individuals, for example male and female. The types must share the same covariance matrix and the win matrices are entered as a list. The first item in the list acts as the baseline group. This model has an asymmetric variance structure, as the variance of the baseline is always smaller.
+#' For a model with thee types, f, g and h, the structure is as follows. The baseline is f, or the second type, g = f + d_1, and the third type, h = f + d_2. Here d_1 and d_2 are the discrepancy between each type and the baseline.
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
@@ -359,23 +381,17 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, est
 
 #' Run the BSBT MCMC algorithm with ordering constraints
 #'
-#' This function runs the BSBT mcmc algorithm with ordering constraints. The constraints are
-#' included using a list of sets.
+#' This function runs the BSBT MCMC algorithm with ordering constraints. This allows the sign of lambda_i - lambda_j to be specified. The confidence parameters specify the confidence in this constraint. As this parameter approaches 0, all proposals that do not meet this constraint will be rejected. As this parameter approaches infinity, all proposals are accepted, regardless of the constraint. Only small numbers of ordering constraints should be included, as they can affect the mixing of the markov chain.
 #'
-#' @param n.iter The number of iterations to be run
-#' @param delta The underrlaxed tuning parameter must be in (0, 1)
-#' @param k.mean The prior mean vector
-#' @param k.chol The cholesky decomposition of the prior covariance matrix
-#' @param win.matrix A matrix, where w_ij give the number of times area i beat j
-#' @param f.initial A vector of the intial esitmate for f
-#' @param S A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constaint, and the confidence parameter.
-#' @param alpha A boolean if inference for alpha should be carried out
+#'
+#' @inheritParams run_mcmc
+#' @param S A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constraints, and the confidence parameter; S = (i, j, ±1, nu).
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item f.matrix - A matrix containing the each iteration of f
 #'   \item alpha.sq - A vector containing the iterations of alpha^2
-#'   \item accpetance.rate - The acceptance rate for f
-#'   \item time.taken - Time tkane to run the MCMC algorithm in seconds
+#'   \item acceptance.rate - The acceptance rate for f
+#'   \item time.taken - Time taken to run the MCMC algorithm in seconds
 #' }
 #'
 #' @examples
@@ -388,8 +404,8 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, est
 #' win.matrix <- comparisons_to_matrix(3, comparisons)
 #' f.initial <- c(0, 0, 0)
 #' S <- list()
-#' S[[1]] <- c(1, 3, -1, 3)
-#' S[[2]] <- c(1, 2, -1, 3)
+#' S[[1]] <- c(1, 3, -1, 3) #Specify that lambda_1 - lambda_3 < 0, and the confidence parameter has value 3.
+#' S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0, and the confidence parameter has value 3.
 #' mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, S)
 #'
 #'

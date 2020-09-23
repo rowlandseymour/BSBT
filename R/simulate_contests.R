@@ -1,18 +1,19 @@
 #' Simulate contests from the Bradley--Terry Model
 #'
-#' This function simulates pair-wise contests according to the Bradley--Terry model
+#' This function simulates pair-wise contests according to the Bradley--Terry model. It require the true quality of the areas and the number of comparisons to be carried out. It can also include some judge noise or error.
+#' When including noise, each time a judge carries out a comparisons, we assume they use the true quality with some zero-mean normal noise added. The standard deviation must be specified.
 
 #'
 #' @param n.contests The number of contests to be carried out
 #' @param true.quality A vector with the level of deprivation in each area on the log scale.
 #' @param sigma.obs Standard deviation for the noise to be added to the level of deprivation in each subward. If 0, no noise is used.
-#' @return A list containing a data.frame with each par-wise contest and the outcome, and a win matrix where the i,j^th element is the number of times i beat j
+#' @return A list containing a data.frame with each par-wise contest, the outcome (a 1 for a win, a 0 for a loss), and a win matrix where the i,j^th element is the number of times i beat j
 #'
 #' @examples
 #'
 #' example.deprivation <- -2:2 #True level of deprivation in each area
-#' example.comparisons <- simulate_comparisons(10, example.deprivation, 0) #generate comparisons
-#'
+#' example.comparisons <- simulate_comparisons(10, example.deprivation, 0) #generate comparisons with no judge noise
+#' example.comparisons <- simulate_comparisons(10, example.deprivation, 0.1) #generate comparisons with judge noise.
 #' @export
 simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 
@@ -81,10 +82,10 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 
 #' Construct Win Matrix from Comparisons
 #'
-#' This function constructs a win matrix from a data frame of comparisons. It is needed for the mcmc function.
+#' This function constructs a win matrix from a data frame of comparisons. It is needed for the MCMC functions.
 #'
 #' @param n.areas The number of areas in the study.
-#' @param comparisons An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgement. The first column is the better area, the second column is the more deprived area. The areas should be labeled from 1 to n.areas.
+#' @param comparisons An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgment. The first column is the winning area, the second column is the more losing area. The areas should be labeled from 1 to n.areas.
 #' @return A matrix where the {i, j}^th element is the number of times area i beat area j.
 #'
 #' @examples
@@ -98,8 +99,9 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 #' @export
 comparisons_to_matrix <- function(n.areas, comparisons){
 
-  win.matrix <- matrix(0, n.areas, n.areas)
-  for(j in 1:dim(comparisons)[1])
+  win.matrix <- matrix(0, n.areas, n.areas) #construct empty matrix
+
+  for(j in 1:dim(comparisons)[1]) #for each comparisons, eneter outcome into win matrix
     win.matrix[comparisons[j, 1], comparisons[j, 2]] <- win.matrix[comparisons[j, 1], comparisons[j, 2]] + 1
 
 

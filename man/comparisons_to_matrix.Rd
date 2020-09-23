@@ -9,13 +9,13 @@ comparisons_to_matrix(n.areas, comparisons)
 \arguments{
 \item{n.areas}{The number of areas in the study.}
 
-\item{comparisons}{An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgement. The first column is the better area, the second column is the more deprived area. The areas should be labeled from 1 to n.areas.}
+\item{comparisons}{An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgment. The first column is the winning area, the second column is the more losing area. The areas should be labeled from 1 to n.areas.}
 }
 \value{
 A matrix where the {i, j}^th element is the number of times area i beat area j.
 }
 \description{
-This function constructs a win matrix from a data frame of comparisons. It is needed for the mcmc function.
+This function constructs a win matrix from a data frame of comparisons. It is needed for the MCMC functions.
 }
 \examples{
 

@@ -18,19 +18,19 @@ run_gender_mcmc(
 \arguments{
 \item{n.iter}{The number of iterations to be run}
 
-\item{delta}{The underrlaxed tuning parameter must be in (0, 1)}
+\item{delta}{The underrlaxed tuning parameter. Must be in (0, 1)}
 
 \item{k.mean}{The  prior mean vector}
 
-\item{k.chol}{The cholesky decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing ths}
+\item{k.chol}{The cholesky decomposition of the prior covariance matrix, alpha must be set to 1 when constructing this}
 
 \item{male.win.matrix}{A matrix, where w_ij give the number of times area i beat j when judged by men}
 
 \item{female.win.matrix}{A matrix, where w_ij give the number of times area i beat j when judged by women}
 
-\item{f.initial}{A vector of the intial esitmate for f, the male function}
+\item{f.initial}{A vector of the initial estimate for f, the grand mean of men and women's perceptions}
 
-\item{g.initial}{A vector of the intial esitmate for g, the discrepancy functon}
+\item{g.initial}{A vector of the initial estimate for g, the difference between men and women's perceptions}
 }
 \value{
 A list of MCMC output
@@ -38,25 +38,26 @@ A list of MCMC output
 \item f.matrix - A matrix containing the each iteration of f
 \item g.matrix - A matrix containing the each iteration of g
 \item alpha.sq - A matrix containing the iterations of alpha^2
-\item accpetance.rate - The acceptance rate for f and g
-\item time.taken - Time tkane to run the MCMC algorithm in seconds
+\item acceptance.rate - The acceptance rate for f and g
+\item time.taken - Time taken to run the MCMC algorithm in seconds
 }
 }
 \description{
-This function runs the BSBT with Gender Effect MCMC algorithm
+This function runs the BSBT MCMC algorithm where the male and female judges can be separated. It generates samples for the grand mean of the male and female perceptions for the derivation in each area and the difference between them. It is similar to \code{\link{run_mcmc}}.
+This function requires the data to be separate into two parts, one for each gender. There should be a win matrix for the male judges, and a win matrix for the female judges. Similarly, intial estimates for the grand mean and difference parameters need to be included seperately.
 }
 \examples{
 
 n.iter <- 10
 delta <- 0.1
 k.mean <- c(0, 0, 0)
-k.chol <- diag(3)
+k.chol <- diag(3) #decomposed covariance matrix
 men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
-men.win.matrix <- comparisons_to_matrix(3, men.comparisons)
-women.win.matrix <- comparisons_to_matrix(3, women.comparisons)
-f.initial <- c(0, 0, 0)
-g.initial <- c(0, 0, 0)
+men.win.matrix <- comparisons_to_matrix(3, men.comparisons) #win matrix for the male judges
+women.win.matrix <- comparisons_to_matrix(3, women.comparisons) #win matrix for the female judges
+f.initial <- c(0, 0, 0) #initial estimate for grand mean
+g.initial <- c(0, 0, 0) #initial estimate for differences
 
 mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.chol, men.win.matrix,
     women.win.matrix, f.initial, g.initial)

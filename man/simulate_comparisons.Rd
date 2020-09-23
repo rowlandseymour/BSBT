@@ -14,14 +14,15 @@ simulate_comparisons(n.contests, true.quality, sigma.obs)
 \item{sigma.obs}{Standard deviation for the noise to be added to the level of deprivation in each subward. If 0, no noise is used.}
 }
 \value{
-A list containing a data.frame with each par-wise contest and the outcome, and a win matrix where the i,j^th element is the number of times i beat j
+A list containing a data.frame with each par-wise contest, the outcome (a 1 for a win, a 0 for a loss), and a win matrix where the i,j^th element is the number of times i beat j
 }
 \description{
-This function simulates pair-wise contests according to the Bradley--Terry model
+This function simulates pair-wise contests according to the Bradley--Terry model. It require the true quality of the areas and the number of comparisons to be carried out. It can also include some judge noise or error.
+When including noise, each time a judge carries out a comparisons, we assume they use the true quality with some zero-mean normal noise added. The standard deviation must be specified.
 }
 \examples{
 
 example.deprivation <- -2:2 #True level of deprivation in each area
-example.comparisons <- simulate_comparisons(10, example.deprivation, 0) #generate comparisons
-
+example.comparisons <- simulate_comparisons(10, example.deprivation, 0) #generate comparisons with no judge noise
+example.comparisons <- simulate_comparisons(10, example.deprivation, 0.1) #generate comparisons with judge noise.
 }
