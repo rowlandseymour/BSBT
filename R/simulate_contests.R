@@ -12,7 +12,7 @@
 #' @examples
 #'
 #' example.deprivation <- -2:2 #True level of deprivation in each area
-#' #generate comparisons with no judge noise
+#  generate comparisons with no judge noise
 #' example.comparisons <- simulate_comparisons(10, example.deprivation, 0)
 #' #generate comparisons with judge noise.
 #' example.comparisons <- simulate_comparisons(10, example.deprivation, 0.1)
