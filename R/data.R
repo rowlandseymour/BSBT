@@ -67,3 +67,58 @@
 #'
 "mean.deprivation"
 
+
+
+
+#' Adjacency matrix for the Local Authority Areas in England
+#'
+#'
+#'
+#' @docType data
+#'
+#'
+#' @format A 4317x317 matrix, where a_{ij} = 1 if LAAs i and j are neighbours and 0 otherwise. The adjacency matrix is based on areas which share administrative borders. An edge has been added between the Isles of Scilly and Cornwall. 6 edges have been added between the Isle of Wight and LAAs in south Hampshire.
+#'
+#'
+#' @keywords datasets
+#'
+#'
+#'
+"english.laa.adj.matrix"
+
+
+#' Shape files for Local Authority Areas in England
+#'
+#' Polygons for the 317 local authority areas in england. Names and coordinates are also included.
+#'
+#' @docType data
+#'
+#'
+#' @format A .shp object
+#'
+#'
+#' @keywords datasets
+#'
+#' @source \rul{https://geoportal.statistics.gov.uk/datasets/ae90afc385c04d869bc8cf8890bd1bcd_1}
+#'
+"english.laa.shapefiles"
+
+
+#' Indicies of Multiple Deprivation for Local Authority Areas in England
+#'
+#' A data frame containing the average index of multiple deprivation for each LAA in England.
+#'
+#' @docType data
+#'
+#'
+#' @format A .shp object
+#'
+#'
+#' @keywords datasets
+#'
+#' @source \rul{https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019}
+#'
+"english.laa.deprivation"
+
+
+
