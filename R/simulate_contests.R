@@ -32,10 +32,10 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
   if(sigma.obs > 0){
     for(j in 1:n.contests){
 
-      #Generate IDs of subwards
-      subwards <- sample(1:length(true.quality), 2, FALSE)  #choose two subwards to compare
-      log.lambda.1 <- true.quality[subwards[1]] + stats::rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
-      log.lambda.2 <- true.quality[subwards[2]] + stats::rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
+      #Generate IDs of area
+      area <- sample(1:length(true.quality), 2, FALSE)  #choose two area to compare
+      log.lambda.1 <- true.quality[area[1]] + stats::rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
+      log.lambda.2 <- true.quality[area[2]] + stats::rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
 
 
       #Simulate Contest
@@ -43,31 +43,31 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
       result <- stats::rbinom(1, 1, win.prob)                                      #simulate from bernoulli dist
 
       #Record Results
-      contest.results[j, ] <- c(subwards, result)                           #record result
+      contest.results[j, ] <- c(area, result)                           #record result
       if(result == 1)
-        number.of.wins[subwards[1], subwards[2]] <- number.of.wins[subwards[1], subwards[2]] + 1
+        number.of.wins[area[1], area[2]] <- number.of.wins[area[1], area[2]] + 1
       else
-        number.of.wins[subwards[2], subwards[1]] <- number.of.wins[subwards[2], subwards[1]] + 1
+        number.of.wins[area[2], area[1]] <- number.of.wins[area[2], area[1]] + 1
 
     }
   } else if (sigma.obs == 0){
     #If no noise, simulate from true quality
     for(j in 1:n.contests){
 
-      #Generate IDs of subwards
-      subwards <- sample(1:length(true.quality), 2, FALSE)
-      log.lambda.1 <- true.quality[subwards[1]]
-      log.lambda.2 <- true.quality[subwards[2]]
+      #Generate IDs of area
+      area <- sample(1:length(true.quality), 2, FALSE)
+      log.lambda.1 <- true.quality[area[1]]
+      log.lambda.2 <- true.quality[area[2]]
       #Simulate Contest
       win.prob <- exp(log.lambda.1)/(exp(log.lambda.1) + exp(log.lambda.2))
       result <- stats::rbinom(1, 1, win.prob)
 
       #Record Results
-      contest.results[j, ] <- c(subwards, result)
+      contest.results[j, ] <- c(area, result)
       if(result == 1)
-        number.of.wins[subwards[1], subwards[2]] <- number.of.wins[subwards[1], subwards[2]] + 1
+        number.of.wins[area[1], area[2]] <- number.of.wins[area[1], area[2]] + 1
       else
-        number.of.wins[subwards[2], subwards[1]] <- number.of.wins[subwards[2], subwards[1]] + 1
+        number.of.wins[area[2], area[1]] <- number.of.wins[area[2], area[1]] + 1
 
     }
   } else {
