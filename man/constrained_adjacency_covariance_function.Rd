@@ -9,8 +9,7 @@ constrained_adjacency_covariance_function(
   type,
   hyperparameters,
   linear.combination,
-  linear.constraint = 0,
-  tol = 1e-05
+  linear.constraint = 0
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ constrained_adjacency_covariance_function(
 \item{linear.combination}{A matrix which defines the linear combination of the parameter vector lambda = (lambda_1, ..., lambda_N)^T. The linear combination is a vector of coefficients such that linear.combination \%*\% lambda = linear.constraint.}
 
 \item{linear.constraint}{The value the linear constraint takes. Defaults to 0.}
-
-\item{tol}{The tolerance for the Cholesky decomposition}
 }
 \value{
 The mean vector and covariance matrix

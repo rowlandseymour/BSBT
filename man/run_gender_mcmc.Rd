@@ -8,7 +8,7 @@ run_gender_mcmc(
   n.iter,
   delta,
   k.mean,
-  k.chol,
+  k.decomp,
   male.win.matrix,
   female.win.matrix,
   f.initial,
@@ -24,7 +24,7 @@ run_gender_mcmc(
 
 \item{k.mean}{The  prior mean vector}
 
-\item{k.chol}{The cholesky decomposition of the prior covariance matrix, alpha must be set to 1 when constructing this}
+\item{k.decomp}{The decomposition of the prior covariance matrix, alpha must be set to 1 when constructing this}
 
 \item{male.win.matrix}{A matrix, where w_ij give the number of times area i beat j when judged by men}
 
@@ -57,7 +57,7 @@ This function requires the data to be separate into two parts, one for each gend
 n.iter <- 10
 delta <- 0.1
 k.mean <- c(0, 0, 0)
-k.chol <- diag(3) #decomposed covariance matrix
+k.decomp <- diag(3) #decomposed covariance matrix
 men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
 men.win.matrix <- comparisons_to_matrix(3, men.comparisons) #win matrix for the male judges
@@ -65,7 +65,7 @@ women.win.matrix <- comparisons_to_matrix(3, women.comparisons) #win matrix for 
 f.initial <- c(0, 0, 0) #initial estimate for grand mean
 g.initial <- c(0, 0, 0) #initial estimate for differences
 
-mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.chol, men.win.matrix,
+mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.decomp, men.win.matrix,
     women.win.matrix, f.initial, g.initial)
 
 }

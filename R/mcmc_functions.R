@@ -48,7 +48,7 @@ loglike_function <- function(x, win.matrix){
 
 #' Draw a sample from a multivariate normal distribution
 #'
-#' This draws a sample from a multivariate normal distribution with mean vector mu and covariance matrix Sigma,. It recquires the covariance matrix to be decomposed using the Cholesky method (chol).
+#' This draws a sample from a multivariate normal distribution with mean vector mu and covariance matrix Sigma. It requires the covariance matrix to be decomposed using the Cholesky method (chol).
 #'
 #'
 #' @param mu The mean vector
@@ -73,6 +73,33 @@ mvnorm_chol <- function(mu, chol){
 }
 
 
+
+#' Draw a sample from a multivariate normal distribution
+#'
+#' This draws a sample from a multivariate normal distribution with mean vector mu and covariance matrix Sigma. It requires the covariance matrix to be decomposed using spectral decomposition (eigen).
+#'
+#'
+#' @param mu The mean vector
+#' @param decomp.covariance This spectral decomposition part of the sampler. It is V*U^0.5, where Sigma = V*U*t(V). The required component is returned by the construct_constrained_covariance_marix function.
+#' @return a vector containing a sample from the distribution
+#'
+#' @keywords  internal distribution
+#'
+#'
+#' @examples
+#'
+#' mu <- c(2, 1) #mean vector
+#' sigma <- matrix(c(2^2, 0.5*2*1, 0.5*2*1, 1^2), 2, 2) #covariacne matrix
+#' sigma.chol <- chol(sigma) #decompose covariance matrix
+#' f <- mvnorm_chol(mu, sigma.chol) #draw sample
+#'
+#' @export
+mvnorm_sd <- function(mu, decomp.covariance){
+
+  #x <- mu + U*V^0.5*u, where u ~ N(0, I)
+  return(mu + decomp.covariance%*%stats::rnorm(length(mu)))
+}
+
 #' Run the BSBT MCMC algorithm
 #'
 #' This function runs the BSBT MCMC algorithm to estimate the deprivation parameters. In this version, the judges are assumed to act homogeneously. This algorithm estimates the deprivation in each area and the prior distribution variance parameter. For data with two types of judges, see \code{\link{run_gender_mcmc}}.
@@ -81,7 +108,7 @@ mvnorm_chol <- function(mu, chol){
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
 #' @param k.mean The prior mean vector
-#' @param k.chol The cholesky decomposition of the prior covariance matrix
+#' @param k.decomp The decomposition of the prior covariance matrix
 #' @param win.matrix A matrix, where w_ij give the number of times area i beat j
 #' @param f.initial A vector of the initial estimate for f
 #' @param alpha A boolean if inference for alpha should be carried out
@@ -100,16 +127,16 @@ mvnorm_chol <- function(mu, chol){
 #' n.iter <- 10
 #' delta <- 0.1
 #' k.mean <- c(0, 0, 0)
-#' k.chol <- diag(3) #decomposed covariance matrix
+#' k.decomp <- diag(3) #decomposed covariance matrix
 #' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' win.matrix <- comparisons_to_matrix(3, comparisons) #construct covariance matrix
 #' f.initial <- c(0, 0, 0) #intial estimates for lamabda_1, lambda_2, lambda_3
 #'
-#' mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial)
+#' mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial)
 #'
 #'
 #' @export
-run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE, omega = 0.1, chi = 0.1){
+run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alpha = FALSE, omega = 0.1, chi = 0.1){
 
   f <- f.initial
   n.objects <- length(f)
@@ -120,7 +147,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
   alpha.vector <- numeric(n.iter)
 
   if(alpha == TRUE)
-    k.chol.plain <- k.chol
+    k.decomp.plain <- k.decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -130,8 +157,8 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
     #Update alpha
 
     if(alpha == TRUE){
-      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + chi)
-      k.chol     <- sqrt(alpha.sq.current)*k.chol.plain
+      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.decomp.plain%*%f + chi)
+      k.decomp     <- sqrt(alpha.sq.current)*k.decomp.plain
       alpha.vector[i]  <- alpha.sq.current
     }
 
@@ -140,7 +167,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 
 
     #Update f0
-    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, k.chol)
+    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, k.decomp)
     loglike.prop <- loglike_function(as.numeric(exp(f.prop)), win.matrix)
 
     log.p.acc <- loglike.prop - loglike
@@ -172,7 +199,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter. Must be in (0, 1)
 #' @param k.mean The  prior mean vector
-#' @param k.chol The cholesky decomposition of the prior covariance matrix, alpha must be set to 1 when constructing this
+#' @param k.decomp The decomposition of the prior covariance matrix, alpha must be set to 1 when constructing this
 #' @param male.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by men
 #' @param female.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by women
 #' @param f.initial A vector of the initial estimate for f, the grand mean of men and women's perceptions
@@ -193,7 +220,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #' n.iter <- 10
 #' delta <- 0.1
 #' k.mean <- c(0, 0, 0)
-#' k.chol <- diag(3) #decomposed covariance matrix
+#' k.decomp <- diag(3) #decomposed covariance matrix
 #' men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
 #' men.win.matrix <- comparisons_to_matrix(3, men.comparisons) #win matrix for the male judges
@@ -201,12 +228,12 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #' f.initial <- c(0, 0, 0) #initial estimate for grand mean
 #' g.initial <- c(0, 0, 0) #initial estimate for differences
 #'
-#' mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.chol, men.win.matrix,
+#' mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.decomp, men.win.matrix,
 #'     women.win.matrix, f.initial, g.initial)
 #'
 #' @export
 
-run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, female.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1){
+run_gender_mcmc <- function(n.iter, delta, k.mean, k.decomp, male.win.matrix, female.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1){
 
   f <- f.initial
   g <- g.initial
@@ -219,8 +246,8 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
   g.matrix <- matrix(NA, n.iter, n.objects)
   alpha.matrix <- matrix(NA, n.iter, 2)
 
-  #k.chol.plain sotres the decomposed covariance matrix with alpah = 1, k.chol is for alpha varying
-  k.chol.plain <- k.chol
+  #k.decomp.plain sotres the decomposed covariance matrix with alpah = 1, k.decomp is for alpha varying
+  k.decomp.plain <- k.decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -229,17 +256,17 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
   #Gibbs Step for alpha
   #Sample alpha values
-  male.alpha.sq.current     <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + chi)
-  female.alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(g)%*%k.chol.plain%*%g + chi)
+  male.alpha.sq.current     <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.decomp.plain%*%f + chi)
+  female.alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(g)%*%k.decomp.plain%*%g + chi)
 
   #recompute covariance matrices
-  male.k.chol               <- sqrt(male.alpha.sq.current)*k.chol.plain
-  female.k.chol             <- sqrt(female.alpha.sq.current)*k.chol.plain
+  male.k.decomp               <- sqrt(male.alpha.sq.current)*k.decomp.plain
+  female.k.decomp             <- sqrt(female.alpha.sq.current)*k.decomp.plain
   alpha.matrix[i, ]         <- c(male.alpha.sq.current, female.alpha.sq.current)
 
   #MH step for f and g
-  f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, male.k.chol)
-  g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm_chol(k.mean, female.k.chol)
+  f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, male.k.decomp)
+  g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm_chol(k.mean, female.k.decomp)
 
   loglike.prop <- loglike_function(as.numeric(exp(f.prop - g.prop)), male.win.matrix) +
     loglike_function(as.numeric(exp(g.prop + f.prop)), female.win.matrix)
@@ -280,7 +307,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
 #' @param k.mean The prior mean vector
-#' @param k.chol The cholesky decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing this
+#' @param k.decomp The decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing this
 #' @param win.matrices A list of n matrices where the ith matrix is the win matrix corresponding to only the ith level
 #' @param estimates.initial A list of vectors where the ith vector is the initial estimate for the ith level effect
 #' @param omega The value of the inverse gamma shape parameter
@@ -298,7 +325,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #' n.iter <- 10
 #' delta <- 0.1
 #' k.mean <- c(0, 0, 0)
-#' k.chol <- diag(3)
+#' k.decomp <- diag(3)
 #' men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
 #' men.win.matrix <- comparisons_to_matrix(3, men.comparisons)
@@ -309,13 +336,13 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #' win.matrices <- list(men.win.matrix, women.win.matrix)
 #' estimates.initial <- list(f.initial, g.initial)
 #'
-#' mcmc.output <- run_asymmetric_mcmc(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial)
+#' mcmc.output <- run_asymmetric_mcmc(n.iter, delta, k.mean, k.decomp, win.matrices, estimates.initial)
 #'
 #' @export
-run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial, omega = 0.1, chi = 0.1){
+run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrices, estimates.initial, omega = 0.1, chi = 0.1){
 
-  inv_gamma <- function(lambdas, k.chol.plain, n.objects) {
-    1/stats::rgamma(1, omega + n.objects/2, 0.5*t(lambdas)%*%k.chol.plain%*%lambdas + chi)
+  inv_gamma <- function(lambdas, k.decomp.plain, n.objects) {
+    1/stats::rgamma(1, omega + n.objects/2, 0.5*t(lambdas)%*%k.decomp.plain%*%lambdas + chi)
   }
 
   # get model constants
@@ -336,7 +363,7 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, est
 
   counter <- 0
 
-  k.chol.plain <- k.chol
+  k.decomp.plain <- k.decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -344,14 +371,14 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, est
   for(i in 1:n.iter){
 
     # Gibbs Step for alpha
-    alpha.sq.current <- apply(estimates.current, 1, inv_gamma, k.chol.plain, n.objects) # this is a vector
+    alpha.sq.current <- apply(estimates.current, 1, inv_gamma, k.decomp.plain, n.objects) # this is a vector
 
-    n.levels.k.chol <- lapply(sqrt(alpha.sq.current), "*", k.chol.plain) # This is a list
+    n.levels.k.decomp <- lapply(sqrt(alpha.sq.current), "*", k.decomp.plain) # This is a list
     alpha.matrix[i, ] <- alpha.sq.current
 
     # MH step for all the n.levels
     estimates.prop <- sqrt(1 - delta^2)*estimates.current +
-      delta*t(mapply(mvnorm_chol, rep(list(k.mean), n.levels), n.levels.k.chol)) # this is a matrix
+      delta*t(mapply(mvnorm_chol, rep(list(k.mean), n.levels), n.levels.k.decomp)) # this is a matrix
 
     # calculate the proposed likelihood
     loglike.prop <- loglike_function(as.numeric(exp(estimates.prop[1, ])), win.matrices[[1]]) +
@@ -405,7 +432,7 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, est
 #' n.iter <- 10
 #' delta <- 0.1
 #' k.mean <- c(0, 0, 0)
-#' k.chol <- diag(3)
+#' k.decomp <- diag(3)
 #' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' win.matrix <- comparisons_to_matrix(3, comparisons)
 #' f.initial <- c(0, 0, 0)
@@ -414,11 +441,11 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, est
 #' #and the confidence parameter has value 3.
 #' S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0,
 #' #and the confidence parameter has value 3.
-#' mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, S)
+#' mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, S)
 #'
 #'
 #' @export
-run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, S, alpha = FALSE){
+run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, S, alpha = FALSE, omega = 0.1, chi = 0.1){
 
 
   #Compute loglikelihood contributions from order constraints
@@ -431,7 +458,7 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.
 
     log.order.prior.value <- 0
     for(i in 1:m)
-      log.order.prior.value <- log.order.prior.value + stats::pnorm(S[[i]][3]/S[[i]][4]*f[S[[i]][1]] - f[S[[i]][2]], 0, 1, log.p = TRUE, omega = 0.1, chi = 0.1)
+      log.order.prior.value <- log.order.prior.value + stats::pnorm(S[[i]][3]/S[[i]][4]*f[S[[i]][1]] - f[S[[i]][2]], 0, 1, log.p = TRUE)
 
     return(log.order.prior.value)
   }
@@ -446,7 +473,7 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.
   alpha.vector <- numeric(n.iter)
 
   if(alpha == TRUE)
-    k.chol.plain <- k.chol
+    k.decomp.plain <- k.decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -456,8 +483,8 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.
     #Update alpha
 
     if(alpha == TRUE){
-      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + chi)
-      k.chol     <- sqrt(alpha.sq.current)*k.chol.plain
+      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.decomp.plain%*%f + chi)
+      k.decomp     <- sqrt(alpha.sq.current)*k.decomp.plain
       alpha.vector[i]  <- alpha.sq.current
     }
 
@@ -466,7 +493,7 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.
 
 
     #Update f0
-    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, k.chol)
+    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, k.decomp)
     loglike.prop <- loglike_function(as.numeric(exp(f.prop)), win.matrix)
 
     log.p.acc <- loglike.prop - loglike + log.order.likelihood(S, f.prop) - log.order.likelihood(S, f)

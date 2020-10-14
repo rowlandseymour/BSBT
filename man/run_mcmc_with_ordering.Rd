@@ -8,11 +8,13 @@ run_mcmc_with_ordering(
   n.iter,
   delta,
   k.mean,
-  k.chol,
+  k.decomp,
   win.matrix,
   f.initial,
   S,
-  alpha = FALSE
+  alpha = FALSE,
+  omega = 0.1,
+  chi = 0.1
 )
 }
 \arguments{
@@ -22,7 +24,7 @@ run_mcmc_with_ordering(
 
 \item{k.mean}{The prior mean vector}
 
-\item{k.chol}{The cholesky decomposition of the prior covariance matrix}
+\item{k.decomp}{The decomposition of the prior covariance matrix}
 
 \item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
 
@@ -31,6 +33,10 @@ run_mcmc_with_ordering(
 \item{S}{A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constraints, and the confidence parameter; S = (i, j, ±1, nu).}
 
 \item{alpha}{A boolean if inference for alpha should be carried out}
+
+\item{omega}{The value of the inverse gamma shape parameter}
+
+\item{chi}{The value of the inverse gamma scale parameter}
 }
 \value{
 A list of MCMC output
@@ -49,7 +55,7 @@ This function runs the BSBT MCMC algorithm with ordering constraints. This allow
 n.iter <- 10
 delta <- 0.1
 k.mean <- c(0, 0, 0)
-k.chol <- diag(3)
+k.decomp <- diag(3)
 comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 win.matrix <- comparisons_to_matrix(3, comparisons)
 f.initial <- c(0, 0, 0)
@@ -58,7 +64,7 @@ S[[1]] <- c(1, 3, -1, 3) #Specify that lambda_1 - lambda_3 < 0,
 #and the confidence parameter has value 3.
 S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0,
 #and the confidence parameter has value 3.
-mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, S)
+mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, S)
 
 
 }

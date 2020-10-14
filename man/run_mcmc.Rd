@@ -8,7 +8,7 @@ run_mcmc(
   n.iter,
   delta,
   k.mean,
-  k.chol,
+  k.decomp,
   win.matrix,
   f.initial,
   alpha = FALSE,
@@ -23,7 +23,7 @@ run_mcmc(
 
 \item{k.mean}{The prior mean vector}
 
-\item{k.chol}{The cholesky decomposition of the prior covariance matrix}
+\item{k.decomp}{The decomposition of the prior covariance matrix}
 
 \item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
 
@@ -52,12 +52,12 @@ This function runs the BSBT MCMC algorithm to estimate the deprivation parameter
 n.iter <- 10
 delta <- 0.1
 k.mean <- c(0, 0, 0)
-k.chol <- diag(3) #decomposed covariance matrix
+k.decomp <- diag(3) #decomposed covariance matrix
 comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 win.matrix <- comparisons_to_matrix(3, comparisons) #construct covariance matrix
 f.initial <- c(0, 0, 0) #intial estimates for lamabda_1, lambda_2, lambda_3
 
-mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial)
+mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial)
 
 
 }
