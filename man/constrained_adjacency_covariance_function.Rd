@@ -20,7 +20,7 @@ constrained_adjacency_covariance_function(
 
 \item{hyperparameters}{A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters}
 
-\item{linear.combination}{A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.}
+\item{linear.combination}{A matrix which defines the linear combination of the parameter vector lambda = (lambda_1, ..., lambda_N)^T. The linear combination is a vector of coefficients such that linear.combination \%*\% lambda = linear.constraint.}
 
 \item{linear.constraint}{The value the linear constraint takes. Defaults to 0.}
 

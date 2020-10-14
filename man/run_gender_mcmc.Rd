@@ -12,7 +12,9 @@ run_gender_mcmc(
   male.win.matrix,
   female.win.matrix,
   f.initial,
-  g.initial
+  g.initial,
+  omega = 0.1,
+  chi = 0.1
 )
 }
 \arguments{
@@ -31,6 +33,10 @@ run_gender_mcmc(
 \item{f.initial}{A vector of the initial estimate for f, the grand mean of men and women's perceptions}
 
 \item{g.initial}{A vector of the initial estimate for g, the difference between men and women's perceptions}
+
+\item{omega}{The value of the inverse gamma shape parameter}
+
+\item{chi}{The value of the inverse gamma scale parameter}
 }
 \value{
 A list of MCMC output

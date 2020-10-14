@@ -85,6 +85,8 @@ mvnorm_chol <- function(mu, chol){
 #' @param win.matrix A matrix, where w_ij give the number of times area i beat j
 #' @param f.initial A vector of the initial estimate for f
 #' @param alpha A boolean if inference for alpha should be carried out
+#' @param omega The value of the inverse gamma shape parameter
+#' @param chi The value of the inverse gamma scale parameter
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item f.matrix - A matrix containing the each iteration of f
@@ -107,7 +109,7 @@ mvnorm_chol <- function(mu, chol){
 #'
 #'
 #' @export
-run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE){
+run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE, omega = 0.1, chi = 0.1){
 
   f <- f.initial
   n.objects <- length(f)
@@ -128,7 +130,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
     #Update alpha
 
     if(alpha == TRUE){
-      alpha.sq.current   <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
+      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + chi)
       k.chol     <- sqrt(alpha.sq.current)*k.chol.plain
       alpha.vector[i]  <- alpha.sq.current
     }
@@ -175,6 +177,8 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #' @param female.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by women
 #' @param f.initial A vector of the initial estimate for f, the grand mean of men and women's perceptions
 #' @param g.initial A vector of the initial estimate for g, the difference between men and women's perceptions
+#' @param omega The value of the inverse gamma shape parameter
+#' @param chi The value of the inverse gamma scale parameter
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item f.matrix - A matrix containing the each iteration of f
@@ -202,7 +206,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha
 #'
 #' @export
 
-run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, female.win.matrix, f.initial, g.initial){
+run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, female.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1){
 
   f <- f.initial
   g <- g.initial
@@ -225,8 +229,8 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 
   #Gibbs Step for alpha
   #Sample alpha values
-  male.alpha.sq.current     <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
-  female.alpha.sq.current   <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(g)%*%k.chol.plain%*%g + 0.1)
+  male.alpha.sq.current     <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + chi)
+  female.alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(g)%*%k.chol.plain%*%g + chi)
 
   #recompute covariance matrices
   male.k.chol               <- sqrt(male.alpha.sq.current)*k.chol.plain
@@ -279,6 +283,8 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #' @param k.chol The cholesky decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing this
 #' @param win.matrices A list of n matrices where the ith matrix is the win matrix corresponding to only the ith level
 #' @param estimates.initial A list of vectors where the ith vector is the initial estimate for the ith level effect
+#' @param omega The value of the inverse gamma shape parameter
+#' @param chi The value of the inverse gamma scale parameter
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item estimates - A list of matrices. Each matrix containing the iteration of the ith level
@@ -306,10 +312,10 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.chol, male.win.matrix, fema
 #' mcmc.output <- run_asymmetric_mcmc(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial)
 #'
 #' @export
-run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial){
+run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.chol, win.matrices, estimates.initial, omega = 0.1, chi = 0.1){
 
   inv_gamma <- function(lambdas, k.chol.plain, n.objects) {
-    1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(lambdas)%*%k.chol.plain%*%lambdas + 0.1)
+    1/stats::rgamma(1, omega + n.objects/2, 0.5*t(lambdas)%*%k.chol.plain%*%lambdas + chi)
   }
 
   # get model constants
@@ -425,7 +431,7 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.
 
     log.order.prior.value <- 0
     for(i in 1:m)
-      log.order.prior.value <- log.order.prior.value + stats::pnorm(S[[i]][3]/S[[i]][4]*f[S[[i]][1]] - f[S[[i]][2]], 0, 1, log.p = TRUE)
+      log.order.prior.value <- log.order.prior.value + stats::pnorm(S[[i]][3]/S[[i]][4]*f[S[[i]][1]] - f[S[[i]][2]], 0, 1, log.p = TRUE, omega = 0.1, chi = 0.1)
 
     return(log.order.prior.value)
   }
@@ -450,7 +456,7 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.chol, win.matrix, f.
     #Update alpha
 
     if(alpha == TRUE){
-      alpha.sq.current   <- 1/stats::rgamma(1, 0.1 + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + 0.1)
+      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.chol.plain%*%f + chi)
       k.chol     <- sqrt(alpha.sq.current)*k.chol.plain
       alpha.vector[i]  <- alpha.sq.current
     }

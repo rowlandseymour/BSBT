@@ -10,7 +10,9 @@ run_asymmetric_mcmc(
   k.mean,
   k.chol,
   win.matrices,
-  estimates.initial
+  estimates.initial,
+  omega = 0.1,
+  chi = 0.1
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ run_asymmetric_mcmc(
 \item{win.matrices}{A list of n matrices where the ith matrix is the win matrix corresponding to only the ith level}
 
 \item{estimates.initial}{A list of vectors where the ith vector is the initial estimate for the ith level effect}
+
+\item{omega}{The value of the inverse gamma shape parameter}
+
+\item{chi}{The value of the inverse gamma scale parameter}
 }
 \value{
 A list of MCMC output

@@ -4,7 +4,17 @@
 \alias{run_mcmc}
 \title{Run the BSBT MCMC algorithm}
 \usage{
-run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE)
+run_mcmc(
+  n.iter,
+  delta,
+  k.mean,
+  k.chol,
+  win.matrix,
+  f.initial,
+  alpha = FALSE,
+  omega = 0.1,
+  chi = 0.1
+)
 }
 \arguments{
 \item{n.iter}{The number of iterations to be run}
@@ -20,6 +30,10 @@ run_mcmc(n.iter, delta, k.mean, k.chol, win.matrix, f.initial, alpha = FALSE)
 \item{f.initial}{A vector of the initial estimate for f}
 
 \item{alpha}{A boolean if inference for alpha should be carried out}
+
+\item{omega}{The value of the inverse gamma shape parameter}
+
+\item{chi}{The value of the inverse gamma scale parameter}
 }
 \value{
 A list of MCMC output
