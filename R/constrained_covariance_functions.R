@@ -6,7 +6,7 @@
 #' @param coordinates An Nx2 matrix containing the Euclidean coordinates of the nodes.
 #' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
 #' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters
-#' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
+#' @param linear.combination A matrix which defines the linear combination of the parameter vector lambda = (lambda_1, ..., lambda_N)^T. The linear combination is a vector of coefficients such that linear.combination %*% lambda = linear.constraint.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @param tol The tolerance for the Cholesky decomposition
 #' @return The mean vector and covariance matrix
@@ -75,7 +75,7 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
 #' @param adj.matrix The graph adjacency matrix
 #' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
 #' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters
-#' @param linear.combination A matrix which defines the linear combination of (lambda_1, ..., lambda_N)^T.
+#' @param linear.combination A matrix which defines the linear combination of the parameter vector lambda = (lambda_1, ..., lambda_N)^T. The linear combination is a vector of coefficients such that linear.combination %*% lambda = linear.constraint.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @param tol The tolerance for the Cholesky decomposition
 #' @return The mean vector and covariance matrix
