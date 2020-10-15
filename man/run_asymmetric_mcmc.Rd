@@ -7,8 +7,7 @@
 run_asymmetric_mcmc(
   n.iter,
   delta,
-  k.mean,
-  k.decomp,
+  covariance.matrix,
   win.matrices,
   estimates.initial,
   omega = 0.1,
@@ -20,9 +19,7 @@ run_asymmetric_mcmc(
 
 \item{delta}{The underrlaxed tuning parameter must be in (0, 1)}
 
-\item{k.mean}{The prior mean vector}
-
-\item{k.decomp}{The decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing this}
+\item{covariance.matrix}{The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix. The variance hyperparameter must be set to 1.}
 
 \item{win.matrices}{A list of n matrices where the ith matrix is the win matrix corresponding to only the ith level}
 
@@ -49,8 +46,10 @@ For a model with thee types, f, g and h, the structure is as follows. The baseli
 
 n.iter <- 10
 delta <- 0.1
-k.mean <- c(0, 0, 0)
-k.decomp <- diag(3)
+covariance.matrix <- list()
+covariance.matrix$mean <- c(0, 0, 0)
+covariance.matrix$decomp <- diag(3)
+covariance.matrix$inv    <- diag(3)
 men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
 men.win.matrix <- comparisons_to_matrix(3, men.comparisons)
@@ -61,6 +60,6 @@ g.initial <- c(0, 0, 0)
 win.matrices <- list(men.win.matrix, women.win.matrix)
 estimates.initial <- list(f.initial, g.initial)
 
-mcmc.output <- run_asymmetric_mcmc(n.iter, delta, k.mean, k.decomp, win.matrices, estimates.initial)
+mcmc.output<- run_asymmetric_mcmc(n.iter, delta, covariance.matrix, win.matrices, estimates.initial)
 
 }

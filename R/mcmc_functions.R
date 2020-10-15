@@ -63,11 +63,11 @@ loglike_function <- function(x, win.matrix){
 #' mu <- c(2, 1) #mean vector
 #' sigma <- matrix(c(2^2, 0.5*2*1, 0.5*2*1, 1^2), 2, 2) #covariacne matrix
 #' sigma.chol <- chol(sigma) #decompose covariance matrix
-#' f <- mvnorm_chol(mu, sigma.chol) #draw sample
+#' #f <- mvnorm_chol(mu, sigma.chol) #draw sample
 #'
 #' @export
 mvnorm_chol <- function(mu, chol){
-
+  .Deprecated("mvnorm_sd")
   #x <- mu + t(L)u, where u ~ N(0, I)
   return(mu + t(chol)%*%stats::rnorm(length(mu)))
 }
@@ -90,8 +90,9 @@ mvnorm_chol <- function(mu, chol){
 #'
 #' mu <- c(2, 1) #mean vector
 #' sigma <- matrix(c(2^2, 0.5*2*1, 0.5*2*1, 1^2), 2, 2) #covariacne matrix
-#' sigma.chol <- chol(sigma) #decompose covariance matrix
-#' f <- mvnorm_chol(mu, sigma.chol) #draw sample
+#' sigma.eigen <- eigen(sigma)
+#' decomp.covariance <- sigma.eigen$vectors%*%diag(sqrt(sigma.eigen$values))
+#' f <- mvnorm_sd(mu, decomp.covariance) #draw sample
 #'
 #' @export
 mvnorm_sd <- function(mu, decomp.covariance){
@@ -107,18 +108,17 @@ mvnorm_sd <- function(mu, decomp.covariance){
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
-#' @param k.mean The prior mean vector
-#' @param k.decomp The decomposition of the prior covariance matrix
+#' @param covariance.matrix The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix.
 #' @param win.matrix A matrix, where w_ij give the number of times area i beat j
 #' @param f.initial A vector of the initial estimate for f
-#' @param alpha A boolean if inference for alpha should be carried out
+#' @param alpha A boolean if inference for alpha should be carried out. If this is TRUE, the covariance matrix
 #' @param omega The value of the inverse gamma shape parameter
 #' @param chi The value of the inverse gamma scale parameter
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item f.matrix - A matrix containing the each iteration of f
 #'   \item alpha.sq - A vector containing the iterations of alpha^2
-#'   \item accpetance.rate - The acceptance rate for f
+#'   \item acceptance.rate - The acceptance rate for f
 #'   \item time.taken - Time taken to run the MCMC algorithm in seconds
 #' }
 #'
@@ -126,17 +126,19 @@ mvnorm_sd <- function(mu, decomp.covariance){
 #'
 #' n.iter <- 10
 #' delta <- 0.1
-#' k.mean <- c(0, 0, 0)
-#' k.decomp <- diag(3) #decomposed covariance matrix
+#' covariance.matrix <- list()
+#' covariance.matrix$mean <- c(0, 0, 0)
+#' covariance.matrix$decomp <- diag(3)
+#' covariance.matrix$inv    <- diag(3)
 #' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' win.matrix <- comparisons_to_matrix(3, comparisons) #construct covariance matrix
 #' f.initial <- c(0, 0, 0) #intial estimates for lamabda_1, lambda_2, lambda_3
 #'
-#' mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial)
+#' mcmc.output <- run_mcmc(n.iter, delta, covariance.matrix, win.matrix, f.initial)
 #'
 #'
 #' @export
-run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alpha = FALSE, omega = 0.1, chi = 0.1){
+run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, alpha = FALSE, omega = 0.1, chi = 0.1){
 
   f <- f.initial
   n.objects <- length(f)
@@ -147,7 +149,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alp
   alpha.vector <- numeric(n.iter)
 
   if(alpha == TRUE)
-    k.decomp.plain <- k.decomp
+    k.decomp.plain <- covariance.matrix$decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -157,9 +159,9 @@ run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alp
     #Update alpha
 
     if(alpha == TRUE){
-      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.decomp.plain%*%f + chi)
-      k.decomp     <- sqrt(alpha.sq.current)*k.decomp.plain
-      alpha.vector[i]  <- alpha.sq.current
+      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%covariance.matrix$inv%*%f + chi)
+      covariance.matrix$decomp          <- sqrt(alpha.sq.current)*k.decomp.plain
+      alpha.vector[i]    <- alpha.sq.current
     }
 
 
@@ -167,7 +169,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alp
 
 
     #Update f0
-    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, k.decomp)
+    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_sd(covariance.matrix$mean, covariance.matrix$decomp)
     loglike.prop <- loglike_function(as.numeric(exp(f.prop)), win.matrix)
 
     log.p.acc <- loglike.prop - loglike
@@ -184,7 +186,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alp
   toc <- Sys.time()
 
   if(alpha == TRUE)
-    return(list("f" = f.matrix, "alpha.sq" =alpha.vector, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
+    return(list("f" = f.matrix, "alpha.sq" = alpha.vector, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
   else
     return(list("f" = f.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
 
@@ -198,8 +200,7 @@ run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alp
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter. Must be in (0, 1)
-#' @param k.mean The  prior mean vector
-#' @param k.decomp The decomposition of the prior covariance matrix, alpha must be set to 1 when constructing this
+#' @param covariance.matrix The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix. The variance hyperparameter must be set to 1.
 #' @param male.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by men
 #' @param female.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by women
 #' @param f.initial A vector of the initial estimate for f, the grand mean of men and women's perceptions
@@ -219,8 +220,10 @@ run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alp
 #'
 #' n.iter <- 10
 #' delta <- 0.1
-#' k.mean <- c(0, 0, 0)
-#' k.decomp <- diag(3) #decomposed covariance matrix
+#' covariance.matrix <- list()
+#' covariance.matrix$mean <- c(0, 0, 0)
+#' covariance.matrix$decomp <- diag(3)
+#' covariance.matrix$inv    <- diag(3)
 #' men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
 #' men.win.matrix <- comparisons_to_matrix(3, men.comparisons) #win matrix for the male judges
@@ -228,26 +231,28 @@ run_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, alp
 #' f.initial <- c(0, 0, 0) #initial estimate for grand mean
 #' g.initial <- c(0, 0, 0) #initial estimate for differences
 #'
-#' mcmc.output <- run_gender_mcmc(n.iter, delta, k.mean, k.decomp, men.win.matrix,
+#' mcmc.output <- run_gender_mcmc(n.iter, delta, covariance.matrix, men.win.matrix,
 #'     women.win.matrix, f.initial, g.initial)
 #'
 #' @export
 
-run_gender_mcmc <- function(n.iter, delta, k.mean, k.decomp, male.win.matrix, female.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1){
+run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, female.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1){
 
   f <- f.initial
   g <- g.initial
   n.objects <- length(f) #compute number of objects/areas from f
-  loglike <- loglike_function(as.numeric(exp(f)), male.win.matrix) + loglike_function(as.numeric(exp(g + f)), female.win.matrix) #loglike value based on intial values
+  loglike <- loglike_function(as.numeric(exp(f - g)), male.win.matrix) + loglike_function(as.numeric(exp(g + f)), female.win.matrix) #loglike value based on initial values
 
-  #Initialise sotrage matrices
+  #Initialise storage matrices
   counter <- 0
   f.matrix <- matrix(NA, n.iter, n.objects)
   g.matrix <- matrix(NA, n.iter, n.objects)
   alpha.matrix <- matrix(NA, n.iter, 2)
 
-  #k.decomp.plain sotres the decomposed covariance matrix with alpah = 1, k.decomp is for alpha varying
-  k.decomp.plain <- k.decomp
+  #k.decomp.plain stores the decomposed covariance matrix with alpha = 1, k.decomp is for alpha varying
+  k.decomp.plain <- covariance.matrix$decomp
+  male.k.decomp <- covariance.matrix$decomp
+  female.k.decomp <- covariance.matrix$decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -256,17 +261,17 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.decomp, male.win.matrix, fe
 
   #Gibbs Step for alpha
   #Sample alpha values
-  male.alpha.sq.current     <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.decomp.plain%*%f + chi)
-  female.alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(g)%*%k.decomp.plain%*%g + chi)
+  male.alpha.sq.current     <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%covariance.matrix$inv%*%f + chi)
+  female.alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(g)%*%covariance.matrix$inv%*%g + chi)
 
   #recompute covariance matrices
-  male.k.decomp               <- sqrt(male.alpha.sq.current)*k.decomp.plain
-  female.k.decomp             <- sqrt(female.alpha.sq.current)*k.decomp.plain
-  alpha.matrix[i, ]         <- c(male.alpha.sq.current, female.alpha.sq.current)
+  male.k.decomp               <- sqrt(male.alpha.sq.current)*covariance.matrix$decomp
+  female.k.decomp             <- sqrt(female.alpha.sq.current)*covariance.matrix$decomp
+  alpha.matrix[i, ]           <- c(male.alpha.sq.current, female.alpha.sq.current)
 
   #MH step for f and g
-  f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, male.k.decomp)
-  g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm_chol(k.mean, female.k.decomp)
+  f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_sd(covariance.matrix$mean, male.k.decomp)
+  g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm_sd(covariance.matrix$mean, female.k.decomp)
 
   loglike.prop <- loglike_function(as.numeric(exp(f.prop - g.prop)), male.win.matrix) +
     loglike_function(as.numeric(exp(g.prop + f.prop)), female.win.matrix)
@@ -306,8 +311,7 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.decomp, male.win.matrix, fe
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
-#' @param k.mean The prior mean vector
-#' @param k.decomp The decomposition of the  prior covariance matrix, alpha must be set to 1 when constructing this
+#' @param covariance.matrix The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix. The variance hyperparameter must be set to 1.
 #' @param win.matrices A list of n matrices where the ith matrix is the win matrix corresponding to only the ith level
 #' @param estimates.initial A list of vectors where the ith vector is the initial estimate for the ith level effect
 #' @param omega The value of the inverse gamma shape parameter
@@ -324,8 +328,10 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.decomp, male.win.matrix, fe
 #'
 #' n.iter <- 10
 #' delta <- 0.1
-#' k.mean <- c(0, 0, 0)
-#' k.decomp <- diag(3)
+#' covariance.matrix <- list()
+#' covariance.matrix$mean <- c(0, 0, 0)
+#' covariance.matrix$decomp <- diag(3)
+#' covariance.matrix$inv    <- diag(3)
 #' men.comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' women.comparisons <- data.frame("winner" = c(1, 2, 1, 2), "loser" = c(3, 1, 3, 3))
 #' men.win.matrix <- comparisons_to_matrix(3, men.comparisons)
@@ -336,13 +342,13 @@ run_gender_mcmc <- function(n.iter, delta, k.mean, k.decomp, male.win.matrix, fe
 #' win.matrices <- list(men.win.matrix, women.win.matrix)
 #' estimates.initial <- list(f.initial, g.initial)
 #'
-#' mcmc.output <- run_asymmetric_mcmc(n.iter, delta, k.mean, k.decomp, win.matrices, estimates.initial)
+#' mcmc.output<- run_asymmetric_mcmc(n.iter, delta, covariance.matrix, win.matrices, estimates.initial)
 #'
 #' @export
-run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrices, estimates.initial, omega = 0.1, chi = 0.1){
+run_asymmetric_mcmc <- function(n.iter, delta, covariance.matrix, win.matrices, estimates.initial, omega = 0.1, chi = 0.1){
 
-  inv_gamma <- function(lambdas, k.decomp.plain, n.objects) {
-    1/stats::rgamma(1, omega + n.objects/2, 0.5*t(lambdas)%*%k.decomp.plain%*%lambdas + chi)
+  inv_gamma <- function(lambdas, k.inv, n.objects) {
+    1/stats::rgamma(1, omega + n.objects/2, 0.5*t(lambdas)%*%k.inv%*%lambdas + chi)
   }
 
   # get model constants
@@ -363,7 +369,7 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrices, e
 
   counter <- 0
 
-  k.decomp.plain <- k.decomp
+  k.decomp.plain <- covariance.matrix$decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -371,14 +377,14 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrices, e
   for(i in 1:n.iter){
 
     # Gibbs Step for alpha
-    alpha.sq.current <- apply(estimates.current, 1, inv_gamma, k.decomp.plain, n.objects) # this is a vector
+    alpha.sq.current <- apply(estimates.current, 1, inv_gamma, covariance.matrix$inv, n.objects) # this is a vector
 
     n.levels.k.decomp <- lapply(sqrt(alpha.sq.current), "*", k.decomp.plain) # This is a list
     alpha.matrix[i, ] <- alpha.sq.current
 
     # MH step for all the n.levels
     estimates.prop <- sqrt(1 - delta^2)*estimates.current +
-      delta*t(mapply(mvnorm_chol, rep(list(k.mean), n.levels), n.levels.k.decomp)) # this is a matrix
+      delta*t(mapply(mvnorm_sd, rep(list(covariance.matrix$mean), n.levels), n.levels.k.decomp)) # this is a matrix
 
     # calculate the proposed likelihood
     loglike.prop <- loglike_function(as.numeric(exp(estimates.prop[1, ])), win.matrices[[1]]) +
@@ -431,8 +437,10 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrices, e
 #'
 #' n.iter <- 10
 #' delta <- 0.1
-#' k.mean <- c(0, 0, 0)
-#' k.decomp <- diag(3)
+#' covariance.matrix <- list()
+#' covariance.matrix$mean <- c(0, 0, 0)
+#' covariance.matrix$decomp <- diag(3)
+#' covariance.matrix$inv    <- diag(3)
 #' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' win.matrix <- comparisons_to_matrix(3, comparisons)
 #' f.initial <- c(0, 0, 0)
@@ -441,11 +449,11 @@ run_asymmetric_mcmc <- function(n.iter, delta, k.mean, k.decomp, win.matrices, e
 #' #and the confidence parameter has value 3.
 #' S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0,
 #' #and the confidence parameter has value 3.
-#' mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, S)
+#' mcmc.output <- run_mcmc_with_ordering(n.iter, delta, covariance.matrix, win.matrix, f.initial, S)
 #'
 #'
 #' @export
-run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, S, alpha = FALSE, omega = 0.1, chi = 0.1){
+run_mcmc_with_ordering <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, S, alpha = FALSE, omega = 0.1, chi = 0.1){
 
 
   #Compute loglikelihood contributions from order constraints
@@ -473,7 +481,7 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.decomp, win.matrix, 
   alpha.vector <- numeric(n.iter)
 
   if(alpha == TRUE)
-    k.decomp.plain <- k.decomp
+    k.decomp.plain <- covariance.matrix$decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -483,17 +491,16 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.decomp, win.matrix, 
     #Update alpha
 
     if(alpha == TRUE){
-      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%k.decomp.plain%*%f + chi)
-      k.decomp     <- sqrt(alpha.sq.current)*k.decomp.plain
-      alpha.vector[i]  <- alpha.sq.current
+      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%covariance.matrix$inv%*%f + chi)
+      covariance.matrix$decomp          <- sqrt(alpha.sq.current)*k.decomp.plain
+      alpha.vector[i]    <- alpha.sq.current
     }
 
 
 
 
-
     #Update f0
-    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_chol(k.mean, k.decomp)
+    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_sd(covariance.matrix$mean, covariance.matrix$decomp)
     loglike.prop <- loglike_function(as.numeric(exp(f.prop)), win.matrix)
 
     log.p.acc <- loglike.prop - loglike + log.order.likelihood(S, f.prop) - log.order.likelihood(S, f)
@@ -510,7 +517,7 @@ run_mcmc_with_ordering <- function(n.iter, delta, k.mean, k.decomp, win.matrix, 
   toc <- Sys.time()
 
   if(alpha == TRUE)
-    return(list("f" = f.matrix, "alpha.sq" =alpha.vector, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
+    return(list("f" = f.matrix, "alpha.sq" = alpha.vector, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
   else
     return(list("f" = f.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
 

@@ -7,8 +7,7 @@
 run_mcmc(
   n.iter,
   delta,
-  k.mean,
-  k.decomp,
+  covariance.matrix,
   win.matrix,
   f.initial,
   alpha = FALSE,
@@ -21,15 +20,13 @@ run_mcmc(
 
 \item{delta}{The underrlaxed tuning parameter must be in (0, 1)}
 
-\item{k.mean}{The prior mean vector}
-
-\item{k.decomp}{The decomposition of the prior covariance matrix}
+\item{covariance.matrix}{The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix.}
 
 \item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
 
 \item{f.initial}{A vector of the initial estimate for f}
 
-\item{alpha}{A boolean if inference for alpha should be carried out}
+\item{alpha}{A boolean if inference for alpha should be carried out. If this is TRUE, the covariance matrix}
 
 \item{omega}{The value of the inverse gamma shape parameter}
 
@@ -40,7 +37,7 @@ A list of MCMC output
 \itemize{
 \item f.matrix - A matrix containing the each iteration of f
 \item alpha.sq - A vector containing the iterations of alpha^2
-\item accpetance.rate - The acceptance rate for f
+\item acceptance.rate - The acceptance rate for f
 \item time.taken - Time taken to run the MCMC algorithm in seconds
 }
 }
@@ -51,13 +48,15 @@ This function runs the BSBT MCMC algorithm to estimate the deprivation parameter
 
 n.iter <- 10
 delta <- 0.1
-k.mean <- c(0, 0, 0)
-k.decomp <- diag(3) #decomposed covariance matrix
+covariance.matrix <- list()
+covariance.matrix$mean <- c(0, 0, 0)
+covariance.matrix$decomp <- diag(3)
+covariance.matrix$inv    <- diag(3)
 comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 win.matrix <- comparisons_to_matrix(3, comparisons) #construct covariance matrix
 f.initial <- c(0, 0, 0) #intial estimates for lamabda_1, lambda_2, lambda_3
 
-mcmc.output <- run_mcmc(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial)
+mcmc.output <- run_mcmc(n.iter, delta, covariance.matrix, win.matrix, f.initial)
 
 
 }

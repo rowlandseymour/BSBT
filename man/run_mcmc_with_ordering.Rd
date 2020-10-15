@@ -7,8 +7,7 @@
 run_mcmc_with_ordering(
   n.iter,
   delta,
-  k.mean,
-  k.decomp,
+  covariance.matrix,
   win.matrix,
   f.initial,
   S,
@@ -22,9 +21,7 @@ run_mcmc_with_ordering(
 
 \item{delta}{The underrlaxed tuning parameter must be in (0, 1)}
 
-\item{k.mean}{The prior mean vector}
-
-\item{k.decomp}{The decomposition of the prior covariance matrix}
+\item{covariance.matrix}{The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix.}
 
 \item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
 
@@ -32,7 +29,7 @@ run_mcmc_with_ordering(
 
 \item{S}{A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constraints, and the confidence parameter; S = (i, j, ±1, nu).}
 
-\item{alpha}{A boolean if inference for alpha should be carried out}
+\item{alpha}{A boolean if inference for alpha should be carried out. If this is TRUE, the covariance matrix}
 
 \item{omega}{The value of the inverse gamma shape parameter}
 
@@ -54,8 +51,10 @@ This function runs the BSBT MCMC algorithm with ordering constraints. This allow
 
 n.iter <- 10
 delta <- 0.1
-k.mean <- c(0, 0, 0)
-k.decomp <- diag(3)
+covariance.matrix <- list()
+covariance.matrix$mean <- c(0, 0, 0)
+covariance.matrix$decomp <- diag(3)
+covariance.matrix$inv    <- diag(3)
 comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 win.matrix <- comparisons_to_matrix(3, comparisons)
 f.initial <- c(0, 0, 0)
@@ -64,7 +63,7 @@ S[[1]] <- c(1, 3, -1, 3) #Specify that lambda_1 - lambda_3 < 0,
 #and the confidence parameter has value 3.
 S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0,
 #and the confidence parameter has value 3.
-mcmc.output <- run_mcmc_with_ordering(n.iter, delta, k.mean, k.decomp, win.matrix, f.initial, S)
+mcmc.output <- run_mcmc_with_ordering(n.iter, delta, covariance.matrix, win.matrix, f.initial, S)
 
 
 }
