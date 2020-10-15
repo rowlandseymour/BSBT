@@ -103,8 +103,8 @@ comparisons_to_matrix <- function(n.areas, comparisons){
 
   win.matrix <- matrix(0, n.areas, n.areas) #construct empty matrix
 
-  for(j in 1:dim(comparisons)[1]) #for each comparisons, eneter outcome into win matrix
-    win.matrix[comparisons[j, 1], comparisons[j, 2]] <- win.matrix[comparisons[j, 1], comparisons[j, 2]] + 1
+  for(j in 1:dim(comparisons)[1]) #for each comparisons, enter outcome into win matrix
+    win.matrix[comparisons[j, 2], comparisons[j, 1]] <- win.matrix[comparisons[j, 2], comparisons[j, 1]] + 1
 
 
   return(win.matrix)
