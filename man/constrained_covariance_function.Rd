@@ -31,11 +31,11 @@ This function constructs a covariance function from the Euclidean coordinates of
 }
 \examples{
 #Generate 10 points and create covariance matrix using Euclidean distance metric
-coords <- data.frame("x" = runif(10), "y" = runif(10)) #generate coordinates
+coords <- data.frame("x" = c(0, 1, 2), "y" = c(0, 1, 2)) #generate coordinates
 #create covariance matrix using Squared Exponential function and subject to the constraint
 #the sum of the deprivation levels is 0.
 k <- constrained_covariance_function(coords, "sqexp",
-c(1, 0.5), rep(1, 10), linear.constraint = 0)
+c(1, 5), rep(1, 3), linear.constraint = 0)
 }
 \seealso{
 For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}

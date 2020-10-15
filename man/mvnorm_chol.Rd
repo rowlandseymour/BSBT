@@ -22,7 +22,7 @@ This draws a sample from a multivariate normal distribution with mean vector mu 
 mu <- c(2, 1) #mean vector
 sigma <- matrix(c(2^2, 0.5*2*1, 0.5*2*1, 1^2), 2, 2) #covariacne matrix
 sigma.chol <- chol(sigma) #decompose covariance matrix
-f <- mvnorm_chol(mu, sigma.chol) #draw sample
+#f <- mvnorm_chol(mu, sigma.chol) #draw sample
 
 }
 \keyword{distribution}

@@ -16,6 +16,7 @@ Description: This package implements the Bayesian Spatial Bradley--Terry (BSBT) 
 License: GPL-3 + file LICENSE
 Imports: 
     stats,
+    MASS,
     igraph,
     lifecycle
 Encoding: UTF-8
