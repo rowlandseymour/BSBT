@@ -2,10 +2,9 @@
 ----
 ## Bayesian Spatial Bradley--Terry
 <!-- badges: start -->
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build status](https://travis-ci.com/rowlandseymour/BSBT.svg?branch=master)](https://travis-ci.com/rowlandseymour/BSBT)
 [![R build status](https://github.com/rowlandseymour/BSBT/workflows/R-CMD-check/badge.svg)](https://github.com/rowlandseymour/BSBT/actions)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
 ----
 📦 The `BSBT` R package allows you to fit a spatial Bradley--Terry model to comparative judgement data sets. The package estimates the quality of each area in the data set, based on the observed comparisons. The model requires a network to be constructed to represent how the areas are connected. It includes spatial information by placing a correlated prior distribution to the quality parameters, where the prior distribution parameters depend on  the network structure. The package estimates the model parameters using an MCMC algorithm. 
