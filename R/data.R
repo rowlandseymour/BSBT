@@ -69,3 +69,40 @@
 
 
 
+
+#' The mean level of deprivation for subwards in Dar es Salaam as perceived by men
+#'
+#' This data is used in the vignette
+#'
+#' @docType data
+#'
+#'
+#' @format An vector of 452 elements, one for each subward
+#'
+#'
+#' @keywords datasets
+#'
+#'
+"male.mean.deprivation"
+
+
+
+#' The mean level of deprivation for subwards in Dar es Salaam as perceived by women
+#'
+#' This data is used in the vignette
+#'
+#' @docType data
+#'
+#'
+#' @format An vector of 452 elements, one for each subward
+#'
+#'
+#' @keywords datasets
+#'
+#'
+"female.mean.deprivation"
+
+
+
+
+
