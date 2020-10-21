@@ -152,7 +152,7 @@ run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, al
     k.decomp.plain <- covariance.matrix$decomp
 
   # MCMC Loop ---------------------------------------------------------------
-  pb <- txtProgressBar(min = 1, max = n.iter, style = 3)
+  pb <- utils::txtProgressBar(min = 1, max = n.iter, style = 3)
   tic <- Sys.time()
   for(i in 1:n.iter){
 
@@ -180,7 +180,7 @@ run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, al
     }
 
     f.matrix[i, ]   <- f
-    setTxtProgressBar(pb, i) # update text progress bar after each iter
+    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
 
   }
 
@@ -208,6 +208,7 @@ run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, al
 #' @param g.initial A vector of the initial estimate for g, the difference between men and women's perceptions
 #' @param omega The value of the inverse gamma shape parameter
 #' @param chi The value of the inverse gamma scale parameter
+#' @param thinning Swtting thinning to i will store every i^th iteration. This may be required for very long runs.
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item f.matrix - A matrix containing the each iteration of f
@@ -261,7 +262,7 @@ run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, f
   # MCMC Loop ---------------------------------------------------------------
 
   tic <- Sys.time()
-  pb <- txtProgressBar(min = 1, max = n.iter, style = 3)
+  pb <- utils::txtProgressBar(min = 1, max = n.iter, style = 3)
   for(i in 1:n.iter){
 
   #Gibbs Step for alpha
@@ -299,7 +300,7 @@ run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, f
     g.matrix[i/thinning, ]   <- g
   }
 
-  setTxtProgressBar(pb, i) # update text progress bar after each iter
+  utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
 
   toc <- Sys.time()

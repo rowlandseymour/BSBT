@@ -13,7 +13,8 @@ run_gender_mcmc(
   f.initial,
   g.initial,
   omega = 0.1,
-  chi = 0.1
+  chi = 0.1,
+  thinning = 1
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ run_gender_mcmc(
 \item{omega}{The value of the inverse gamma shape parameter}
 
 \item{chi}{The value of the inverse gamma scale parameter}
+
+\item{thinning}{Swtting thinning to i will store every i^th iteration. This may be required for very long runs.}
 }
 \value{
 A list of MCMC output
