@@ -237,7 +237,10 @@ run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, al
 #'
 #' @export
 
-run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, female.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1){
+run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, female.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1, thinning = 1){
+
+  if(n.iter > 1000000 & thinning == 1)
+    warning("Large number of iterations and no thinning. Memory problems may occur.")
 
   f <- f.initial
   g <- g.initial
@@ -246,9 +249,9 @@ run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, f
 
   #Initialise storage matrices
   counter <- 0
-  f.matrix <- matrix(NA, n.iter, n.objects)
-  g.matrix <- matrix(NA, n.iter, n.objects)
-  alpha.matrix <- matrix(NA, n.iter, 2)
+  f.matrix <- matrix(NA, n.iter/thinning, n.objects)
+  g.matrix <- matrix(NA, n.iter/thinning, n.objects)
+  alpha.matrix <- matrix(NA, n.iter/thinning, 2)
 
   #k.decomp.plain stores the decomposed covariance matrix with alpha = 1, k.decomp is for alpha varying
   k.decomp.plain <- covariance.matrix$decomp
@@ -269,7 +272,8 @@ run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, f
   #recompute covariance matrices
   male.k.decomp               <- sqrt(male.alpha.sq.current)*covariance.matrix$decomp
   female.k.decomp             <- sqrt(female.alpha.sq.current)*covariance.matrix$decomp
-  alpha.matrix[i, ]           <- c(male.alpha.sq.current, female.alpha.sq.current)
+  if(i %% thinning == 0)
+    alpha.matrix[i/thinning, ]           <- c(male.alpha.sq.current, female.alpha.sq.current)
 
   #MH step for f and g
   f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_sd(covariance.matrix$mean, male.k.decomp)
@@ -290,8 +294,11 @@ run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, f
   }
 
   #store variables
-  f.matrix[i, ]   <- f
-  g.matrix[i, ]   <- g
+  if(i %% thinning == 0){
+    f.matrix[i/thinning, ]   <- f
+    g.matrix[i/thinning, ]   <- g
+  }
+
   setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
 
