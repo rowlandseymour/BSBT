@@ -11,8 +11,8 @@ test_that("Loglikelihood works", {
 })
 
 test_that("Multivariate Normal Sampler works", {
-  expect_equal(as.numeric(mvnorm_chol(c(NA, NA), matrix(c(1, 2, 3, 4), 2, 2))), c(NA_integer_, NA_integer_))
-  expect_error(mvnorm_chol(c(1, 2, 3), matrix(c(1, 2, 3, 4), 2, 2)), "non-conformable arguments")
+  expect_equal(as.numeric(mvnorm_sd(c(NA, NA), matrix(c(1, 2, 3, 4), 2, 2))), c(NA_integer_, NA_integer_))
+  expect_error(mvnorm_sd(c(1, 2, 3), matrix(c(1, 2, 3, 4), 2, 2)), "non-conformable arguments")
 })
 
 
