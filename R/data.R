@@ -1,6 +1,6 @@
 #' Comparative Judgment on Deprivation in Dar es Salaam, Tanzania
 #'
-#' A comparative judgment datas et on deprivation in subwards in Dar es Salaam, Tanzania.
+#' A comparative judgment data set on deprivation in subwards in Dar es Salaam, Tanzania.
 #' Citizens were shown pairs of subwards at random and asked which was more deprived.
 #' If they said they were equal, one of the pair was chosen at random to be more deprived.
 #' The data was collected in August 2018. The gender of each judge is also included.
@@ -11,7 +11,7 @@
 #'
 #' @keywords datasets
 #'
-#' @source This dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann.We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge HumanitarianStreet Mapping Team (HOT) for providing a team of experts in data collectionto facilitate the surveys. This work was also supported by the EPSRC HorizonCentre for Doctoral Training - My Life in Data (EP/L015463/1) and EPSRC grant Neodemographics (EP/L021080/1).
+#' @source This data set was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann.We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge HumanitarianStreet Mapping Team (HOT) for providing a team of experts in data collection to facilitate the surveys. This work was also supported by the EPSRC Horizon Centre for Doctoral Training - My Life in Data (EP/L015463/1) and EPSRC grant Neodemographics (EP/L021080/1).
 #'
 "dar.comparisons"
 

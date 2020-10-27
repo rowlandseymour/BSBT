@@ -80,7 +80,7 @@ mvnorm_chol <- function(mu, chol){
 #'
 #'
 #' @param mu The mean vector
-#' @param decomp.covariance This spectral decomposition part of the sampler. It is V*U^0.5, where Sigma = V*U*t(V). The required component is returned by the construct_constrained_covariance_marix function.
+#' @param decomp.covariance This spectral decomposition part of the sampler. It is V*U^0.5, where Sigma = V*U*t(V). The required component is returned by the construct_constrained_covariance_matrix function.
 #' @return a vector containing a sample from the distribution
 #'
 #' @keywords  internal distribution
@@ -132,7 +132,7 @@ mvnorm_sd <- function(mu, decomp.covariance){
 #' covariance.matrix$inv    <- diag(3)
 #' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #' win.matrix <- comparisons_to_matrix(3, comparisons) #construct covariance matrix
-#' f.initial <- c(0, 0, 0) #intial estimates for lamabda_1, lambda_2, lambda_3
+#' f.initial <- c(0, 0, 0) #initial estimates for lamabda_1, lambda_2, lambda_3
 #'
 #' mcmc.output <- run_mcmc(n.iter, delta, covariance.matrix, win.matrix, f.initial)
 #'
@@ -197,7 +197,7 @@ run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, al
 #' Run the BSBT with Gender Effect MCMC algorithm
 #'
 #' This function runs the BSBT MCMC algorithm where the male and female judges can be separated. It generates samples for the grand mean of the male and female perceptions for the derivation in each area and the difference between them. It is similar to \code{\link{run_mcmc}}.
-#' This function requires the data to be separate into two parts, one for each gender. There should be a win matrix for the male judges, and a win matrix for the female judges. Similarly, intial estimates for the grand mean and difference parameters need to be included seperately.
+#' This function requires the data to be separate into two parts, one for each gender. There should be a win matrix for the male judges, and a win matrix for the female judges. Similarly, initial estimates for the grand mean and difference parameters need to be included seperately.
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter. Must be in (0, 1)
@@ -208,7 +208,7 @@ run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, al
 #' @param g.initial A vector of the initial estimate for g, the difference between men and women's perceptions
 #' @param omega The value of the inverse gamma shape parameter
 #' @param chi The value of the inverse gamma scale parameter
-#' @param thinning Swtting thinning to i will store every i^th iteration. This may be required for very long runs.
+#' @param thinning Setting thinning to i will store every i^th iteration. This may be required for very long runs.
 #' @return A list of MCMC output
 #' \itemize{
 #'   \item f.matrix - A matrix containing the each iteration of f

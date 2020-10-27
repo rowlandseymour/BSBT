@@ -1,6 +1,6 @@
 #' Construct a constrained covariance matrix from the Euclidean coordinates of the objects
 #'
-#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covairance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
+#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covariance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
 #'
 #'
 #' @param coordinates An Nx2 matrix containing the Euclidean coordinates of the nodes.
