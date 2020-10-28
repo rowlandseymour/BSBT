@@ -9,7 +9,7 @@ mvnorm_sd(mu, decomp.covariance)
 \arguments{
 \item{mu}{The mean vector}
 
-\item{decomp.covariance}{This spectral decomposition part of the sampler. It is V\emph{U^0.5, where Sigma = V}U*t(V). The required component is returned by the construct_constrained_covariance_marix function.}
+\item{decomp.covariance}{This spectral decomposition part of the sampler. It is V\emph{U^0.5, where Sigma = V}U*t(V). The required component is returned by the construct_constrained_covariance_matrix function.}
 }
 \value{
 a vector containing a sample from the distribution

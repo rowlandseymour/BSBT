@@ -36,7 +36,7 @@ run_gender_mcmc(
 
 \item{chi}{The value of the inverse gamma scale parameter}
 
-\item{thinning}{Swtting thinning to i will store every i^th iteration. This may be required for very long runs.}
+\item{thinning}{Setting thinning to i will store every i^th iteration. This may be required for very long runs.}
 }
 \value{
 A list of MCMC output
@@ -50,7 +50,7 @@ A list of MCMC output
 }
 \description{
 This function runs the BSBT MCMC algorithm where the male and female judges can be separated. It generates samples for the grand mean of the male and female perceptions for the derivation in each area and the difference between them. It is similar to \code{\link{run_mcmc}}.
-This function requires the data to be separate into two parts, one for each gender. There should be a win matrix for the male judges, and a win matrix for the female judges. Similarly, intial estimates for the grand mean and difference parameters need to be included seperately.
+This function requires the data to be separate into two parts, one for each gender. There should be a win matrix for the male judges, and a win matrix for the female judges. Similarly, initial estimates for the grand mean and difference parameters need to be included seperately.
 }
 \examples{
 

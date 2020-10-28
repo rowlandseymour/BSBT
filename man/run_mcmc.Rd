@@ -54,7 +54,7 @@ covariance.matrix$decomp <- diag(3)
 covariance.matrix$inv    <- diag(3)
 comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 win.matrix <- comparisons_to_matrix(3, comparisons) #construct covariance matrix
-f.initial <- c(0, 0, 0) #intial estimates for lamabda_1, lambda_2, lambda_3
+f.initial <- c(0, 0, 0) #initial estimates for lamabda_1, lambda_2, lambda_3
 
 mcmc.output <- run_mcmc(n.iter, delta, covariance.matrix, win.matrix, f.initial)
 

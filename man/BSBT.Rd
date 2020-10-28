@@ -5,11 +5,11 @@
 \alias{BSBT}
 \title{BSBT: Bayesian Spatial Bradley--Terry}
 \description{
-This package implements the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then constructs a correlated prior distribution for the quality parameters based on the network. The package includes MCMC algorithms to estimate the quality parameters.
+An implementation of the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then places a correlated prior distribution on the quality parameter for each area, based on the network. The package includes MCMC algorithms to estimate the quality parameters.
 }
 \section{Covariance Functions}{
 
-The covariance functions can be used to construct the Multivariate Normal prior distribution. The prior distirbution includes a constraint, where a linear combination of the parameters can be specified.
+The covariance functions can be used to construct the Multivariate Normal prior distribution. The prior distribution includes a constraint, where a linear combination of the parameters can be specified.
 There are two functions:
 \enumerate{
 \item \code{\link{constrained_adjacency_covariance_function}} creates a covariance matrix
