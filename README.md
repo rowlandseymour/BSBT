@@ -38,6 +38,9 @@ In the package, there is a comparative judgement data set collected in Dar es Sa
 
 There is also code for simulating comparative judgement data given the underlying levels of deprivation. More information can be found by calling `?BSBT::simulate_contests`
 
+## Publications
+R. G. Seymour, D. Sirl, S. Preston, I. L. Dryden, M. J. A. Ellis, B. Perrat, & J. Goulding. (2020). The Bayesian Spatial Bradley–Terry Model: Urban Deprivation Modeling in Tanzania. [arXiv:2010.14128](https://arxiv.org/abs/2010.14128).
+
 ## Acknowledgements
 ----
 This work is supported by the Engineering and Physical Sciences Research Council [grant number EP/T003928/1] and the Big East African Data Science research group at the University of Nottingham.
