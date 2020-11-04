@@ -14,7 +14,7 @@ simulate_comparisons(n.contests, true.quality, sigma.obs)
 \item{sigma.obs}{Standard deviation for the noise to be added to the level of deprivation in each area. If 0, no noise is used.}
 }
 \value{
-A list containing a data.frame with each par-wise contest, the outcome (a 1 for a win, a 0 for a loss),
+A list containing a data.frame with each pair-wise contest, the outcome (a 1 for a win, a 0 for a loss),
 and a win matrix where the i,j^th element is the number of times i beat j
 }
 \description{
