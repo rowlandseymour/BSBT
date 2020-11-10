@@ -36,7 +36,8 @@ There is also code for simulating comparative judgement data given the underlyin
 
 ## The Package in Action
 R. G. Seymour, D. Sirl, S. Preston, I. L. Dryden, M. J. A. Ellis, B. Perrat, & J. Goulding. (2020). The Bayesian Spatial Bradley–Terry Model: Urban Deprivation Modeling in Tanzania. [arXiv:2010.14128](https://arxiv.org/abs/2010.14128).
-(Using citizen knowledge to model urban deprivation)[https://github.com/rowlandseymour/Talks/blob/master/20_12_Universitas21_Talk.pptx] @ Universitas21 Early Career Researcher Workshop 2020 - Modern Slavery, Forced Labour and Human Trafficking: Research Roadmaps to 2030. Deceber 2020. 
+
+[Using citizen knowledge to model urban deprivation](https://github.com/rowlandseymour/Talks/blob/master/20_12_Universitas21_Talk.pptx) @ Universitas21 Early Career Researcher Workshop 2020 - Modern Slavery, Forced Labour and Human Trafficking: Research Roadmaps to 2030. Deceber 2020. 
 
 ## Acknowledgements
 This work is supported by the Engineering and Physical Sciences Research Council [grant number EP/T003928/1] and the Big East African Data Science research group at the University of Nottingham.
