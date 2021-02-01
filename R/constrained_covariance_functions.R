@@ -1,6 +1,6 @@
 #' Construct a constrained covariance matrix from the Euclidean coordinates of the objects
 #'
-#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covariance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
+#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covariance function may be squared exponential, rational quadratic, Matern or the matrix exponential. It includes a constraint, where a linear combination of the parameters can be fixed.
 #'
 #'
 #' @param coordinates An Nx2 matrix containing the Euclidean coordinates of the nodes.
@@ -30,7 +30,8 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
     stop("Insufficient hyperparameters. Rational Quadratic requires 3 values.")
   if(type == "matern" & length(hyperparameters) != 2)
     stop("Insufficient hyperparameters. Matern requires 2 values.")
-
+  if(type == "matrix" & length(hyperparameters) != 1)
+    stop("Insufficient hyperparameters. Matrix exponential requires 1 value.")
 
 
   #Compute Euclidean distance between each pair of objects
@@ -43,6 +44,8 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
     k <- hyperparameters[1]^2*(1 + dist.mat^2/(2*(hyperparameters[2]^2)*hyperparameters[3]))^(-hyperparameters[3])
   } else if(type == "matern"){
     k <- (1 + sqrt(5)/hyperparameters[2]*dist.mat + 5/(3*hyperparameters[2]^2)*dist.mat^2)*exp(-sqrt(5)/hyperparameters[2]*dist.mat)
+  } else if(type == "matrix"){
+    k <- hyperparameters[1]*Matrix::expm(dist.mat)
   } else {
     stop("Could not construct covariance matrix. Unrecognised covariance type.")
   }
@@ -71,11 +74,11 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
 
 #' Construct a constrained covariance matrix from the adjacency matrix
 #'
-#' This function constructs a covariance function from the graph's adjacency matrix. The covariance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
+#' This function constructs a covariance function from the graph's adjacency matrix. The covariance function may be squared exponential, rational quadratic, Matern or the matrix exponential. It includes a constraint, where a linear combination of the parameters can be fixed.
 #'
 #'
 #' @param adj.matrix The graph adjacency matrix
-#' @param type The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.
+#' @param type The type of covariance function used. One of "sqexp", "ratquad", "matern" or "matrix". Note: only matern with nu = 5/2 is supported.
 #' @param hyperparameters A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters
 #' @param linear.combination A matrix which defines the linear combination of the parameter vector lambda = (lambda_1, ..., lambda_N)^T. The linear combination is a vector of coefficients such that linear.combination %*% lambda = linear.constraint.
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
@@ -107,6 +110,8 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
     stop("Insufficient hyperparameters. Rational Quadratic requires 3 values.")
   if(type == "matern" & length(hyperparameters) != 2)
     stop("Insufficient hyperparameters. Matern requires 2 values.")
+  if(type == "matrix" & length(hyperparameters) != 1)
+    stop("Insufficient hyperparameters. Matrix exponential requires 1 value.")
 
   if(dim(shortest.path.matrix)[1] != length(linear.combination))
     stop("Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
@@ -121,7 +126,9 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
     k <- hyperparameters[1]^2*(1 + shortest.path.matrix^2/(2*(hyperparameters[2]^2)*hyperparameters[3]))^(-hyperparameters[3])
   } else if(type == "matern"){
     k <- (1 + sqrt(5)/hyperparameters[2]*shortest.path.matrix + 5/(3*hyperparameters[2]^2)*shortest.path.matrix^2)*exp(-sqrt(5)/hyperparameters[2]*shortest.path.matrix)
-  } else {
+  } else if(type == "matrix"){
+    k <- hyperparameters[1]*Matrix::expm(shortest.path.matrix)
+  }else {
     stop("Could not construct covariance matrix. Unrecognised covariance type.")
   }
 

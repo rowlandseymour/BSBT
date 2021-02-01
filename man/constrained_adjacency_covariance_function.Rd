@@ -15,7 +15,7 @@ constrained_adjacency_covariance_function(
 \arguments{
 \item{adj.matrix}{The graph adjacency matrix}
 
-\item{type}{The type of covariance function used. One of "sqexp", "ratquad" or "matern". Note: only matern with nu = 5/2 is supported.}
+\item{type}{The type of covariance function used. One of "sqexp", "ratquad", "matern" or "matrix". Note: only matern with nu = 5/2 is supported.}
 
 \item{hyperparameters}{A vector containing the covariance function hyperparameters. For the squared exponential and matern, the vector should contain the variance and length scale, for the rational quadratic, the vector should contain the variance, length scale and scaling parameters}
 
@@ -27,7 +27,7 @@ constrained_adjacency_covariance_function(
 The mean vector and covariance matrix
 }
 \description{
-This function constructs a covariance function from the graph's adjacency matrix. The covariance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
+This function constructs a covariance function from the graph's adjacency matrix. The covariance function may be squared exponential, rational quadratic, Matern or the matrix exponential. It includes a constraint, where a linear combination of the parameters can be fixed.
 }
 \examples{
 #Construct covariance matrix of Dar es Salaam, Tanzania, using network metric
