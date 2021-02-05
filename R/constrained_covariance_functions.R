@@ -1,6 +1,6 @@
 #' Construct a constrained covariance matrix from the Euclidean coordinates of the objects
 #'
-#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covariance function may be squared exponential, rational quadratic, Matern or the matrix exponential. It includes a constraint, where a linear combination of the parameters can be fixed.
+#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covariance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
 #'
 #'
 #' @param coordinates An Nx2 matrix containing the Euclidean coordinates of the nodes.
@@ -30,8 +30,7 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
     stop("Insufficient hyperparameters. Rational Quadratic requires 3 values.")
   if(type == "matern" & length(hyperparameters) != 2)
     stop("Insufficient hyperparameters. Matern requires 2 values.")
-  if(type == "matrix" & length(hyperparameters) != 1)
-    stop("Insufficient hyperparameters. Matrix exponential requires 1 value.")
+
 
 
   #Compute Euclidean distance between each pair of objects
@@ -44,8 +43,6 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
     k <- hyperparameters[1]^2*(1 + dist.mat^2/(2*(hyperparameters[2]^2)*hyperparameters[3]))^(-hyperparameters[3])
   } else if(type == "matern"){
     k <- (1 + sqrt(5)/hyperparameters[2]*dist.mat + 5/(3*hyperparameters[2]^2)*dist.mat^2)*exp(-sqrt(5)/hyperparameters[2]*dist.mat)
-  } else if(type == "matrix"){
-    k <- hyperparameters[1]*Matrix::expm(dist.mat)
   } else {
     stop("Could not construct covariance matrix. Unrecognised covariance type.")
   }
@@ -97,10 +94,12 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
                                                      linear.combination, linear.constraint = 0){
 
 
-  #Partition Plane using Voronoi diagram and create network from this. Use dijkstra's algorithm to
+  #Use dijkstra's algorithm to
   # compute shortest path between each node
+  if(type != "matrix"){
   object.network          <- igraph::graph.adjacency(adj.matrix, weighted=TRUE)
   shortest.path.matrix    <- igraph::shortest.paths(object.network, algorithm = "dijkstra")
+  }
 
 
 
@@ -127,7 +126,9 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
   } else if(type == "matern"){
     k <- (1 + sqrt(5)/hyperparameters[2]*shortest.path.matrix + 5/(3*hyperparameters[2]^2)*shortest.path.matrix^2)*exp(-sqrt(5)/hyperparameters[2]*shortest.path.matrix)
   } else if(type == "matrix"){
-    k <- hyperparameters[1]*Matrix::expm(shortest.path.matrix)
+    k <- expm::expm(adj.matrix)
+    k <- diag(diag(k)^-0.5)%*%k%*%diag(diag(k)^-0.5)
+    k <- hyperparameters[1]^2*k
   }else {
     stop("Could not construct covariance matrix. Unrecognised covariance type.")
   }
