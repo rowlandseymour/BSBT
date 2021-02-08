@@ -112,7 +112,7 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
   if(type == "matrix" & length(hyperparameters) != 1)
     stop("Insufficient hyperparameters. Matrix exponential requires 1 value.")
 
-  if(dim(shortest.path.matrix)[1] != length(linear.combination))
+  if(dim(adj.matrix)[1] != length(linear.combination))
     stop("Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
 
 
@@ -120,15 +120,13 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
   #Construct Covariance Matrix
   if(type == "sqexp"){
     k <- hyperparameters[1]^2*exp(-shortest.path.matrix^2/hyperparameters[2]^2)
-
   } else if(type == "ratquad"){
     k <- hyperparameters[1]^2*(1 + shortest.path.matrix^2/(2*(hyperparameters[2]^2)*hyperparameters[3]))^(-hyperparameters[3])
   } else if(type == "matern"){
     k <- (1 + sqrt(5)/hyperparameters[2]*shortest.path.matrix + 5/(3*hyperparameters[2]^2)*shortest.path.matrix^2)*exp(-sqrt(5)/hyperparameters[2]*shortest.path.matrix)
   } else if(type == "matrix"){
     k <- expm::expm(adj.matrix)
-    k <- diag(diag(k)^-0.5)%*%k%*%diag(diag(k)^-0.5)
-    k <- hyperparameters[1]^2*k
+    k <- hyperparameters[1]^2*diag(diag(k)^-0.5)%*%k%*%diag(diag(k)^-0.5)
   }else {
     stop("Could not construct covariance matrix. Unrecognised covariance type.")
   }
@@ -138,7 +136,7 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
   if(length(linear.constraint) > 1)
     stop("Currently only scalar constraints are supported")
 
-  prior.mean                <- rep(0, dim(shortest.path.matrix)[1])
+  prior.mean                <- rep(0, dim(k)[1])
   constrained.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
   constrained.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
   spectral.decomp           <- eigen(constrained.k)
