@@ -58,7 +58,7 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
 
   prior.mean                <- rep(0, dim(coordinates)[1])
   constrained.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
-  constrained.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
+  constrained.mean          <- prior.mean + as.numeric((linear.constraint-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
   spectral.decomp           <- eigen(constrained.k)
   spectral.decomp$values[spectral.decomp$values < 0] <- 0 #Deal with precision errors in covariance matrix
   constrained.decomp        <- spectral.decomp$vectors%*%diag(sqrt(spectral.decomp$values))
@@ -138,7 +138,7 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
 
   prior.mean                <- rep(0, dim(k)[1])
   constrained.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
-  constrained.mean          <- prior.mean + as.numeric((0-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
+  constrained.mean          <- prior.mean + as.numeric((linear.constraint-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
   spectral.decomp           <- eigen(constrained.k)
   spectral.decomp$values[spectral.decomp$values < 0] <- 0 #Deal with precision errors in covariance matrix
   constrained.decomp        <- spectral.decomp$vectors%*%diag(sqrt(spectral.decomp$values))
