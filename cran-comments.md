@@ -1,3 +1,9 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Replaced the invalid lifecycle URL in README.md
+
+
 ## Test environments
 * local R installation, R 4.0.3
 * ubuntu 16.04 (on travis-ci), R 4.0.3
