@@ -18,7 +18,6 @@ Imports:
     stats,
     MASS,
     igraph,
-    lifecycle, 
     utils,
     expm
 Encoding: UTF-8
@@ -37,4 +36,3 @@ Suggests:
     RColorBrewer,
     deldir
 VignetteBuilder: knitr
-RdMacros: lifecycle

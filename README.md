@@ -4,7 +4,6 @@
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/rowlandseymour/BSBT.svg?branch=master)](https://travis-ci.com/rowlandseymour/BSBT)
 [![R build status](https://github.com/rowlandseymour/BSBT/workflows/R-CMD-check/badge.svg)](https://github.com/rowlandseymour/BSBT/actions)
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![CRAN status](https://www.r-pkg.org/badges/version/BSBT)](https://CRAN.R-project.org/package=BSBT)
 <!-- badges: end -->
 ----

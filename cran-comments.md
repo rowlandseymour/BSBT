@@ -1,7 +1,7 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Replaced the invalid lifecycle URL in README.md
+* Removed lifecycle package
 
 
 ## Test environments
