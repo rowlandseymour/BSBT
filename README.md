@@ -30,6 +30,7 @@ The `BSBT` package uses MCMC the estimate the model parameters. The MCMC can be 
 
 ## Data
 To collect your own data you can use the purpose built BSBT data collection software. This can be found at [github.com/BPerrat/BSBT-Interface](https://github.com/BPerrat/BSBT-Interface) and is managed by @[BPerrat](https://github.com/BPerrat). 
+
 In the package, there is a comparative judgement data set collected in Dar es Salaam, Tanzania. It includes over 75,000 comparisons, where citizens where are to compare subwards in the city based on deprivation. Also included are shapefiles for the 452 subwards. These can be accessed by calling `data(dar.comparisons, package = "BSBT")` and `data(dar.shapefiles, package = "BSBT")`.
 
 There is also code for simulating comparative judgement data given the underlying levels of deprivation. More information can be found by calling `?BSBT::simulate_contests`
