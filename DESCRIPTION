@@ -34,5 +34,6 @@ Suggests:
     surveillance,
     spdep,
     RColorBrewer,
-    deldir
+    deldir,
+    RSQLite
 VignetteBuilder: knitr
