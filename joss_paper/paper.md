@@ -50,7 +50,7 @@ $$
 $$
 We assume the deprivation parameters are correlated, with deprivation levels in nearby areas being highly correlated and levels in far away areas having low correlation. To achieve this,  we place a multivaraition normal prior distribution such that
 $$
-(\boldlambda \mid \boldsymbol{1}^T\boldlambda = 0) \sim \textrm{MVN}\Big(\textbf{0}, \, \Sigma - \Sigma\boldsymbol{1}(\boldsymbol{1}^T\Sigma \boldsymbol{1})^{-1}\boldsymbol{1}^T\Sigma\Big),
+(\boldsymbol{\lambda} \mid \boldsymbol{1}^T\boldsymbol{\lambda} = 0) \sim \textrm{MVN}\Big(\textbf{0}, \, \Sigma - \Sigma\boldsymbol{1}(\boldsymbol{1}^T\Sigma \boldsymbol{1})^{-1}\boldsymbol{1}^T\Sigma\Big),
 $$
 with the constraint that the deprivation parameters sum to 0 to remove identifaibility issues. The covariance matrix contains the spatial information and the package provides a number of ways to construct this. We recommend using a network structure, where each area is a node and edges are placed between adjacent areas. The covariance matrix is constructed using the matrix exponential of the adjecency matrix, which assigns high correlation to areas with many short paths between them, and low correlation to areas which can only be reached through long paths. The pakcage allows other network measures to be used, including one based on the length of the shortest path between areas. It is also possibel to use a Euclidean distance metric. All covariance functions supplied contain a total variance parameter. This can either be fixed or inferred using an inverse-gamma prior distribution. 
 
