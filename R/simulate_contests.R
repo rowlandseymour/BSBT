@@ -26,7 +26,7 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
     stop('The argument "n.contests" must be a positive integer.')
 
   contest.results <- data.frame(matrix(NA, nrow = n.contests, ncol = 3))
-  names(contest.results) <- c("subward1", "subward2", "result")
+  names(contest.results) <- c("area1", "area2", "result")
   number.of.wins <- matrix(0, length(true.quality), length(true.quality))
 
   if(sigma.obs > 0){
@@ -76,7 +76,7 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
 
 
 
-  results <- data.frame("subward1" = as.factor(contest.results$subward1), "subward2" = as.factor(contest.results$subward2),
+  results <- data.frame("area1" = as.factor(contest.results$area1), "area2" = as.factor(contest.results$area2),
                         result = contest.results$result)
 
   return(list("results" = results, "win.matrix" = number.of.wins))
