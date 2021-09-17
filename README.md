@@ -6,7 +6,7 @@
 [![DOI](https://zenodo.org/badge/267797127.svg)](https://zenodo.org/badge/latestdoi/267797127)
 <!-- badges: end -->
 ----
-📦 The `BSBT` R package allows you to fit the Bayesian Spatial Bradley--Terry model to comparative judgement data sets. The package estimates the quality of each area in the data set based on the observed comparisons. The package includes functions to construct the prior distribution covariance matrix from a network or set of coordinates. The package also contains functions to run a number of different MCMC algorithms to estimate the level of deprivation in each area in the data set. Also included is a comparative judgement data set on deprivation in Dar es Salaam, Tanzania.
+📦 The `BSBT` R package allows you to fit the Bayesian Spatial Bradley--Terry model to comparative judgement data sets. The package estimates the quality of each object in the data set based on the observed comparisons. The package includes functions to construct the prior distribution covariance matrix from a network or set of coordinates. The package also contains functions to run a number of different MCMC algorithms to estimate the level of deprivation in each aobject in the data set. Also included is a comparative judgement data set on deprivation in Dar es Salaam, Tanzania.
 
 ## Installation
 You can install `BSBT` by calling the following commands:
