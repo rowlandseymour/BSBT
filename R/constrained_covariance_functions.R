@@ -109,8 +109,8 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
     stop("Insufficient hyperparameters. Rational Quadratic requires 3 values.")
   if(type == "matern" & length(hyperparameters) != 2)
     stop("Insufficient hyperparameters. Matern requires 2 values.")
-  if(type == "matrix" & length(hyperparameters) != 1)
-    stop("Insufficient hyperparameters. Matrix exponential requires 1 value.")
+  if(type == "matrix" & length(hyperparameters) != 2)
+    stop("Insufficient hyperparameters. Matrix exponential requires 2 values.")
 
   if(dim(adj.matrix)[1] != length(linear.combination))
     stop("Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
@@ -125,7 +125,7 @@ constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperpar
   } else if(type == "matern"){
     k <- (1 + sqrt(5)/hyperparameters[2]*shortest.path.matrix + 5/(3*hyperparameters[2]^2)*shortest.path.matrix^2)*exp(-sqrt(5)/hyperparameters[2]*shortest.path.matrix)
   } else if(type == "matrix"){
-    k <- expm::expm(adj.matrix)
+    k <- expm::expm(hyperparameters[2]*adj.matrix)
     k <- hyperparameters[1]^2*diag(diag(k)^-0.5)%*%k%*%diag(diag(k)^-0.5)
   }else {
     stop("Could not construct covariance matrix. Unrecognised covariance type.")
