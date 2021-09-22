@@ -59,23 +59,26 @@ $$
 \boldsymbol{\lambda}^{(k)} = \boldsymbol{\lambda}^{(1)} + \boldsymbol{u}^{(k)},
 $$
 where $\boldsymbol{u}^{(k)}$ follows a multivariate normal distribution. 
-# Example Workflow
 
-## Data analysis
+# Example Workflow
 To use with the `BSBT` package, we need to transform the table into a matrix, where element $w_{ij}$ contains the number of times area $i$ was chosen over area $j$. This can be done by calling
 ```r
 win.matrix <- comparisons_to_matrix(N, your_comparisons),
 ```
 where N is the number of areas in the study. We can now analyse the comparisons. We first construct the prior distribution covariance matrix, which contains the spatial structure of the areas. Then we feed this matrix and the processed data into the MCMC function, which infers the quality of each area. The covariance matrix function requires the adjacency matrix from the shape files. The can be done using the `spdep` package, the `surveillance` package using, or GIS software, such as QGIS. 
 ```r
-k            <- constrained_adjacency_covariance_function(your_adjacency_matrix, type = "matrix", hyperparameters = c(1), linear.combination = rep(1, N), linear.constraint = 0)
-mcmc.output  <- run_mcmc(n.iter = 1000000, delta = 0.01, k, win.matrix, f.initial =  rep(0, N), alpha = TRUE)
+k            <- constrained_adjacency_covariance_function(your_adjacency_matrix, 
+  type = "matrix", hyperparameters = c(1), linear.combination = rep(1, N), 
+  linear.constraint = 0)
+mcmc.output  <- run_mcmc(n.iter = 1000000, delta = 0.01, k, win.matrix, 
+  f.initial =  rep(0, N), alpha = TRUE)
 ```
 The MCMC algorithm may take several hours to run. To include the posterior median estimates for the quality of each area in the database, call
 ```r
 burn.in                    <- 500000 #burn-in period 
 mean.quality               <- apply(mcmc.output$f[-c(1:burn.in), ], 2, mean)
-quality                    <- data.frame("area_id" = 1:N, "quality" = mean.quality)
+quality                    <- data.frame("area_id" = 1:N, 
+  "quality" = mean.quality)
 ```
 
 
