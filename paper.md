@@ -15,7 +15,7 @@ authors:
 affiliations:
  - name: School of Mathematical Sciences, University of Nottingham, UK
    index: 1
- - name: ...
+ - name: xxxx
     index: 2
 date: xxxxx
 bibliography: paper.bib
