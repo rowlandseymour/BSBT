@@ -11,12 +11,12 @@ authors:
     affiliation: "1" # (Multiple affiliations must be quoted)
   - name: James Briant
     affiliation: "2"
-    orcid: 
+    orcid: xxxx
 affiliations:
  - name: School of Mathematical Sciences, University of Nottingham, UK
    index: 1
  - name: xxxx
-    index: 2
+   index: 2
 date: xxxxx
 bibliography: paper.bib
 
