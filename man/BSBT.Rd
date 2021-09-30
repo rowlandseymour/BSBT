@@ -5,7 +5,7 @@
 \alias{BSBT}
 \title{BSBT: Bayesian Spatial Bradley--Terry}
 \description{
-An implementation of the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then places a correlated prior distribution on the quality parameter for each area, based on the network. The package includes MCMC algorithms to estimate the quality parameters.
+An implementation of the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different objecs. It constructs a network to describe how the objects are connected, and then places a correlated prior distribution on the quality parameter for each object, based on the network. The package includes MCMC algorithms to estimate the quality parameters.
 }
 \section{Covariance Functions}{
 
@@ -20,7 +20,7 @@ using a network based metric, and
 
 \section{MCMC functions}{
 
-The main MCMC function is \code{\link{run_mcmc}}, but in cases where the gender of the judges is known
-the function \code{\link{run_gender_mcmc}} can be used to analyse how the different genders behave.
+The main MCMC function is \code{\link{run_mcmc}}, but in cases where there are different types of judges
+the function \code{\link{run_symmetric_mcmc}} can be used to analyse how the different types behave.
 }
 

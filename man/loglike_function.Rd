@@ -9,7 +9,7 @@ loglike_function(x, win.matrix)
 \arguments{
 \item{x}{The level of deprivation of the areas on an exponential scale}
 
-\item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
+\item{win.matrix}{A matrix, where w_ij give the number of times object i beat j}
 }
 \value{
 The value of of the loglikelihood function

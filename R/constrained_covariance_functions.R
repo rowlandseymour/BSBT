@@ -88,7 +88,7 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
 #' data(dar.adj.matrix, package = "BSBT") #load dar es salaam adjacency matrix
 #' k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp",
 #'        hyperparameters = c(1, 1), rep(1, dim(dar.adj.matrix)[1]), 0)
-#'        #Covariance registered by sum of areas is 0 using rational quadratic function
+#'        #Covariance registered by sum of objects is 0 using rational quadratic function
 #' @export
 constrained_adjacency_covariance_function <- function(adj.matrix, type, hyperparameters,
                                                      linear.combination, linear.constraint = 0){

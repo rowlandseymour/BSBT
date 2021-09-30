@@ -34,7 +34,7 @@ This function constructs a covariance function from the graph's adjacency matrix
 data(dar.adj.matrix, package = "BSBT") #load dar es salaam adjacency matrix
 k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp",
        hyperparameters = c(1, 1), rep(1, dim(dar.adj.matrix)[1]), 0)
-       #Covariance registered by sum of areas is 0 using rational quadratic function
+       #Covariance registered by sum of objects is 0 using rational quadratic function
 }
 \seealso{
 For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}

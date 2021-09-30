@@ -22,7 +22,7 @@ run_mcmc(
 
 \item{covariance.matrix}{The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix.}
 
-\item{win.matrix}{A matrix, where w_ij give the number of times area i beat j}
+\item{win.matrix}{A matrix, where w_ij give the number of times object i beat j}
 
 \item{f.initial}{A vector of the initial estimate for f}
 
@@ -42,7 +42,7 @@ A list of MCMC output
 }
 }
 \description{
-This function runs the BSBT MCMC algorithm to estimate the deprivation parameters. In this version, the judges are assumed to act homogeneously. This algorithm estimates the deprivation in each area and the prior distribution variance parameter. For data with two types of judges, see \code{\link{run_gender_mcmc}}.
+This function runs the BSBT MCMC algorithm to estimate the deprivation parameters. In this version, the judges are assumed to act homogeneously. This algorithm estimates the deprivation in each object and the prior distribution variance parameter. For data with two types of judges, see \code{\link{run_symmetric_mcmc}}.
 }
 \examples{
 

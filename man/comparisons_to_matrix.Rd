@@ -4,15 +4,15 @@
 \alias{comparisons_to_matrix}
 \title{Construct Win Matrix from Comparisons}
 \usage{
-comparisons_to_matrix(n.areas, comparisons)
+comparisons_to_matrix(n.objects, comparisons)
 }
 \arguments{
-\item{n.areas}{The number of areas in the study.}
+\item{n.objects}{The number of areas in the study.}
 
-\item{comparisons}{An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgment. The first column is the winning area, the second column is the more losing area. The areas should be labeled from 1 to n.areas.}
+\item{comparisons}{An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgment. The first column is the winning object, the second column is the more losing object. The areas should be labeled from 1 to n.objects.}
 }
 \value{
-A matrix where the {i, j}^th element is the number of times area i beat area j.
+A matrix where the {i, j}^th element is the number of times object i beat object j.
 }
 \description{
 This function constructs a win matrix from a data frame of comparisons. It is needed for the MCMC functions.

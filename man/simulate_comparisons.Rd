@@ -9,9 +9,9 @@ simulate_comparisons(n.contests, true.quality, sigma.obs)
 \arguments{
 \item{n.contests}{The number of contests to be carried out}
 
-\item{true.quality}{A vector with the level of deprivation in each area on the log scale.}
+\item{true.quality}{A vector with the level of deprivation in each object on the log scale.}
 
-\item{sigma.obs}{Standard deviation for the noise to be added to the level of deprivation in each area. If 0, no noise is used.}
+\item{sigma.obs}{Standard deviation for the noise to be added to the level of deprivation in each object. If 0, no noise is used.}
 }
 \value{
 A list containing a data.frame with each pair-wise contest, the outcome (a 1 for a win, a 0 for a loss),
@@ -23,7 +23,7 @@ When including noise, each time a judge carries out a comparisons, we assume the
 }
 \examples{
 
-example.deprivation <- -2:2 #True level of deprivation in each area
+example.deprivation <- -2:2 #True level of deprivation in each object
 example.comparisons <- simulate_comparisons(10, example.deprivation, 0)
 #generate comparisons with judge noise.
 example.comparisons <- simulate_comparisons(10, example.deprivation, 0.1)

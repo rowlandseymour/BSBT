@@ -3,8 +3,8 @@
 #' This function computes the probability i beats j on the logit scale. It is given by logit(pi_ij) = lambda_i - log(exp(lambda_i) + exp(lambda_j))
 #'
 #'
-#' @param x The level of deprivation of the winning area on the exponential scale
-#' @param y The level of deprivation of the losing area on the exponential scale
+#' @param x The level of deprivation of the winning object on the exponential scale
+#' @param y The level of deprivation of the losing object on the exponential scale
 #' @return logit(pi_ij)
 #'
 #' @keywords internal
@@ -25,7 +25,7 @@ quality_ratio <- function(x, y) log(x)- log(x+y)
 #'
 #'
 #' @param x The level of deprivation of the areas on an exponential scale
-#' @param win.matrix A matrix, where w_ij give the number of times area i beat j
+#' @param win.matrix A matrix, where w_ij give the number of times object i beat j
 #' @return The value of of the loglikelihood function
 #'
 #' @keywords interal
@@ -103,13 +103,13 @@ mvnorm_sd <- function(mu, decomp.covariance){
 
 #' Run the BSBT MCMC algorithm
 #'
-#' This function runs the BSBT MCMC algorithm to estimate the deprivation parameters. In this version, the judges are assumed to act homogeneously. This algorithm estimates the deprivation in each area and the prior distribution variance parameter. For data with two types of judges, see \code{\link{run_gender_mcmc}}.
+#' This function runs the BSBT MCMC algorithm to estimate the deprivation parameters. In this version, the judges are assumed to act homogeneously. This algorithm estimates the deprivation in each object and the prior distribution variance parameter. For data with two types of judges, see \code{\link{run_symmetric_mcmc}}.
 #'
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter must be in (0, 1)
 #' @param covariance.matrix The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix.
-#' @param win.matrix A matrix, where w_ij give the number of times area i beat j
+#' @param win.matrix A matrix, where w_ij give the number of times object i beat j
 #' @param f.initial A vector of the initial estimate for f
 #' @param alpha A boolean if inference for alpha should be carried out. If this is TRUE, the covariance matrix
 #' @param omega The value of the inverse gamma shape parameter
@@ -194,18 +194,18 @@ run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, al
 }
 
 
-#' Run the BSBT with Gender Effect MCMC algorithm
+#' Run the BSBT with symmetric effect MCMC algorithm
 #'
-#' This function runs the BSBT MCMC algorithm where the male and female judges can be separated. It generates samples for the grand mean of the male and female perceptions for the derivation in each area and the difference between them. It is similar to \code{\link{run_mcmc}}.
-#' This function requires the data to be separate into two parts, one for each gender. There should be a win matrix for the male judges, and a win matrix for the female judges. Similarly, initial estimates for the grand mean and difference parameters need to be included seperately.
+#' This function runs the BSBT MCMC algorithm where two types are judges can be separated. It generates samples for the grand mean of the types  perceptions for the derivation in each object and the difference between them. It is similar to \code{\link{run_mcmc}}.
+#' This function requires the data to be separate into two parts, one for each type. There should be a win matrix for each type. Similarly, initial estimates for the grand mean and difference parameters need to be included separately.
 #'
 #' @param n.iter The number of iterations to be run
 #' @param delta The underrlaxed tuning parameter. Must be in (0, 1)
 #' @param covariance.matrix The output from the covariance matrix function, which contains the decomposed and inverted covariance matrix. The variance hyperparameter must be set to 1.
-#' @param male.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by men
-#' @param female.win.matrix A matrix, where w_ij give the number of times area i beat j when judged by women
-#' @param f.initial A vector of the initial estimate for f, the grand mean of men and women's perceptions
-#' @param g.initial A vector of the initial estimate for g, the difference between men and women's perceptions
+#' @param type1.win.matrix A matrix, where w_ij give the number of times object i beat j when judged by men
+#' @param type2.win.matrix A matrix, where w_ij give the number of times object i beat j when judged by women
+#' @param f.initial A vector of the initial estimate for f, the grand mean of the perceptions
+#' @param g.initial A vector of the initial estimate for g, the difference between the perceptions
 #' @param omega The value of the inverse gamma shape parameter
 #' @param chi The value of the inverse gamma scale parameter
 #' @param thinning Setting thinning to i will store every i^th iteration. This may be required for very long runs.
@@ -233,12 +233,12 @@ run_mcmc <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, al
 #' f.initial <- c(0, 0, 0) #initial estimate for grand mean
 #' g.initial <- c(0, 0, 0) #initial estimate for differences
 #'
-#' mcmc.output <- run_gender_mcmc(n.iter, delta, covariance.matrix, men.win.matrix,
+#' mcmc.output <- run_symmetric_mcmc(n.iter, delta, covariance.matrix, men.win.matrix,
 #'     women.win.matrix, f.initial, g.initial)
 #'
 #' @export
 
-run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, female.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1, thinning = 1){
+run_symmetric_mcmc <- function(n.iter, delta, covariance.matrix, type1.win.matrix, type2.win.matrix, f.initial, g.initial, omega = 0.1, chi = 0.1, thinning = 1){
 
   if(n.iter > 1000000 & thinning == 1)
     warning("Large number of iterations and no thinning. Memory problems may occur.")
@@ -246,7 +246,7 @@ run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, f
   f <- f.initial
   g <- g.initial
   n.objects <- length(f) #compute number of objects/areas from f
-  loglike <- loglike_function(as.numeric(exp(f - g)), male.win.matrix) + loglike_function(as.numeric(exp(g + f)), female.win.matrix) #loglike value based on initial values
+  loglike <- loglike_function(as.numeric(exp(f - g)), type1.win.matrix) + loglike_function(as.numeric(exp(g + f)), type2.win.matrix) #loglike value based on initial values
 
   #Initialise storage matrices
   counter <- 0
@@ -256,8 +256,8 @@ run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, f
 
   #k.decomp.plain stores the decomposed covariance matrix with alpha = 1, k.decomp is for alpha varying
   k.decomp.plain <- covariance.matrix$decomp
-  male.k.decomp <- covariance.matrix$decomp
-  female.k.decomp <- covariance.matrix$decomp
+  type1.k.decomp <- covariance.matrix$decomp
+  type2.k.decomp <- covariance.matrix$decomp
 
   # MCMC Loop ---------------------------------------------------------------
 
@@ -267,21 +267,21 @@ run_gender_mcmc <- function(n.iter, delta, covariance.matrix, male.win.matrix, f
 
   #Gibbs Step for alpha
   #Sample alpha values
-  male.alpha.sq.current     <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%covariance.matrix$inv%*%f + chi)
-  female.alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(g)%*%covariance.matrix$inv%*%g + chi)
+  type1.alpha.sq.current     <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%covariance.matrix$inv%*%f + chi)
+  type2.alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(g)%*%covariance.matrix$inv%*%g + chi)
 
   #recompute covariance matrices
-  male.k.decomp               <- sqrt(male.alpha.sq.current)*covariance.matrix$decomp
-  female.k.decomp             <- sqrt(female.alpha.sq.current)*covariance.matrix$decomp
+  type1.k.decomp               <- sqrt(type1.alpha.sq.current)*covariance.matrix$decomp
+  type2.k.decomp             <- sqrt(type2.alpha.sq.current)*covariance.matrix$decomp
   if(i %% thinning == 0)
-    alpha.matrix[i/thinning, ]           <- c(male.alpha.sq.current, female.alpha.sq.current)
+    alpha.matrix[i/thinning, ]           <- c(type1.alpha.sq.current, type2.alpha.sq.current)
 
   #MH step for f and g
-  f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_sd(covariance.matrix$mean, male.k.decomp)
-  g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm_sd(covariance.matrix$mean, female.k.decomp)
+  f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_sd(covariance.matrix$mean, type1.k.decomp)
+  g.prop <- sqrt(1 - delta^2)*g + delta*mvnorm_sd(covariance.matrix$mean, type2.k.decomp)
 
-  loglike.prop <- loglike_function(as.numeric(exp(f.prop - g.prop)), male.win.matrix) +
-    loglike_function(as.numeric(exp(g.prop + f.prop)), female.win.matrix)
+  loglike.prop <- loglike_function(as.numeric(exp(f.prop - g.prop)), type1.win.matrix) +
+    loglike_function(as.numeric(exp(g.prop + f.prop)), type2.win.matrix)
 
   log.p.acc <- loglike.prop - loglike #underrelaxed means acceptance probability is likelihood ratio
 
@@ -420,116 +420,6 @@ run_asymmetric_mcmc <- function(n.iter, delta, covariance.matrix, win.matrices, 
   toc <- Sys.time()
 
   return(list("estimates" = lambda.estimate.matrices, "alpha.sq" = alpha.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
-
-}
-
-
-
-
-
-
-#' Run the BSBT MCMC algorithm with ordering constraints
-#'
-#' This function runs the BSBT MCMC algorithm with ordering constraints. This allows the sign of lambda_i - lambda_j to be specified. The confidence parameters specify the confidence in this constraint. As this parameter approaches 0, all proposals that do not meet this constraint will be rejected. As this parameter approaches infinity, all proposals are accepted, regardless of the constraint. Only small numbers of ordering constraints should be included, as they can affect the mixing of the markov chain.
-#'
-#'
-#' @inheritParams run_mcmc
-#' @param S A list of ordering constraints. There are four elements in each set, the label of the two areas, the value of the constraints, and the confidence parameter; S = (i, j, ±1, nu).
-#' @return A list of MCMC output
-#' \itemize{
-#'   \item f.matrix - A matrix containing the each iteration of f
-#'   \item alpha.sq - A vector containing the iterations of alpha^2
-#'   \item acceptance.rate - The acceptance rate for f
-#'   \item time.taken - Time taken to run the MCMC algorithm in seconds
-#' }
-#'
-#' @examples
-#'
-#' n.iter <- 10
-#' delta <- 0.1
-#' covariance.matrix <- list()
-#' covariance.matrix$mean <- c(0, 0, 0)
-#' covariance.matrix$decomp <- diag(3)
-#' covariance.matrix$inv    <- diag(3)
-#' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
-#' win.matrix <- comparisons_to_matrix(3, comparisons)
-#' f.initial <- c(0, 0, 0)
-#' S <- list()
-#' S[[1]] <- c(1, 3, -1, 3) #Specify that lambda_1 - lambda_3 < 0,
-#' #and the confidence parameter has value 3.
-#' S[[2]] <- c(1, 2, -1, 3) #Specify that lambda_1 - lambda_2 < 0,
-#' #and the confidence parameter has value 3.
-#' mcmc.output <- run_mcmc_with_ordering(n.iter, delta, covariance.matrix, win.matrix, f.initial, S)
-#'
-#'
-#' @export
-run_mcmc_with_ordering <- function(n.iter, delta, covariance.matrix, win.matrix, f.initial, S, alpha = FALSE, omega = 0.1, chi = 0.1){
-
-
-  #Compute loglikelihood contributions from order constraints
-  log.order.likelihood <- function(S, f){
-    if(typeof(S) != "list")
-      stop("S must be a list")
-
-
-    m <- length(S)
-
-    log.order.prior.value <- 0
-    for(i in 1:m)
-      log.order.prior.value <- log.order.prior.value + stats::pnorm(S[[i]][3]/S[[i]][4]*f[S[[i]][1]] - f[S[[i]][2]], 0, 1, log.p = TRUE)
-
-    return(log.order.prior.value)
-  }
-
-
-  f <- f.initial
-  n.objects <- length(f)
-  loglike <- loglike_function(as.numeric(exp(f)), win.matrix)
-
-  counter <- 0
-  f.matrix <- matrix(NA, n.iter, n.objects)
-  alpha.vector <- numeric(n.iter)
-
-  if(alpha == TRUE)
-    k.decomp.plain <- covariance.matrix$decomp
-
-  # MCMC Loop ---------------------------------------------------------------
-
-  tic <- Sys.time()
-  for(i in 1:n.iter){
-
-    #Update alpha
-
-    if(alpha == TRUE){
-      alpha.sq.current   <- 1/stats::rgamma(1, omega + n.objects/2, 0.5*t(f)%*%covariance.matrix$inv%*%f + chi)
-      covariance.matrix$decomp          <- sqrt(alpha.sq.current)*k.decomp.plain
-      alpha.vector[i]    <- alpha.sq.current
-    }
-
-
-
-
-    #Update f0
-    f.prop <- sqrt(1 - delta^2)*f + delta*mvnorm_sd(covariance.matrix$mean, covariance.matrix$decomp)
-    loglike.prop <- loglike_function(as.numeric(exp(f.prop)), win.matrix)
-
-    log.p.acc <- loglike.prop - loglike + log.order.likelihood(S, f.prop) - log.order.likelihood(S, f)
-    if(log(stats::runif(1)) < log.p.acc){
-      f                     <- f.prop
-      loglike               <- loglike.prop
-      counter[1]            <- counter[1] + 1
-    }
-
-    f.matrix[i, ]   <- f
-
-  }
-
-  toc <- Sys.time()
-
-  if(alpha == TRUE)
-    return(list("f" = f.matrix, "alpha.sq" = alpha.vector, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
-  else
-    return(list("f" = f.matrix, "acceptance.rate" = counter/n.iter, "time.taken" = toc - tic))
 
 }
 

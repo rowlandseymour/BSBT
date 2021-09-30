@@ -7,9 +7,9 @@
 quality_ratio(x, y)
 }
 \arguments{
-\item{x}{The level of deprivation of the winning area on the exponential scale}
+\item{x}{The level of deprivation of the winning object on the exponential scale}
 
-\item{y}{The level of deprivation of the losing area on the exponential scale}
+\item{y}{The level of deprivation of the losing object on the exponential scale}
 }
 \value{
 logit(pi_ij)

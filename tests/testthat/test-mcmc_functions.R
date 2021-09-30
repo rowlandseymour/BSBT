@@ -27,30 +27,15 @@ test_that("standard MCMC function works", {
 
 
 
-test_that("gender MCMC function works", {
+test_that("symmetrci MCMC function works", {
   data("dar.adj.matrix")
   k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp", hyperparameters = c(1, 0.5), linear.combination = rep(1, 452), linear.constraint = 0)
   male.win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
   female.win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
-  expect_error(run_gender_mcmc(10, 0.1, k, male.win.matrix[1:451, ], female.win.matrix, rep(1, 452), rep(1, 452)), "non-conformable arrays")
-  expect_error(run_gender_mcmc(-1, 0.1, k, male.win.matrix, female.win.matrix, rep(1, 452), rep(1, 452)), "invalid")
+  expect_error(run_symmetric_mcmc(10, 0.1, k, male.win.matrix[1:451, ], female.win.matrix, rep(1, 452), rep(1, 452)), "non-conformable arrays")
+  expect_error(run_symmetric_mcmc(-1, 0.1, k, male.win.matrix, female.win.matrix, rep(1, 452), rep(1, 452)), "invalid")
 }
 )
-
-test_that("ordered MCMC function works", {
-  data("dar.adj.matrix")
-  S <- list()
-  S[[1]] <- rep(1, 2, 1, 10)
-  S[[2]] <- rep(3, 4, 4, 10)
-  k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp", hyperparameters = c(1, 0.5), linear.combination = rep(1, 452), linear.constraint = 0)
-  win.matrix <- matrix(rbinom(452*452, 10, 0.5), 452, 452)
-  expect_error(run_mcmc_with_ordering(10, 0.1, k, win.matrix, rep(1, 451), S, alpha = FALSE), "non-conformable arrays")
-  expect_error(run_mcmc_with_ordering(-1, 0.1, k, win.matrix, rep(1, 452), S, alpha = FALSE), "invalid")
-  S <- c(0, 1)
-  expect_error(run_mcmc_with_ordering(10, 0.1, k, win.matrix, rep(1, 452), S, alpha = FALSE), "S must be a list")
-}
-)
-
 
 test_that("asymmetric MCMC function works", {
   data("dar.adj.matrix")
