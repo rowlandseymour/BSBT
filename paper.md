@@ -60,43 +60,14 @@ $$
 $$
 where $\boldsymbol{u}^{(k)}$ follows a multivariate normal distribution and is the discrepancies between the qualities percived by the baseline type and type $j$. 
 
-# Example workflow
-We assume the data is in a dataframe with two columns; each row should correspond to a comparisons, and the first column should give the winning object and the second column the losing object. To use with the `BSBT` package, we need to transform the table into a matrix, where element $w_{ij}$ contains the number of times object $i$ was chosen over object $j$. This can be done by calling
-```r
-win.matrix <- comparisons_to_matrix(N, your_comparisons),
-```
-where N is the number of objects in the study and `your_comparisons` is the dataframe contianing the comparisons. We can now analyse the comparisons. We first construct the prior distribution covariance matrix, which contains the network structure of the objects. Then we feed this matrix and the processed data into the MCMC function, which infers the quality of each object. The covariance matrix function requires the adjacency matrix from the shape files. The can be done using the `spdep` package, the `surveillance` package using, or GIS software, such as QGIS. 
-```r
-k            <- constrained_adjacency_covariance_function(
-                  your_adjacency_matrix, 
-                  type = "matrix", 
-                  hyperparameters = c(1), 
-                  linear.combination = rep(1, N), 
-                  linear.constraint = 0)
-mcmc.output  <- run_mcmc(n.iter = 1000000, 
-                  delta = 0.01, 
-                  covarianc.function = k, 
-                  win.matirx = win.matrix, 
-                  f.initial =  rep(0, N), 
-                  alpha = TRUE)
-```
-The MCMC algorithm may take several hours to run. To include the posterior median estimates for the quality of each object in the database, call
-```r
-burn.in                    <- 500000 #burn-in period 
-mean.quality               <- apply(mcmc.output$f[-c(1:burn.in), ], 
-                                    2,
-                                    mean)
-quality                    <- data.frame("object_id" = 1:N, 
-                                          "quality" = mean.quality)
-```
 
 # Data 
 In the package, there is a comparative judgement data set collected in Dar es Salaam, Tanzania. It includes over 75,000 comparisons, where citizens where are to compare subwards in the city based on deprivation. Also included are shapefiles for the 452 subwards. These can be accessed by calling `data(dar.comparisons, package = "BSBT")` and `data(dar.shapefiles, package = "BSBT")`. The vignette "BSBT for Dar es Salaam" demonstrates the BSBT model on this data and gives examples of how the results can be plotted. 
 
 
 # Acknowledgements
-This work is supported by the Engineering and Physical Sciences Research Council [grant number EP/T003928/1] and the Big East African Data Science research group at the University of Nottingham.
+This work is supported by the Engineering and Physical Sciences Research Council [grant numbers EP/T003928/1 and EP/R513283/1] and the Univesity of Nottingham. 
 
-The comparative judgement dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann. We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge Humanitarian Street Mapping Team (HOT) for providing a team of experts in data collection to facilitate the surveys. This fieldwork was also supported by the EPSRC Horizon Centre for Doctoral Training - My Life in Data (EP/L015463/1) and by EPSRC grant Neodemographics (EP/L021080/1).
+The comparative judgement dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann. We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge Humanitarian Street Mapping Team (HOT) for providing a team of experts in data collection to facilitate the surveys. This fieldwork was also supported by the EPSRC Horizon Centre for Doctoral Training - My Life in Data [EP/L015463/1] and by EPSRC grant Neodemographics [EP/L021080/1].
 
 # References
