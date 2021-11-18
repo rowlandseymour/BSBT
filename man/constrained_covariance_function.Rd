@@ -27,7 +27,10 @@ constrained_covariance_function(
 The mean vector and covariance matrix
 }
 \description{
-This function constructs a covariance function from the Euclidean coordinates of the objects. The covariance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
+This function constructs a covariance function from the Euclidean
+coordinates of the objects. The covariance function may be
+squared exponential, rational quadratic or Matern. It includes a constraint,
+where a linear combination of the parameters can be fixed.
 }
 \examples{
 #Generate 10 points and create covariance matrix using Euclidean distance metric

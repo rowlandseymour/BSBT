@@ -3,7 +3,8 @@
 \docType{data}
 \name{male.mean.deprivation}
 \alias{male.mean.deprivation}
-\title{The mean level of deprivation for subwards in Dar es Salaam as perceived by men}
+\title{The mean level of deprivation for subwards in Dar es Salaam as
+perceived by men}
 \format{
 An vector of 452 elements, one for each subward
 }

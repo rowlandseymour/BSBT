@@ -14,9 +14,10 @@ This data set was collected by Madeleine Ellis, James Goulding, Bertrand Perrat,
 dar.comparisons
 }
 \description{
-A comparative judgment data set on deprivation in subwards in Dar es Salaam, Tanzania.
-Citizens were shown pairs of subwards at random and asked which was more deprived.
-If they said they were equal, one of the pair was chosen at random to be more deprived.
-The data was collected in August 2018. The gender of each judge is also included.
+A comparative judgment data set on deprivation in subwards in Dar es Salaam,
+Tanzania.Citizens were shown pairs of subwards at random and asked which
+was more deprived.If they said they were equal, one of the pair was chosen at
+random to be more deprived.The data was collected in August 2018.
+The gender of each judge is also included.
 }
 \keyword{datasets}

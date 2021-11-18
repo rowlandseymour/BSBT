@@ -27,7 +27,11 @@ constrained_adjacency_covariance_function(
 The mean vector and covariance matrix
 }
 \description{
-This function constructs a covariance function from the graph's adjacency matrix. The covariance function may be squared exponential, rational quadratic, Matern or the matrix exponential. It includes a constraint, where a linear combination of the parameters can be fixed.
+This function constructs a covariance function from the graph's adjacency
+matrix. The covariance function may be squared exponential,
+rational quadratic, Matern or the matrix exponential.
+It includes a constraint, where a linear combination of the parameters
+can be fixed.
 }
 \examples{
 #Construct covariance matrix of Dar es Salaam, Tanzania, using network metric

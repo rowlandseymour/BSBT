@@ -25,4 +25,4 @@ lambda     <- c(3, 1, 2)
 l <- loglike_function(lambda, win.matrix)
 
 }
-\keyword{interal}
+\keyword{internal}
