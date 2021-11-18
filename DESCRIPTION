@@ -37,3 +37,5 @@ Suggests:
     deldir,
     RSQLite
 VignetteBuilder: knitr
+URL: https://github.com/rowlandseymour/BSBT
+BugReports: https://github.com/rowlandseymour/BSBT/issues
