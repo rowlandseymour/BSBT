@@ -2,14 +2,18 @@
 title: "BSBT: A simple example"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{BSBT: A simple example}
+  %\VignetteIndexEntry{BSBT_example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
+
 
 BSBT (Bayesian Spatial Bradley--Terry) is a package which fits a Bradley--Terry model with a spatial component for comparative judgement data sets. This can be used to estimate the quality of objects used in the data set.
 
