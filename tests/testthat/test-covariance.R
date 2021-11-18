@@ -19,8 +19,7 @@ test_that("constrained adjacent covariance works", {
                                               hyperparameters = c(1, 0.5),
                                               linear.combination = rep(1, 41),
                                                         linear.constraint = 0),
-          "Could not constrain distirbution.
-           Linear constraint dimensions does not match number of objects.")
+   "Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
   expect_error(constrained_adjacency_covariance_function(dar.adj.matrix,
                                               type = "matrix",
                                               hyperparameters = c(1),
@@ -46,7 +45,6 @@ test_that("constrained covariance works", {
                                                hyperparameters = c(1, 0.5),
                                                linear.combination = rep(1, 41),
                                               linear.constraint = 0),
-        "Could not constrain distirbution.
-        Linear constraint dimensions does not match number of objects.")
+        "Could not constrain distirbution. Linear constraint dimensions does not match number of objects.")
 })
 
