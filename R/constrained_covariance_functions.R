@@ -1,6 +1,9 @@
 #' Construct a constrained covariance matrix from the Euclidean coordinates of the objects
 #'
-#' This function constructs a covariance function from the Euclidean coordinates of the objects. The covariance function may be squared exponential, rational quadratic or Matern. It includes a constraint, where a linear combination of the parameters can be fixed.
+#' This function constructs a covariance function from the Euclidean
+#' coordinates of the objects. The covariance function may be
+#' squared exponential, rational quadratic or Matern. It includes a constraint,
+#' where a linear combination of the parameters can be fixed.
 #'
 #'
 #' @param coordinates An Nx2 matrix containing the Euclidean coordinates of the nodes.
@@ -58,7 +61,8 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
 
   prior.mean                <- rep(0, dim(coordinates)[1])
   constrained.k             <- k - k%*%linear.combination%*%t(k%*%linear.combination)*as.numeric((1/(linear.combination%*%k%*%linear.combination)))
-  constrained.mean          <- prior.mean + as.numeric((linear.constraint-t(prior.mean)%*%linear.combination)/(t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
+  constrained.mean          <- prior.mean + as.numeric((linear.constraint-t(prior.mean)%*%linear.combination)/
+                                                         (t(linear.combination)%*%k%*%linear.combination))*k%*%linear.combination
   spectral.decomp           <- eigen(constrained.k)
   spectral.decomp$values[spectral.decomp$values < 0] <- 0 #Deal with precision errors in covariance matrix
   constrained.decomp        <- spectral.decomp$vectors%*%diag(sqrt(spectral.decomp$values))
@@ -71,7 +75,11 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
 
 #' Construct a constrained covariance matrix from the adjacency matrix
 #'
-#' This function constructs a covariance function from the graph's adjacency matrix. The covariance function may be squared exponential, rational quadratic, Matern or the matrix exponential. It includes a constraint, where a linear combination of the parameters can be fixed.
+#' This function constructs a covariance function from the graph's adjacency
+#' matrix. The covariance function may be squared exponential,
+#' rational quadratic, Matern or the matrix exponential.
+#' It includes a constraint, where a linear combination of the parameters
+#' can be fixed.
 #'
 #'
 #' @param adj.matrix The graph adjacency matrix

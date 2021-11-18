@@ -1,9 +1,10 @@
 #' Comparative Judgment on Deprivation in Dar es Salaam, Tanzania
 #'
-#' A comparative judgment data set on deprivation in subwards in Dar es Salaam, Tanzania.
-#' Citizens were shown pairs of subwards at random and asked which was more deprived.
-#' If they said they were equal, one of the pair was chosen at random to be more deprived.
-#' The data was collected in August 2018. The gender of each judge is also included.
+#' A comparative judgment data set on deprivation in subwards in Dar es Salaam,
+#' Tanzania.Citizens were shown pairs of subwards at random and asked which
+#' was more deprived.If they said they were equal, one of the pair was chosen at
+#' random to be more deprived.The data was collected in August 2018.
+#' The gender of each judge is also included.
 #' @docType data
 #'
 #'
@@ -70,7 +71,8 @@
 
 
 
-#' The mean level of deprivation for subwards in Dar es Salaam as perceived by men
+#' The mean level of deprivation for subwards in Dar es Salaam as
+#' perceived by men
 #'
 #' This data is used in the vignette
 #'
@@ -87,7 +89,8 @@
 
 
 
-#' The mean level of deprivation for subwards in Dar es Salaam as perceived by women
+#' The mean level of deprivation for subwards in Dar es Salaam as
+#' perceived by women
 #'
 #' This data is used in the vignette
 #'

@@ -33,7 +33,7 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
     for(j in 1:n.contests){
 
       #Generate IDs of object
-      object <- sample(1:length(true.quality), 2, FALSE)  #choose two object to compare
+      object <- sample(seq_len(length(true.quality)), 2, FALSE)  #choose two object to compare
       log.lambda.1 <- true.quality[object[1]] + stats::rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
       log.lambda.2 <- true.quality[object[2]] + stats::rnorm(1, 0, sigma.obs)  #lambda_i* = lambda_i + N(0, sigma.obs^2)
 
@@ -55,7 +55,7 @@ simulate_comparisons <- function(n.contests, true.quality, sigma.obs){
     for(j in 1:n.contests){
 
       #Generate IDs of object
-      object <- sample(1:length(true.quality), 2, FALSE)
+      object <- sample(seq_len(length(true.quality)), 2, FALSE)
       log.lambda.1 <- true.quality[object[1]]
       log.lambda.2 <- true.quality[object[2]]
       #Simulate Contest

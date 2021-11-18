@@ -28,7 +28,7 @@ quality_ratio <- function(x, y) log(x)- log(x+y)
 #' @param win.matrix A matrix, where w_ij give the number of times object i beat j
 #' @return The value of of the loglikelihood function
 #'
-#' @keywords interal
+#' @keywords internal
 #'
 #' @examples
 #'
