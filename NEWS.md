@@ -11,6 +11,6 @@
 * Bug for for creating a covariance matrix with non-zero constraint.
 
 # BSBT 1.0.0
-The first release
+The first release 
 
 
