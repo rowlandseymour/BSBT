@@ -1,13 +1,12 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Removed lifecycle package
+* Switched to github CI coninuous actions
 
 
 ## Test environments
 * local R installation, R 4.0.3
-* ubuntu 16.04 (on travis-ci), R 4.0.3
-* win-builder (devel)
+* mac-OS (release), windows (release), ubuntu (devel), ubuntu (release), ubuntu (oldrel-1), on gituhub actions
 
 ## R CMD check results
 
