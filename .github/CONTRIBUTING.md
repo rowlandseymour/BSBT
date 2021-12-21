@@ -2,7 +2,7 @@
 Thanks for contirbuting to `BSBT`. Here are some guidenlines to make the process easier. 
 
 
-## Reporting bugs
+## Reporting bugs
 
 If you find a bug in `BSBT`, please report it on the issue tracker using the bug report template.
 
