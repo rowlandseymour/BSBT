@@ -1,7 +1,7 @@
 # BSBT 1.2.0
 * The matrix exponential covariance function now has two parameters; a shape and a scale parameter.
 * The terminology of the package has been changed from subwards to objects. 
-* The order function has been depreciated. 
+* The order function has been depreciated.
 
 
 # BSBT 1.1.0
@@ -12,3 +12,5 @@
 
 # BSBT 1.0.0
 The first release
+
+
