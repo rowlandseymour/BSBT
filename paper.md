@@ -10,11 +10,12 @@ authors:
     orcid: 0000-0002-8739-3921
     affiliation: "1" # (Multiple affiliations must be quoted)
   - name: James Briant
+    orcid: 0000-0002-7329-3161
     affiliation: "2"
 affiliations:
  - name: Rights Lab, University of Nottingham, UK
    index: 1
- - name: Statistical Science, University College London, UK
+ - name: Department of Statistical Science, University College London, UK
    index: 2
 date: 12th January 2021
 bibliography: paper.bib
