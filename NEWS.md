@@ -1,3 +1,8 @@
+#BSBT 1.2.1
+* A new comparative judgement data set has been added. This is on forced marriage in wards in Nottinghamshire. 
+* The mnvnorm_chol function is no longer depreciated. 
+
+
 # BSBT 1.2.0
 * The matrix exponential covariance function now has two parameters; a shape and a scale parameter.
 * The terminology of the package has been changed from subwards to objects. 
