@@ -67,7 +67,6 @@ loglike_function <- function(x, win.matrix){
 #'
 #' @export
 mvnorm_chol <- function(mu, chol){
-  .Deprecated("mvnorm_sd")
   #x <- mu + t(L)u, where u ~ N(0, I)
   return(mu + t(chol)%*%stats::rnorm(length(mu)))
 }
