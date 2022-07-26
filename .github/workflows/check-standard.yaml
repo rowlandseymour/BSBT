@@ -5,15 +5,13 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+    
+before_install:
+  - sudo add-apt-repository ppa:ubuntugis/ppa --yes
+  - sudo apt-get --yes --force-yes update -qq
+  - sudo apt-get install --yes libudunits2-dev libproj-dev libgeos-dev libgdal-dev
 
 name: R-CMD-check
-
-run: brew install gdal
-run: |
-GDAL_VER=$(find /usr/local/Cellar/gdal/  -name "lib" | awk -F"/" '{print $7}')
-GDAL_LDPATH=/usr/local/Cellar/gdal/$GDAL_VER/lib/
-export LIBRARY_PATH=$GDAL_LDPATH
-echo $LIBRARY_PATH
 
 jobs:
   R-CMD-check:
