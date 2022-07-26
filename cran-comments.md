@@ -1,7 +1,7 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Added a new dataset
+* Added a new data set
 
 
 ## Test environments
