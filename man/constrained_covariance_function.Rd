@@ -41,5 +41,5 @@ k <- constrained_covariance_function(coords, "sqexp",
 c(1, 5), rep(1, 3), linear.constraint = 0)
 }
 \seealso{
-For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}
+For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://gaussianprocess.org/gpml/chapters/RW4.pdf}
 }

@@ -41,5 +41,5 @@ k <- constrained_adjacency_covariance_function(dar.adj.matrix, type = "sqexp",
        #Covariance registered by sum of objects is 0 using rational quadratic function
 }
 \seealso{
-For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}
+For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://gaussianprocess.org/gpml/chapters/RW4.pdf}
 }

@@ -13,7 +13,7 @@
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @return The mean vector and covariance matrix
 #'
-#' @seealso For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}
+#' @seealso For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://gaussianprocess.org/gpml/chapters/RW4.pdf}
 #'
 #' @examples
 #' #Generate 10 points and create covariance matrix using Euclidean distance metric
@@ -89,7 +89,7 @@ constrained_covariance_function <- function(coordinates, type, hyperparameters,
 #' @param linear.constraint The value the linear constraint takes. Defaults to 0.
 #' @return The mean vector and covariance matrix
 #'
-#' @seealso For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://www.gaussianprocess.org/gpml/chapters/RW4.pdf}
+#' @seealso For more information about covariance functions see \url{https://www.cs.toronto.edu/~duvenaud/cookbook/} or \url{http://gaussianprocess.org/gpml/chapters/RW4.pdf}
 #'
 #' @examples
 #' #Construct covariance matrix of Dar es Salaam, Tanzania, using network metric
