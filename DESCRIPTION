@@ -1,6 +1,6 @@
 Package: BSBT
 Title: The Bayesian Spatial Bradley--Terry Model
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: c(
     person(given = "Rowland",
            family = "Seymour",
