@@ -1,11 +1,11 @@
 Package: BSBT
 Title: The Bayesian Spatial Bradley--Terry Model
-Version: 1.2.1
+Version: 1.2.2
 Authors@R: c(
     person(given = "Rowland",
            family = "Seymour",
            role = c("aut", "cre"),
-           email = "rowland.seymour@nottingham.ac.uk",
+           email = "r.g.Seymour@bham.ac.uk",
            comment = c(ORCID = "0000-0002-8739-3921")),
 	person(given = "James",
 		   family = "Briant",
@@ -13,7 +13,7 @@ Authors@R: c(
  		   email = "james@briant.co.uk"),
   person(given = "Yichi",
          family = "Zhang",
-         role = c("aut"),
+         role = c("ctb"),
          email = "smyyz6@nottingham.ac.uk")
 	)
 Description: An implementation of the Bayesian Spatial Bradley--Terry (BSBT) model. It can be used to investigate data sets where judges compared different spatial areas. It constructs a network to describe how the areas are connected, and then places a correlated prior distribution on the quality parameter for each area, based on the network. The package includes MCMC algorithms to estimate the quality parameters. The methodology is published in Seymour et. al. (2020) <arXiv:2010.14128>.  

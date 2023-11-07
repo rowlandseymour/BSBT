@@ -1,8 +1,7 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Added a new data set
-* Fixed URLs
+* Updated my email
 
 
 ## Test environments
