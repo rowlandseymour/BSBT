@@ -35,10 +35,15 @@ There is also code for simulating comparative judgement data given the underlyin
 ## The Package in Action
 R. G. Seymour, D. Sirl, S. Preston, I. L. Dryden, M. J. A. Ellis, B. Perrat, & J. Goulding. (2020). The Bayesian Spatial Bradley–Terry Model: Urban Deprivation Modeling in Tanzania. [arXiv:2010.14128](https://arxiv.org/abs/2010.14128).
 
+Seymour, R. G., Sirl, D, Preston, S & Goulding, J 2023, Multi-Level Spatial Comparative Judgement Models To Map Deprivation. in Proceedings of the Joint Statistical Meetings 2023. Zenodo, Joint Statistical Meetings 2023. https://doi.org/10.5281/zenodo.8314257
+
+R. G. Seymour, A. Nyarko-Agyei, H. R. McCabe, K. Severn, T. Kypraios, D. Sirl, A. Taylor. (2023). Comparative Judgement Modeling to Map Forced Marriage at Local Levels. [arXiv:2212.01202](https://arxiv.org/abs/2212.01202)
+
+
 [Using citizen knowledge to model urban deprivation](https://github.com/rowlandseymour/Talks/blob/master/20_12_Universitas21_Talk.pptx) @ Universitas21 Early Career Researcher Workshop 2020 - Modern Slavery, Forced Labour and Human Trafficking: Research Roadmaps to 2030. Deceber 2020. 
 
 ## Acknowledgements
-This work is supported by the Engineering and Physical Sciences Research Council [grant number EP/T003928/1] and the Big East African Data Science research group at the University of Nottingham.
+This work is supported by the Engineering and Physical Sciences Research Council [grant numbers EP/T003928/1, EP/R513283/1], the Economic and Social Sciences Research Council [ES/V015370/1], the Research England Policy Support Fund and the Big East African Data Science research group at the University of Nottingham.
 
 The comparative judgement dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann. We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge Humanitarian Street Mapping Team (HOT) for providing a team of experts in data collection to facilitate the surveys. This fieldwork was also supported by the EPSRC Horizon Centre for Doctoral Training - My Life in Data (EP/L015463/1) and by EPSRC grant Neodemographics (EP/L021080/1).
 

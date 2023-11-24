@@ -2,6 +2,7 @@
 This is a resubmission. In this version I have:
 
 * Updated my email
+* Updated the acknowledgements in the README
 
 
 ## Test environments
